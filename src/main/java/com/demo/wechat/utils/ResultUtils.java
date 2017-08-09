@@ -1,6 +1,6 @@
 package com.demo.wechat.utils;
 
-import com.demo.wechat.domain.Result;
+import com.demo.wechat.bean.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

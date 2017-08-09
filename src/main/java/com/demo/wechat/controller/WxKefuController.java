@@ -1,6 +1,6 @@
 package com.demo.wechat.controller;
 
-import com.demo.wechat.domain.Result;
+import com.demo.wechat.bean.Result;
 import com.demo.wechat.utils.DateUtils;
 import com.demo.wechat.utils.ResultUtils;
 import me.chanjar.weixin.common.exception.WxErrorException;

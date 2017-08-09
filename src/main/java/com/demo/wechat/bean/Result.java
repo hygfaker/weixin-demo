@@ -1,4 +1,4 @@
-package com.demo.wechat.domain;
+package com.demo.wechat.bean;
 
 /**
  * Created by huangyg on 2017/8/7.
