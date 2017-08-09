@@ -27,6 +27,8 @@ public class MenuHandler extends AbstractHandler {
             return null;
         }
 
+        logger.error(wxMessage.getFromUser());
+
         return WxMpXmlOutMessage.TEXT().content(msg)
                 .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
                 .build();

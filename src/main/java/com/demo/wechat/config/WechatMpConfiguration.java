@@ -96,7 +96,7 @@ public class WechatMpConfiguration {
 
         // 点击菜单连接事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
-                .event(WxConsts.BUTTON_VIEW).handler(this.nullHandler).end();
+                .event(WxConsts.BUTTON_VIEW).handler(this.getMenuHandler()).end();
 
         // 关注事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)

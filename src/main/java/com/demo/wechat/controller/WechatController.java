@@ -1,5 +1,6 @@
 package com.demo.wechat.controller;
 
+import com.demo.wechat.handler.MenuHandler;
 import com.demo.wechat.handler.MsgHandler;
 import com.demo.wechat.handler.SubscribeHandler;
 import com.demo.wechat.handler.UnsubscribeHandler;
@@ -36,7 +37,7 @@ public class WechatController {
             @RequestParam(name = "nonce", required = false) String nonce,
             @RequestParam(name = "c", required = false) String echostr) {
 
-        this.logger.info("\n接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", signature, timestamp, nonce, echostr);
+        this.logger.info("\n======================接收到来自微信服务器的认证消息======================\n[signature=[{}], timestamp=[{}],nonce=[{}], echostr=[{}]]", signature, timestamp, nonce, echostr);
 
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
             throw new IllegalArgumentException("请求参数非法，请核实!");
@@ -60,7 +61,7 @@ public class WechatController {
                                required = false) String msgSignature) {
 
 
-        this.logger.info("\n接收微信请求：[signature=[{}], encType=[{}], msgSignature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",signature, encType, msgSignature, timestamp, nonce, requestBody);
+        this.logger.info("\n======================接收微信请求====================== \n[signature=[{}], encType=[{}], msgSignature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",signature, encType, msgSignature, timestamp, nonce, requestBody);
 
         if (!this.wxService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
@@ -97,7 +98,7 @@ public class WechatController {
                     .toEncryptedXml(this.wxService.getWxMpConfigStorage());
         }
 
-        this.logger.debug("\n组装回复信息：{}", out);
+        this.logger.debug("\n======================组装回复信息======================\n{}", out);
 
         return out;
     }
@@ -108,16 +109,16 @@ public class WechatController {
 
             // 路由规则
             this.router.rule()
-                    .msgType(WxConsts.XML_MSG_TEXT)
-                    .handler(new MsgHandler())
-                    .end()
-                    .rule()
                     .msgType(WxConsts.EVT_SUBSCRIBE)
                     .handler(new SubscribeHandler())
                     .end()
                     .rule()
                     .msgType(WxConsts.EVT_UNSUBSCRIBE)
                     .handler(new UnsubscribeHandler())
+                    .end()
+                    .rule()
+                    .msgType(WxConsts.XML_MSG_TEXT)
+                    .handler(new MsgHandler())
                     .end()
             ;
 

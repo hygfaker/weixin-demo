@@ -78,6 +78,6 @@ public class WxUserController {
     @PostMapping("/bind")
     public void accountBind(@RequestParam("userid") String userid){
 
-        logger.info("openid={}",userid);
+        logger.info("userid={}",userid);
     }
 }
