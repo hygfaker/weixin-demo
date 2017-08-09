@@ -1,6 +1,8 @@
 package com.demo.wechat.controller;
 
 import com.demo.wechat.handler.MsgHandler;
+import com.demo.wechat.handler.SubscribeHandler;
+import com.demo.wechat.handler.UnsubscribeHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -108,7 +110,17 @@ public class WechatController {
             this.router.rule()
                     .msgType(WxConsts.XML_MSG_TEXT)
                     .handler(new MsgHandler())
-                    .end();
+                    .end()
+                    .rule()
+                    .msgType(WxConsts.EVT_SUBSCRIBE)
+                    .handler(new SubscribeHandler())
+                    .end()
+                    .rule()
+                    .msgType(WxConsts.EVT_UNSUBSCRIBE)
+                    .handler(new UnsubscribeHandler())
+                    .end()
+            ;
+
             // 将消息交给路由器
             return this.router.route(message);
         } catch (Exception e) {

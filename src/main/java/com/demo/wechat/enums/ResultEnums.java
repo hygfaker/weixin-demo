@@ -1,0 +1,32 @@
+package com.demo.wechat.enums;
+
+/**
+ * Created by huangyg on 2017/8/9.
+ */
+public enum ResultEnums {
+    SUCCESS(200,"请求成功"),
+    PARAM_ERROR(400,"参数缺失"),
+    UNAUTHORIZED(401,"缺失鉴权信息"),
+    FORBIDDEN(403,"操作不允许"),
+    NOTFOUND_ERROR(404,"资源无法访问/不存在"),
+    SERVER_ERROR(500,"服务器端发生错误"),
+    ;
+
+
+    private Integer code;
+    private String msg;
+
+
+    ResultEnums(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+    public String getMsg() {
+        return msg;
+    }
+
+}

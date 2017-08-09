@@ -40,11 +40,14 @@ public class MsgHandler extends AbstractHandler {
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
+        // 关键字自动回复
+        if (wxMessage.getContent().endsWith("你是谁")){
+            return new TextBuilder().build("我是个人测试公众号", wxMessage, weixinService);
+        }
 
         //TODO 组装回复消息
         String content = "收到信息内容：" + JsonUtils.toJson(wxMessage);
 
         return new TextBuilder().build("我是公众号", wxMessage, weixinService);
     }
-
 }
