@@ -1,25 +1,25 @@
 package com.demo.wechat.utils;
 
 import com.demo.wechat.bean.Result;
-import com.demo.wechat.enums.ResultEnums;
+import com.demo.wechat.enums.ResultEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Created by huangyg on 2017/8/7.
  */
-public class ResultUtils {
-    public static Logger logger = LoggerFactory.getLogger(ResultUtils.class);
+public class ResultUtil {
+    public static Logger logger = LoggerFactory.getLogger(ResultUtil.class);
     public static Result success(Object object){
         Result result = new Result();
-        result.setCode(ResultEnums.SUCCESS.getCode());
-        result.setMsg(ResultEnums.SUCCESS.getMsg());
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setMsg(ResultEnum.SUCCESS.getMsg());
         result.setData(object);
         logger.info(result.toString());
         return result;
     }
 
-    public static Result failure(ResultEnums resultEnums){
+    public static Result failure(ResultEnum resultEnums){
         Result result = new Result();
         result.setCode(resultEnums.getCode());
         result.setMsg(resultEnums.getMsg());

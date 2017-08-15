@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author XuJijun
  *
  */
-public class RegexUtils {
+public class RegexUtil {
 
     /**
      * 判断是否匹配

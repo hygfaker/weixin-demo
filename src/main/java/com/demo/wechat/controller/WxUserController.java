@@ -1,22 +1,24 @@
 package com.demo.wechat.controller;
 
 import com.demo.wechat.bean.Result;
-import com.demo.wechat.utils.ResultUtils;
+import com.demo.wechat.config.WechatMpProperties;
+import com.demo.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
-import me.chanjar.weixin.mp.bean.result.WxMpUserBlacklistGetResult;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
  * Created by huangyg on 2017/8/2.
  */
+
 @RestController
 @RequestMapping("/user")
 public class WxUserController {
@@ -26,9 +28,13 @@ public class WxUserController {
     @Autowired
     private WxMpService service;
 
+    @Autowired
+    private WechatMpProperties properties;
+
     // 获取用户列表
     @GetMapping("/list")
     public WxMpUserList userList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid) throws WxErrorException{
+        System.out.println(service.getWxMpConfigStorage().toString());
         return this.service.getUserService().userList(nextOpenid);
     }
 
@@ -55,7 +61,7 @@ public class WxUserController {
     // 获取公众号的黑名单列表
     @GetMapping("/blacklist")
     public Result blackList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid) throws WxErrorException{
-        return ResultUtils.success(this.service.getBlackListService().getBlacklist(nextOpenid));
+        return ResultUtil.success(this.service.getBlackListService().getBlacklist(nextOpenid));
 
     }
 
@@ -63,7 +69,7 @@ public class WxUserController {
     @PostMapping("/pushBlackList")
     public Result pushToBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
         this.service.getBlackListService().pushToBlacklist(openidList);
-        return ResultUtils.success();
+        return ResultUtil.success();
 
     }
 
@@ -71,13 +77,38 @@ public class WxUserController {
     @PostMapping("/removeBlackList")
     public Result removeFromBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
         this.service.getBlackListService().pullFromBlacklist(openidList);
-        return ResultUtils.success();
+        return ResultUtil.success();
     }
 
-    // 绑定用户信息
-    @PostMapping("/bind")
-    public void accountBind(@RequestParam("userid") String userid){
+    // 获取用户 openid，需要以下两个方法才能获取。
+    @GetMapping("/openid")
+    public String openid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
+                         @RequestParam(value = "callbackUrl") String callBackUrl,
+                         HttpServletRequest request) throws WxErrorException {
+        String url = "" ;
 
-        logger.info("userid={}",userid);
+        if(isAuthPage){
+            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/accessToken" + "&response_type=code&scope=snsapi_userinfo&state=" + callBackUrl + "#wechat_redirect";
+        }else{
+            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/accessToken" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
+
+        }
+        logger.info(url);
+
+        return "redirect:" + url;
+
     }
+
+    @GetMapping("/openid/accessToken")
+    public String accessToken(@RequestParam(value = "code") String code,
+                            @RequestParam(value = "state") String state) throws WxErrorException{
+        String openid = "";
+
+        // 请求以下链接获取 access_token
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
+        String res = this.service.get(url,null);
+        // 获取 access_token、openid 等信息
+        return res;
+    }
+
 }

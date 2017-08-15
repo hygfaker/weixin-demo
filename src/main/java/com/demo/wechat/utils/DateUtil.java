@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by huangyg on 2017/8/8.
  */
-public class DateUtils {
+public class DateUtil {
 
 
     public static Date dateToUnixTimestamp(String dateStr, String pattern) {
@@ -59,7 +59,7 @@ public class DateUtils {
          */
         public static String getPatternByDateStr(String dateStr){
             for(DatePattern df : DatePattern.values()){
-                if(RegexUtils.matches(dateStr, df.getRegex())){
+                if(RegexUtil.matches(dateStr, df.getRegex())){
                     return df.getPattern();
                 }
             }

@@ -1,7 +1,7 @@
 package com.demo.wechat.controller;
 
 import com.demo.wechat.bean.Result;
-import com.demo.wechat.utils.ResultUtils;
+import com.demo.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class WxQrcodecontroller {
     @GetMapping("/createTmpTicket")
     public Result qrCodeCreateTmpTicket(@RequestParam("sceneid") int sceneid,
                                         @RequestParam(value = "expireSecondes") Integer expireSeconds) throws WxErrorException{
-        return ResultUtils.success(wxMpService.getQrcodeService().qrCodeCreateTmpTicket(sceneid,expireSeconds));
+        return ResultUtil.success(wxMpService.getQrcodeService().qrCodeCreateTmpTicket(sceneid,expireSeconds));
     }
 
     /**
@@ -45,7 +45,7 @@ public class WxQrcodecontroller {
      */
     @GetMapping("/createrLastTicket")
     public Result qrCodeCreateLastTicket(@RequestParam("sceneid") int sceneid) throws WxErrorException{
-        return ResultUtils.success(wxMpService.getQrcodeService().qrCodeCreateLastTicket(sceneid));
+        return ResultUtil.success(wxMpService.getQrcodeService().qrCodeCreateLastTicket(sceneid));
     }
 
     /**
@@ -59,7 +59,7 @@ public class WxQrcodecontroller {
      */
     @GetMapping("/qrocdeUrl")
     public Result  qrCodePictureUrl(@RequestParam("ticket") String ticket,@RequestParam(value = "needShortUrl",defaultValue = "true") boolean needShortUrl) throws WxErrorException{
-        return ResultUtils.success(wxMpService.getQrcodeService().qrCodePictureUrl(ticket,needShortUrl));
+        return ResultUtil.success(wxMpService.getQrcodeService().qrCodePictureUrl(ticket,needShortUrl));
     }
 
 }

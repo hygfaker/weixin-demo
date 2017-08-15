@@ -1,7 +1,7 @@
 package com.demo.wechat.controller;
 
 import com.demo.wechat.bean.Result;
-import com.demo.wechat.utils.ResultUtils;
+import com.demo.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -38,7 +38,7 @@ public class WxMenuController{
      */
     @PostMapping("/create")
     public Result menuCreate(@RequestBody WxMenu menu) throws WxErrorException {
-        return ResultUtils.success(this.wxService.getMenuService().menuCreate(menu));
+        return ResultUtil.success(this.wxService.getMenuService().menuCreate(menu));
     }
 
     /**

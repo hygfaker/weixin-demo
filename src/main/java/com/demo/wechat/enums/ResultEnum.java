@@ -3,7 +3,7 @@ package com.demo.wechat.enums;
 /**
  * Created by huangyg on 2017/8/9.
  */
-public enum ResultEnums {
+public enum ResultEnum {
     SUCCESS(200,"请求成功"),
     PARAM_ERROR(400,"参数缺失"),
     UNAUTHORIZED(401,"缺失鉴权信息"),
@@ -17,7 +17,7 @@ public enum ResultEnums {
     private String msg;
 
 
-    ResultEnums(Integer code, String msg) {
+    ResultEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }

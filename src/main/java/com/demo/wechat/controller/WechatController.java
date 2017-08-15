@@ -1,6 +1,5 @@
 package com.demo.wechat.controller;
 
-import com.demo.wechat.handler.MenuHandler;
 import com.demo.wechat.handler.MsgHandler;
 import com.demo.wechat.handler.SubscribeHandler;
 import com.demo.wechat.handler.UnsubscribeHandler;
@@ -30,12 +29,18 @@ public class WechatController {
     @Autowired
     private WxMpMessageRouter router;
 
+    /**
+     * GET请求来自微信服务器，请原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败。加密/校验流程如下：
+     1）将token、timestamp、nonce三个参数进行字典序排序
+     2）将三个参数字符串拼接成一个字符串进行sha1加密
+     3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+     * */
     @GetMapping(produces = "text/plain;charset=utf-8")
     public String authGet(
             @RequestParam(name = "signature",required = false) String signature,
             @RequestParam(name = "timestamp",required = false) String timestamp,
             @RequestParam(name = "nonce", required = false) String nonce,
-            @RequestParam(name = "c", required = false) String echostr) {
+            @RequestParam(name = "echostr", required = false) String echostr) {
 
         this.logger.info("\n======================接收到来自微信服务器的认证消息======================\n[signature=[{}], timestamp=[{}],nonce=[{}], echostr=[{}]]", signature, timestamp, nonce, echostr);
 
@@ -44,6 +49,7 @@ public class WechatController {
         }
 
         if (this.wxService.checkSignature(timestamp, nonce, signature)) {
+//            验证成功后的操作
             return echostr;
         }
 
