@@ -31,10 +31,9 @@ public class WxAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        logger.info("====================" +
-                        "class_method={}",
-                joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName()
-                        + "====================");
+        logger.info("========================================================");
+
+        logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
         logger.info("url={}",request.getRequestURI());
 
@@ -44,11 +43,7 @@ public class WxAspect {
 
         logger.info("args={}",joinPoint.getArgs());
 
-    }
+        logger.info("========================================================");
 
-    // 数据有返回的时候会调用
-    @AfterReturning(returning = "object", pointcut = "pointCut()")
-    public void doAfterReturning(Object object) {
-        logger.error("response={}", object.toString());
     }
 }

@@ -3,6 +3,9 @@ package com.demo.wechat.controller;
 import com.demo.wechat.bean.Result;
 import com.demo.wechat.config.WechatMpProperties;
 import com.demo.wechat.utils.ResultUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
@@ -10,9 +13,14 @@ import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -80,35 +88,110 @@ public class WxUserController {
         return ResultUtil.success();
     }
 
-    // 获取用户 openid，需要以下两个方法才能获取。
-    @GetMapping("/openid")
-    public String openid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
-                         @RequestParam(value = "callbackUrl") String callBackUrl,
-                         HttpServletRequest request) throws WxErrorException {
-        String url = "" ;
 
+    // 引导用户打开微信页面，获取授权
+    @GetMapping("/openid")
+    public void getOpenid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
+                          @RequestParam(value = "callbackUrl",required = false) String callBackUrl,
+                          HttpServletRequest request, HttpServletResponse response) throws WxErrorException, IOException, ServletException {
+        String authUrl = "";
         if(isAuthPage){
-            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/accessToken" + "&response_type=code&scope=snsapi_userinfo&state=" + callBackUrl + "#wechat_redirect";
+            authUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/info" + "&response_type=code&scope=snsapi_userinfo&state=" + callBackUrl + "#wechat_redirect";
         }else{
-            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/accessToken" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
+            authUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/code" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
 
         }
-        logger.info(url);
-
-        return "redirect:" + url;
-
+        logger.info("微信网页授权的 url：" + authUrl);
+        response.sendRedirect(authUrl); // 重定向
     }
 
-    @GetMapping("/openid/accessToken")
-    public String accessToken(@RequestParam(value = "code") String code,
-                            @RequestParam(value = "state") String state) throws WxErrorException{
-        String openid = "";
+    // 跳转到回调的 url 并且返回 code
+    @GetMapping("/openid/code")
+    public Result getAccessToken(@RequestParam(value = "code") String code,
+                               @RequestParam(value = "state") String callbackUrl,
+                               HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
 
         // 请求以下链接获取 access_token
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
         String res = this.service.get(url,null);
-        // 获取 access_token、openid 等信息
-        return res;
+
+        String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
+
+        if( !callbackUrl.contains("?")){
+            callbackUrl += "?";
+        }else{
+            callbackUrl += "&";
+        }
+
+        HashMap<String,String> map = new HashMap<>();
+        map.put("openid",openid);
+        return ResultUtil.success(map);
     }
 
+
+/*  该接口主要用于跳转到相应回调页面
+
+    // 获取用户 openid，需要以下两个方法才能获取。
+    @GetMapping("/openid")
+    public void getOpenid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
+                       @RequestParam(value = "callbackUrl") String callBackUrl,
+                       HttpServletRequest request, HttpServletResponse response) throws WxErrorException, IOException, ServletException {
+        String url = "" ;
+        if(isAuthPage){
+            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/info" + "&response_type=code&scope=snsapi_userinfo&state=" + callBackUrl + "#wechat_redirect";
+        }else{
+            url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/code" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
+
+        }
+        logger.info("微信网页授权的 url：" + url);
+        response.sendRedirect(url); // 重定向
+    }
+    // 跳转到回调的 url 并且返回 code
+    @GetMapping("/openid/code")
+    public void getAccessToken(@RequestParam(value = "code") String code,
+                                 @RequestParam(value = "state") String callbackUrl,
+                                  HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
+
+        // 请求以下链接获取 access_token
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
+        String res = this.service.get(url,null);
+
+        String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
+
+        if( !callbackUrl.contains("?")){
+            callbackUrl += "?";
+        }else{
+            callbackUrl += "&";
+        }
+        callbackUrl += "openid=" + openid;
+        logger.info("回调的页面：" + callbackUrl);
+        // 跳转到回调页面
+        response.sendRedirect(callbackUrl); // 重定向
+    }
+
+
+
+
+    // 根据 code 获取微信用户具体信息
+    @GetMapping("/openid/info")
+    public void getUserInfo(@RequestParam(value = "code") String code,
+                               @RequestParam(value = "state") String callbackUrl,
+                               HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
+
+        // 请求以下链接获取 access_token
+        String getCodeUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
+        String res = this.service.get(getCodeUrl,null);
+
+        String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
+        String accessToken = new JsonParser().parse(res).getAsJsonObject().get("access_token").getAsString();
+
+
+        String getUserInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+        String userInfo = this.service.get(getUserInfo,null);
+
+        logger.info("回调的页面：" + callbackUrl);
+        // 跳转到回调页面
+        response.sendRedirect(callbackUrl); // 重定向
+    }
+    */
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ResultUtil {
     public static Logger logger = LoggerFactory.getLogger(ResultUtil.class);
+
     public static Result success(Object object){
         Result result = new Result();
         result.setCode(ResultEnum.SUCCESS.getCode());
@@ -26,6 +27,14 @@ public class ResultUtil {
         logger.info(result.toString());
         return result;
     }
+    public static Result failure(ResultEnum resultEnums,String msg){
+        Result result = new Result();
+        result.setCode(resultEnums.getCode());
+        result.setMsg(msg);
+        logger.info(result.toString());
+        return result;
+    }
+
 
     public static Result success(){
         return success(null);
