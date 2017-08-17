@@ -31,7 +31,7 @@ public class WxAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        logger.info("========================================================");
+        logger.info("============================ WeiXin ============================");
 
         logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
@@ -43,7 +43,7 @@ public class WxAspect {
 
         logger.info("args={}",joinPoint.getArgs());
 
-        logger.info("========================================================");
+        logger.info("================================================================");
 
     }
 }

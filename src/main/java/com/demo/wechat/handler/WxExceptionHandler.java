@@ -1,5 +1,6 @@
 package com.demo.wechat.handler;
 
+import com.demo.wechat.bean.ErrorCodeMsg;
 import com.demo.wechat.bean.Result;
 import com.demo.wechat.enums.ResultEnum;
 import com.demo.wechat.utils.ResultUtil;
@@ -24,8 +25,14 @@ public class WxExceptionHandler {
     public Result handle(Exception e){
 
         if (e instanceof WxErrorException){
+
             WxErrorException exception = (WxErrorException)e;
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+
+            String msg = ErrorCodeMsg.errorMsg(exception.getError().getErrorCode());
+            if (msg.equals("unknown")){
+                msg = exception.getError().getErrorMsg();
+            }
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
 
         }else if (e instanceof MissingServletRequestParameterException){ // 参数缺失
             MissingServletRequestParameterException exception= (MissingServletRequestParameterException)e;
