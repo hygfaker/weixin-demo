@@ -1,5 +1,6 @@
 package com.demo.wechat.controller;
 
+import com.demo.wechat.handler.LocationHandler;
 import com.demo.wechat.handler.MsgHandler;
 import com.demo.wechat.handler.SubscribeHandler;
 import com.demo.wechat.handler.UnsubscribeHandler;

@@ -27,7 +27,7 @@ public class WxPublicController {
     @Autowired
     private WxMpService service;
 
-
+    //TODO 等看懂 mybatics 怎么建表之后再继续写其他业务
     @PostMapping("/add")
     public Result addPublicAccount(@RequestParam(value = "appid") String appid,
                                    @RequestParam(value = "secret") String secret,

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/qrcode")
-public class WxQrcodecontroller {
+public class WxQrcodeController {
 
     @Autowired
     private WxMpService wxMpService;

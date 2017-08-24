@@ -1,29 +1,39 @@
 package com.demo.wechat.bean;
 
+import java.util.Date;
+
 /**
  * Created by huangyg on 2017/8/7.
  */
 public class Result<T> {
-    private String msg;
-    private Integer code;
+    private String desc;
+    private Integer status;
+    private String time;
     private T data;
 
-    public String getMsg() {
-        return msg;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public Integer getCode() {
-        return code;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
     public T getData() {
         return data;
     }
@@ -32,12 +42,5 @@ public class Result<T> {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "msg='" + msg + '\'' +
-                ", code=" + code +
-                ", data=" + data +
-                '}';
-    }
+
 }

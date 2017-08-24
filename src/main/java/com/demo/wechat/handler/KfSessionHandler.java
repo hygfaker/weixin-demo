@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * @author Binary Wang(https://github.com/binarywang)
+ * Created by huangyg on 2017/8/15.
  */
 @Component
 public class KfSessionHandler extends AbstractHandler {
@@ -18,7 +18,7 @@ public class KfSessionHandler extends AbstractHandler {
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService wxMpService,
                                     WxSessionManager sessionManager) {
-        //TODO 对会话做处理
+        //TODO 对会话做处理，是否有开启该 handler 的功能，是通过数据库拿数据判断
         return null;
     }
 

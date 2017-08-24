@@ -3,25 +3,26 @@ package com.demo.wechat.controller;
 import com.demo.wechat.bean.Result;
 import com.demo.wechat.config.WechatMpProperties;
 import com.demo.wechat.utils.ResultUtil;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.AccessException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by huangyg on 2017/8/2.
@@ -89,7 +90,7 @@ public class WxUserController {
     }
 
 
-    // 引导用户打开微信页面，获取授权
+    // 授权获取 openid
     @GetMapping("/openid")
     public void getOpenid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
                           @RequestParam(value = "callbackUrl",required = false) String callBackUrl,
@@ -105,7 +106,7 @@ public class WxUserController {
         response.sendRedirect(authUrl); // 重定向
     }
 
-    // 跳转到回调的 url 并且返回 code
+    // 返回 openid
     @GetMapping("/openid/code")
     public Result getAccessToken(@RequestParam(value = "code") String code,
                                @RequestParam(value = "state") String callbackUrl,
@@ -117,17 +118,54 @@ public class WxUserController {
 
         String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
 
-        if( !callbackUrl.contains("?")){
-            callbackUrl += "?";
-        }else{
-            callbackUrl += "&";
+
+        if (callbackUrl.contains("www")){  // 如果有传入 callbackurl，则跳转到 url
+            if( !callbackUrl.contains("?")){
+                callbackUrl += "?";
+            }else{
+                callbackUrl += "&";
+            }
+            callbackUrl += "openid=" + openid;
+            logger.info("回调的页面：" + callbackUrl);
+            // 跳转到回调页面
+            response.sendRedirect(callbackUrl); // 重定向
+            return ResultUtil.success();
+        }else{ // 没有传入 callbackurl，则返回用户 openid
+            HashMap<String,String> map = new HashMap<>();
+            map.put("openid",openid);
+            return ResultUtil.success(map);
         }
 
-        HashMap<String,String> map = new HashMap<>();
-        map.put("openid",openid);
-        return ResultUtil.success(map);
     }
+    @GetMapping("/openid/info")
+    public Result getUserInfo(@RequestParam(value = "code") String code,
+                            @RequestParam(value = "state") String callbackUrl,
+                            HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
 
+        WxMpOAuth2AccessToken accessTokenObject =  this.service.oauth2getAccessToken(code);
+        String accessToken = accessTokenObject.getAccessToken();
+        String openid = accessTokenObject.getOpenId();
+
+        WxMpUser user = this.service.oauth2getUserInfo(accessTokenObject,"zh_CN");
+
+        if (callbackUrl.contains("www")){  // 如果有传入 callbackurl，则跳转到 url
+            if( !callbackUrl.contains("?")){
+                callbackUrl += "?";
+            }else{
+                callbackUrl += "&";
+            }
+            callbackUrl += "userInfo=" + user.toString();
+            logger.info("回调的页面：" + callbackUrl);
+            // 跳转到回调页面
+            response.sendRedirect(callbackUrl); // 重定向
+            return ResultUtil.success();
+        }else{ // 没有传入 callbackurl，则返回用户 openid
+
+            return ResultUtil.success(user);
+        }
+
+
+    }
 
 /*  该接口主要用于跳转到相应回调页面
 

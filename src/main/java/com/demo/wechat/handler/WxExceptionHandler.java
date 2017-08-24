@@ -35,12 +35,13 @@ public class WxExceptionHandler {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
 
         }else if (e instanceof MissingServletRequestParameterException){ // 参数缺失
+
             MissingServletRequestParameterException exception= (MissingServletRequestParameterException)e;
             String msg = "【" + exception.getParameterType() + "】" + "类型的"
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
         }else{
-            logger.error("【系统异常】={}",e);
+            logger.error("【系统异常】= {}",e);
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }
     }

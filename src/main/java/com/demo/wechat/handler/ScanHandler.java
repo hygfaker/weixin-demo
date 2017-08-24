@@ -10,7 +10,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import java.util.Map;
 
 /**
- * @author Binary Wang(https://github.com/binarywang)
+ * Created by huangyg on 2017/8/15.
  */
 public abstract class ScanHandler extends AbstractHandler {
     // todo 获取扫描带参数二维码的数据

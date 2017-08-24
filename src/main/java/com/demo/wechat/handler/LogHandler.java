@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * @author Binary Wang(https://github.com/binarywang)
+ * Created by huangyg on 2017/8/15.
  */
 @Component
 public class LogHandler extends AbstractHandler {

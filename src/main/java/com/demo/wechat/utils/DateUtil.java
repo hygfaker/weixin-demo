@@ -9,6 +9,12 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    public static String getStringDate(){
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
 
     public static Date dateToUnixTimestamp(String dateStr, String pattern) {
         long timestamp = 0;

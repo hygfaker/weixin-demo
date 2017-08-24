@@ -4,6 +4,7 @@ import com.demo.wechat.bean.Result;
 import com.demo.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateIndustry;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,20 @@ public class WxTemplateController {
     @Autowired
     private WxMpService wxService;
 
+
+    // 设置所属行业
+    @PostMapping("/setIndustry")
+    public Result setIndustry(@RequestParam String primary,@RequestParam String second) throws WxErrorException{
+        WxMpTemplateIndustry industry = new WxMpTemplateIndustry(new WxMpTemplateIndustry.Industry(primary),
+                new WxMpTemplateIndustry.Industry(second));
+        return ResultUtil.success(this.wxService.getTemplateMsgService().setIndustry(industry));
+    }
+
+    // 获取设置的行业信息
+    @GetMapping("/industry")
+    public Result setIndustry() throws WxErrorException{
+           return ResultUtil.success(this.wxService.getTemplateMsgService().getIndustry());
+    }
     // 获得模板列表
     @GetMapping("/list")
     public Result getAllPrivateTemplate() throws WxErrorException {
