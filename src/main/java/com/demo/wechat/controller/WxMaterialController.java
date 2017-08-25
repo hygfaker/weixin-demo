@@ -4,10 +4,7 @@ import com.demo.wechat.bean.Result;
 import com.demo.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterial;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
-import me.chanjar.weixin.mp.bean.material.WxMpMaterialUploadResult;
+import me.chanjar.weixin.mp.bean.material.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,22 +34,29 @@ public class WxMaterialController {
     @Autowired
     private WxMpService wxService;
 
-    // 新增永久素材
-    @PostMapping("upload")
-    public Result uploadMaterialNews(@RequestBody WxMpMaterialNews news){
-
+    // 新增新增永久图文素材
+    @PostMapping("/uploadNews")
+    public Result uploadMaterialNews(@RequestParam WxMpMaterialNews news) throws WxErrorException {
+        WxMpMaterialUploadResult result = this.wxService.getMaterialService().materialNewsUpload(news);
         return ResultUtil.success();
     }
 
     // 获取永久素材
-    @GetMapping("getNewsInfo")
+    @GetMapping("/getNewsInfo")
     public Result getMaterialNewsInfo(@RequestParam String mediaid) throws WxErrorException{
         WxMpMaterialNews news = this.wxService.getMaterialService().materialNewsInfo(mediaid);
         return ResultUtil.success();
     }
 
+    // 分页获取图文素材列表
+    @GetMapping("/getList")
+    public Result getList(@RequestParam int offest , @RequestParam int count) throws WxErrorException{
+        WxMpMaterialNewsBatchGetResult result = this.wxService.getMaterialService().materialNewsBatchGet(offest,count);
+        return ResultUtil.success(result);
+    }
+
     // 上传图文消息内的图片获取URL
-    @PostMapping("/imgUpload")
+    @PostMapping("/uploadImg")
     public Result mediaImgUpload(@RequestParam MultipartFile img) throws WxErrorException, IOException {
         // spring 上传文件采用 MultipartFile 对象，而微信 sdk 是使用 File 对象，所以必须先把 MultipartFile -> File 对象，
 
