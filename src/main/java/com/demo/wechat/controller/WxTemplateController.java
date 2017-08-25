@@ -9,6 +9,9 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by huangyg on 2017/8/9.
  */
@@ -48,6 +51,9 @@ public class WxTemplateController {
     // 发送模板消息
     @PostMapping("/send")
     public Result sendTemplateMsg(@RequestBody WxMpTemplateMessage templateMessage) throws WxErrorException{
-        return ResultUtil.success(this.wxService.getTemplateMsgService().sendTemplateMsg(templateMessage));
+        String msgid = this.wxService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+        HashMap<String,String> res = new HashMap<>();
+        res.put("msgid",msgid);
+        return ResultUtil.success(res);
     }
 }

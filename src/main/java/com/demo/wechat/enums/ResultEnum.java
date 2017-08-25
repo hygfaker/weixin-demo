@@ -4,7 +4,7 @@ package com.demo.wechat.enums;
  * Created by huangyg on 2017/8/9.
  */
 public enum ResultEnum {
-    SUCCESS(200,"请求成功"),
+    SUCCESS(200,"执行成功"),
     PARAM_ERROR(400,"参数缺失"),
     UNAUTHORIZED(401,"缺失鉴权信息"),
     FORBIDDEN(403,"操作不允许"),

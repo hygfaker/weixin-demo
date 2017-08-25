@@ -2,6 +2,7 @@ package com.demo.wechat.controller;
 
 import com.demo.wechat.bean.Result;
 import com.demo.wechat.config.WechatMpProperties;
+import com.demo.wechat.utils.JsonUtil;
 import com.demo.wechat.utils.ResultUtil;
 import com.google.gson.JsonParser;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -43,7 +44,7 @@ public class WxUserController {
     // 获取用户列表
     @GetMapping("/list")
     public WxMpUserList userList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid) throws WxErrorException{
-        System.out.println(service.getWxMpConfigStorage().toString());
+        logger.info(service.getWxMpConfigStorage().toString());
         return this.service.getUserService().userList(nextOpenid);
     }
 
@@ -146,6 +147,7 @@ public class WxUserController {
         String accessToken = accessTokenObject.getAccessToken();
         String openid = accessTokenObject.getOpenId();
 
+
         WxMpUser user = this.service.oauth2getUserInfo(accessTokenObject,"zh_CN");
 
         if (callbackUrl.contains("www")){  // 如果有传入 callbackurl，则跳转到 url
@@ -154,11 +156,11 @@ public class WxUserController {
             }else{
                 callbackUrl += "&";
             }
-            callbackUrl += "userInfo=" + user.toString();
+//            callbackUrl += "userInfo=" + JsonUtil.toJson(user);
             logger.info("回调的页面：" + callbackUrl);
             // 跳转到回调页面
             response.sendRedirect(callbackUrl); // 重定向
-            return ResultUtil.success();
+            return ResultUtil.success(JsonUtil.toJson(user));
         }else{ // 没有传入 callbackurl，则返回用户 openid
 
             return ResultUtil.success(user);
