@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +26,6 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/material")
 public class WxMaterialController {
-
-    /*todo
-    * 新增永久，永久素材分为：图文素材、图片素材、视频素材、音频素材等等。其中图文素材较为复杂。
-    * 获取永久
-    * 删除永久
-    * 修改永久
-    * 获取素材总数
-    * 获取素材列表
-    * */
 
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(WxMaterialController.class);
 
@@ -73,40 +65,44 @@ public class WxMaterialController {
     }
 
     // 获取图文永久素材的信息
-    @GetMapping("/newsDetail")
+    @GetMapping("/news")
     public Result materialNewsInfo(@RequestParam String mediaid) throws WxErrorException {
          return ResultUtil.success(this.wxService.getMaterialService().materialNewsInfo(mediaid));
     }
 
-    // 下载声音或者图片
-    @GetMapping("/news")
-    public ResponseEntity<InputStreamResource> newsOrVoiceDownload(@RequestParam String mediaid) throws WxErrorException {
+    // 获取声音或者图片素材的信息
+    @GetMapping("/mediainfo")
+    public Result newsOrVoiceInfo(@RequestParam String mediaid) throws Exception{
+        /* todo 应该建立数据库，将 mediaid、filename、mediatype、length 记录起来，防止每次都重新获取微信数据。并且，由于下载声音图片素材
+           todo 的接口返回的是数据流，不包含文件名称等信息。所以需要额外调用获取素材列表的接口，然后匹配 mediaid 获取相应的信息。这样操作太
+           todo 麻烦。
+         */
+        return ResultUtil.success();
+    }
+
+    // 下载声音或者图片素材
+    @GetMapping("/media")
+    public ResponseEntity<byte[]> newsOrVoiceDownload(@RequestParam String mediaid) throws Exception {
         InputStream inputStream = this.wxService.getMaterialService().materialImageOrVoiceDownload(mediaid);
+
+        byte[] outputStream = FileUtil.readStream(inputStream);
+
         HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Length", String.valueOf(outputStream.length));
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Content-Disposition", String.format("attachment; filename=x"));
-        headers.add("Content-Length",inputStream.);
+        headers.add("Content-Disposition", String.format("attachment; filename=x.png"));
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new InputStreamResource(inputStream));
 
+        ResponseEntity<byte[]> response=new ResponseEntity<byte[]>(outputStream,headers, HttpStatus.OK);
+
+        return response;
     }
 
     // 下载视频永久素材的信息
     @GetMapping("/video")
     public Result videoInfo(@RequestParam String mediaid) throws WxErrorException {
         return ResultUtil.success(this.wxService.getMaterialService().materialVideoInfo(mediaid));
-    }
-
-    // 获取图文永久素材的信息
-    @GetMapping("/newsDetail")
-    public Result getMaterialNewsInfo(@RequestParam String mediaid) throws WxErrorException{
-        WxMpMaterialNews news = this.wxService.getMaterialService().materialNewsInfo(mediaid);
-        return ResultUtil.success(news);
     }
 
     /** 分页获取图文素材列表

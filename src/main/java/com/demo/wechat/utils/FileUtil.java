@@ -4,8 +4,10 @@ import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 /**
@@ -31,5 +33,23 @@ public class FileUtil {
 
         return file;
     }
+
+    /**
+     * 读取流
+     *
+     * @param inputStream
+     * @return 字节数组
+     * @throws Exception
+     */
+    public static byte[] readStream(InputStream inputStream) throws Exception {
+        byte[] buffer = new byte[inputStream.available()];
+        int len = -1;
+        while ((len = inputStream.read(buffer)) != -1) {
+            inputStream.read(buffer, 0, len);
+        }
+        inputStream.close();
+        return buffer;
+    }
+
 
 }

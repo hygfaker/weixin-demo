@@ -133,6 +133,9 @@ public class ErrorCodeMsg {
             case 40117	:
                 errmsg="分组名字不合法";
                 break;
+            case 40130	:
+                errmsg="无效的 openids 数组，至少有两个 openid 组成";
+                break;
             case 40118:
                 errmsg="media_id大小不合法";
                 break;
@@ -255,6 +258,9 @@ public class ErrorCodeMsg {
                 break;
             case 45018:
                 errmsg="分组数量超过上限";
+                break;
+            case 45028:
+                errmsg="没有群发的权限";
                 break;
             case 46001:
                 errmsg="不存在媒体数据";
