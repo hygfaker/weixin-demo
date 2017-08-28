@@ -24,6 +24,7 @@ public class WxMsgController {
 
     private static String MASS_DELTE = "https://api.weixin.qq.com/cgi-bin/message/mass/delete?access_token=";
 
+    // todo
     // 按 openid 列表群发消息
     // 按分组群发消息
     // 群发消息预览接口
