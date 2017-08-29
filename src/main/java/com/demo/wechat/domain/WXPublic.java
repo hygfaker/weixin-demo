@@ -1,4 +1,4 @@
-package com.demo.wechat.dao;
+package com.demo.wechat.domain;
 
 import org.springframework.stereotype.Component;
 

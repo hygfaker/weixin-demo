@@ -1,6 +1,6 @@
 package com.demo.wechat.mapper;
 
-import com.demo.wechat.dao.WXPublic;
+import com.demo.wechat.domain.WXPublic;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 

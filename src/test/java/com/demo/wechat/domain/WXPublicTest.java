@@ -1,4 +1,4 @@
-package com.demo.wechat.dao;
+package com.demo.wechat.domain;
 
 
 import com.demo.wechat.mapper.WXPublicMapper;
@@ -6,7 +6,6 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
