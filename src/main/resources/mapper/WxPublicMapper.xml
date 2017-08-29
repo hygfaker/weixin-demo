@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.minstone.wechat.mapper.WxPublicMapper">
+
+    <sql id="basePublic">
+        WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY
+    </sql>
+
+    <sql id="allColumn">
+        WXPUBLIC_OPENID,WXPUBLIC_NAME,WXPUBLIC_NICKNAME,WXPUBLIC_HEADIMG,WXPUBLIC_QRCODE,WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY,WXPUBLIC_URL
+    </sql>
+
+    <sql id="allValue">
+        (#{wxPublicOpenid},#{wxPublicName},#{wxPublicNickName},#{wxPublicHeadImg},#{wxPublicQrcode},#{wxPublicAppid},#{wxPublicAppSerct},#{wxPublicToken},#{wxPublicAeskey},#{wxPublicUrl})
+    </sql>
+
+
+    <!--<insert id="insert" parameterTyWxPublicblic">-->
+        <!--INSERT INTO-->
+        <!--WXPUBLIC-->
+        <!--<include refid="allColumn"/>-->
+        <!--VALUES-->
+        <!--<include refid="allValue"/>-->
+    <!--</insert>-->
+
+    <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublic">
+        INSERT INTO WXPUBLIC (WXPUBLIC_OPENID,WXPUBLIC_NAME,WXPUBLIC_NICKNAME,WXPUBLIC_HEADIMG,WXPUBLIC_QRCODE,WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY,WXPUBLIC_URL)
+        VALUES (#{wxPublicOpenid},#{wxPublicName},#{wxPublicNickName},#{wxPublicHeadImg},#{wxPublicQrcode},#{wxPublicAppid},#{wxPublicAppSerct},#{wxPublicToken},#{wxPublicAeskey},#{wxPublicUrl})
+    </insert>
+
+    <select id="selectById" parameterType="int" resultType="com.minstone.wechat.domain.WxPublic">
+        SELECT
+        <include refid="basePublic"/>
+        FROM WXPUBLIC
+        WHERE wxPublicCode = #{wxPublicCode}
+    </select>
+
+    <select id="getAll" resultType="com.minstone.wechat.domain.WxPublic">
+        SELECT
+        <include refid="allColumn"/>
+        FROM WXPUBLIC
+    </select>
+
+    <update id="updateById" parameterType="com.minstone.wechat.domain.WxPublic">
+        UPDATE WXPUBLIC SET WXPUBLIC_OPENID = #{wxPublicOpenid},
+        WXPUBLIC_NAME = #{wxPublicName},
+        WXPUBLIC_NICKNAME = #{wxPublicNickName},
+        WXPUBLIC_HEADIMG = #{wxPublicHeadImg},
+        WXPUBLIC_QRCODE = #{wxPublicQrcode},
+        WXPUBLIC_APPID = #{wxPublicAppid},
+        WXPUBLIC_APPSERCT = #{wxPublicAppSerct},
+        WXPUBLIC_TOKEN = #{wxPublicToken},
+        WXPUBLIC_AESKEY = #{wxPublicAeskey},
+        WXPUBLIC_URL = #{wxPublicUrl}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM
+        WXPUBLIC
+        WHERE WXPUBLIC_CODE = #{wxPublicCode}
+    </delete>
+</mapper>
