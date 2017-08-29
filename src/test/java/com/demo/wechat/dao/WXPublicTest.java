@@ -17,6 +17,8 @@ public class WXPublicTest {
         SqlSessionFactory sqlSessionFactory= new SqlSessionFactoryBuilder().build(configStream);
         SqlSession  sqlSession = sqlSessionFactory.openSession();
         try{
+            WXPublicMapper wxPublicMapper = sqlSession.getMapper(WXPublicMapper.class);
+
             //增加
             WXPublic wxPublic=new WXPublic();
             wxPublic.setWxPublicAeskey("aeskey");
@@ -29,24 +31,22 @@ public class WXPublicTest {
             wxPublic.setWxPublicQrcode("qrcode");
             wxPublic.setWxPublicToken("token");
             wxPublic.setWxPublicUrl("url");
-            int insertCount = sqlSession.insert(namespace + ".insert", wxPublic);
+            int insertCount = wxPublicMapper.insert(wxPublic);
             assert insertCount==1;
 
             //查询
-            sqlSession.selectOne(namespace + ".selectById", 1);
+            wxPublicMapper.selectById(1);
             assert wxPublic!=null;
-            System.out.println(wxPublic);
-
 
             //更新
             wxPublic.setWxPublicName("yans67");
             wxPublic.setWxPublicNickName("haha");
-            int updateCount = sqlSession.update(namespace + ".updateById", wxPublic);
-            assert updateCount==1;
+            int updateCount = wxPublicMapper.updateById(wxPublic);
+            assert updateCount > 0;
 
             //删除
-            int deleteCount = sqlSession.delete(namespace + ".deleteById", 1);
-            assert deleteCount==1;
+            int deleteCount = wxPublicMapper.deleteById(4);
+            assert deleteCount == 1;
         } finally {
             sqlSession.close();
         }

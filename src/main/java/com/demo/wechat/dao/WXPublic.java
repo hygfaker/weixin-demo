@@ -1,8 +1,11 @@
 package com.demo.wechat.dao;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Created by huangyg on 2017/8/28.
  */
+@Component
 public class WXPublic {
     private int wxPublicCode;
     private String wxPublicOpenid;
