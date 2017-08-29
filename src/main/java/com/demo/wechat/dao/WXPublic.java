@@ -4,7 +4,7 @@ package com.demo.wechat.dao;
  * Created by huangyg on 2017/8/28.
  */
 public class WXPublic {
-    private String wxPublicCode;
+    private int wxPublicCode;
     private String wxPublicOpenid;
     private String wxPublicName;
     private String wxPublicNickName;
@@ -16,11 +16,11 @@ public class WXPublic {
     private String wxPublicAeskey;
     private String wxPublicUrl;
 
-    public String getWxPublicCode() {
+    public int getWxPublicCode() {
         return wxPublicCode;
     }
 
-    public void setWxPublicCode(String wxPublicCode) {
+    public void setWxPublicCode(int wxPublicCode) {
         this.wxPublicCode = wxPublicCode;
     }
 
