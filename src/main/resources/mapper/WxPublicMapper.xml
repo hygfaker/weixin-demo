@@ -9,11 +9,33 @@
     </sql>
 
     <sql id="allColumn">
-        WXPUBLIC_OPENID,WXPUBLIC_NAME,WXPUBLIC_NICKNAME,WXPUBLIC_HEADIMG,WXPUBLIC_QRCODE,WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY,WXPUBLIC_URL
+       (WXPUBLIC_OPENID,
+       WXPUBLIC_NAME,
+       WXPUBLIC_NICKNAME,
+       WXPUBLIC_HEADIMG,
+       WXPUBLIC_QRCODE,
+       WXPUBLIC_APPID,
+       WXPUBLIC_APPSERCT,
+       WXPUBLIC_TOKEN,
+       WXPUBLIC_AESKEY,
+       WXPUBLIC_URL,
+       WXPUBLIC_HEADIMG_NAME,
+       WXPUBLIC_QRCODE_NAME)
     </sql>
 
     <sql id="allValue">
-        (#{wxPublicOpenid},#{wxPublicName},#{wxPublicNickName},#{wxPublicHeadImg},#{wxPublicQrcode},#{wxPublicAppid},#{wxPublicAppSerct},#{wxPublicToken},#{wxPublicAeskey},#{wxPublicUrl})
+        (#{wxPublicOpenid},
+        #{wxPublicName},
+        #{wxPublicNickName},
+        #{wxPublicHeadImg},
+        #{wxPublicQrcode},
+        #{wxPublicAppid},
+        #{wxPublicAppSerct},
+        #{wxPublicToken},
+        #{wxPublicAeskey},
+        #{wxPublicUrl},
+        #{wxPublicHeadImgName},
+        #{wxPublicQrcodeName})
     </sql>
 
 
@@ -26,8 +48,11 @@
     <!--</insert>-->
 
     <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublic">
-        INSERT INTO WXPUBLIC (WXPUBLIC_OPENID,WXPUBLIC_NAME,WXPUBLIC_NICKNAME,WXPUBLIC_HEADIMG,WXPUBLIC_QRCODE,WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY,WXPUBLIC_URL)
-        VALUES (#{wxPublicOpenid},#{wxPublicName},#{wxPublicNickName},#{wxPublicHeadImg},#{wxPublicQrcode},#{wxPublicAppid},#{wxPublicAppSerct},#{wxPublicToken},#{wxPublicAeskey},#{wxPublicUrl})
+        INSERT INTO
+        WXPUBLIC
+        <include refid="allColumn" />
+        VALUES
+        <include refid="allValue" />
     </insert>
 
     <select id="selectById" parameterType="int" resultType="com.minstone.wechat.domain.WxPublic">
@@ -54,6 +79,8 @@
         WXPUBLIC_TOKEN = #{wxPublicToken},
         WXPUBLIC_AESKEY = #{wxPublicAeskey},
         WXPUBLIC_URL = #{wxPublicUrl}
+        WXPUBLIC_HEADIMG_NAME = #{wxPublicHeadImgName},
+        WXPUBLIC_QRCODE_NAME = #{wxPublicQrcodeName}
     </update>
 
     <delete id="deleteById" parameterType="int">

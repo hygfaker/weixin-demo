@@ -21,13 +21,18 @@ public class WXPublicTest {
         wxPublic.setWxPublicAeskey("aeskey2222");
         wxPublic.setWxPublicAppid("appid222");
         wxPublic.setWxPublicAppSerct("appseret222");
-        wxPublic.setWxPublicHeadImg("img");
+        wxPublic.setWxPublicHeadImgName("imgname");
+        wxPublic.setWxPublicQrcodeName("qrcodename");
         wxPublic.setWxPublicName("name");
         wxPublic.setWxPublicNickName("nickname");
         wxPublic.setWxPublicOpenid("openid");
-        wxPublic.setWxPublicQrcode("qrcode");
         wxPublic.setWxPublicToken("token");
         wxPublic.setWxPublicUrl("url");
+
+        byte[] bytes = new byte[1024];
+        wxPublic.setWxPublicHeadImg(bytes);
+        wxPublic.setWxPublicQrcode(bytes);
+
         int insertCount = wxPublicMapper.insert(wxPublic);
         assert insertCount==1;
     }

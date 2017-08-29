@@ -2,7 +2,6 @@ package com.minstone.wechat.domain;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.stereotype.Component;
 
 import java.sql.Blob;
 
@@ -20,9 +19,9 @@ public class WxPublic {
 //    @NotEmpty
     private String wxPublicNickName;
 //    @NotEmpty
-    private String wxPublicHeadImg;
-    @NotEmpty
-    private String wxPublicQrcode;
+    private byte[] wxPublicHeadImg;
+//    @NotEmpty
+    private byte[] wxPublicQrcode;
     @NotEmpty
     private String wxPublicAppid;
     @NotEmpty
@@ -33,6 +32,28 @@ public class WxPublic {
     private String wxPublicAeskey;
 
     private String wxPublicUrl;
+
+    @NotEmpty
+    private String wxPublicHeadImgName;
+
+    @NotEmpty
+    private String wxPublicQrcodeName;
+
+    public String getWxPublicHeadImgName(String imgname) {
+        return wxPublicHeadImgName;
+    }
+
+    public void setWxPublicHeadImgName(String wxPublicHeadImgName) {
+        this.wxPublicHeadImgName = wxPublicHeadImgName;
+    }
+
+    public String getWxPublicQrcodeName(String qrcodename) {
+        return wxPublicQrcodeName;
+    }
+
+    public void setWxPublicQrcodeName(String wxPublicQrcodeName) {
+        this.wxPublicQrcodeName = wxPublicQrcodeName;
+    }
 
     public int getWxPublicCode() {
         return wxPublicCode;
@@ -66,19 +87,19 @@ public class WxPublic {
         this.wxPublicNickName = wxPublicNickName;
     }
 
-    public String getWxPublicHeadImg() {
+    public byte[] getWxPublicHeadImg() {
         return wxPublicHeadImg;
     }
 
-    public void setWxPublicHeadImg(String wxPublicHeadImg) {
+    public void setWxPublicHeadImg(byte[] wxPublicHeadImg) {
         this.wxPublicHeadImg = wxPublicHeadImg;
     }
 
-    public String getWxPublicQrcode() {
+    public byte[] getWxPublicQrcode() {
         return wxPublicQrcode;
     }
 
-    public void setWxPublicQrcode(String wxPublicQrcode) {
+    public void setWxPublicQrcode(byte[] wxPublicQrcode) {
         this.wxPublicQrcode = wxPublicQrcode;
     }
 
