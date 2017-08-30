@@ -1,6 +1,6 @@
 package com.minstone.wechat.utils;
 
-import com.minstone.wechat.bean.Result;
+import com.minstone.wechat.model.Result;
 import com.minstone.wechat.enums.ResultEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

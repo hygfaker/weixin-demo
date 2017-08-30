@@ -29,9 +29,9 @@ public class WXPublicTest {
         wxPublic.setWxPublicToken("token");
         wxPublic.setWxPublicUrl("url");
 
-        byte[] bytes = new byte[1024];
-        wxPublic.setWxPublicHeadImg(bytes);
-        wxPublic.setWxPublicQrcode(bytes);
+//        byte[] bytes = new byte[1024];
+//        wxPublic.setWxPublicHeadImg(bytes);
+//        wxPublic.setWxPublicQrcode(bytes);
 
         int insertCount = wxPublicMapper.insert(wxPublic);
         assert insertCount==1;

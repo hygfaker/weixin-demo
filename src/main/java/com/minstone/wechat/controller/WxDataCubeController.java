@@ -1,5 +1,5 @@
 package com.minstone.wechat.controller;
-import com.minstone.wechat.bean.Result;
+import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.DateUtil;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;

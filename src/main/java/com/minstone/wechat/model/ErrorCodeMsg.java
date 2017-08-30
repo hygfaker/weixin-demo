@@ -1,4 +1,4 @@
-package com.minstone.wechat.bean;
+package com.minstone.wechat.model;
 
 /**
  * Created by huangyg on 2017/8/16.

@@ -2,7 +2,9 @@ package com.minstone.wechat.domain;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.Blob;
 
 
@@ -16,12 +18,12 @@ public class WxPublic {
     private String wxPublicOpenid;
     @NotEmpty
     private String wxPublicName;
-//    @NotEmpty
+    @NotEmpty
     private String wxPublicNickName;
-//    @NotEmpty
-    private byte[] wxPublicHeadImg;
-//    @NotEmpty
-    private byte[] wxPublicQrcode;
+    @NotEmpty
+    private File wxPublicHeadImg;
+    @NotEmpty
+    private File wxPublicQrcode;
     @NotEmpty
     private String wxPublicAppid;
     @NotEmpty
@@ -30,12 +32,10 @@ public class WxPublic {
     private String wxPublicToken;
     @NotEmpty
     private String wxPublicAeskey;
-
+    @NotEmpty
     private String wxPublicUrl;
-
     @NotEmpty
     private String wxPublicHeadImgName;
-
     @NotEmpty
     private String wxPublicQrcodeName;
 
@@ -87,19 +87,19 @@ public class WxPublic {
         this.wxPublicNickName = wxPublicNickName;
     }
 
-    public byte[] getWxPublicHeadImg() {
+    public File getWxPublicHeadImg() {
         return wxPublicHeadImg;
     }
 
-    public void setWxPublicHeadImg(byte[] wxPublicHeadImg) {
+    public void setWxPublicHeadImg(File wxPublicHeadImg) {
         this.wxPublicHeadImg = wxPublicHeadImg;
     }
 
-    public byte[] getWxPublicQrcode() {
+    public File getWxPublicQrcode() {
         return wxPublicQrcode;
     }
 
-    public void setWxPublicQrcode(byte[] wxPublicQrcode) {
+    public void setWxPublicQrcode(File wxPublicQrcode) {
         this.wxPublicQrcode = wxPublicQrcode;
     }
 

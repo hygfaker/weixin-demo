@@ -1,6 +1,6 @@
 package com.minstone.wechat.controller;
 
-import com.minstone.wechat.bean.Result;
+import com.minstone.wechat.model.Result;
 import com.minstone.wechat.config.WechatMpProperties;
 import com.minstone.wechat.utils.JsonUtil;
 import com.minstone.wechat.utils.ResultUtil;

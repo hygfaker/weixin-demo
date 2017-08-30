@@ -1,6 +1,4 @@
-package com.minstone.wechat.bean;
-
-import java.util.Date;
+package com.minstone.wechat.model;
 
 /**
  * Created by huangyg on 2017/8/7.
