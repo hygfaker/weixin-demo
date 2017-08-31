@@ -11,11 +11,11 @@ public interface WxPublicMapper {
 
     public int insert(WxPublic wxPublic);
 
-    public WxPublic selectById(int id);
+    public WxPublic getByCode(int wxPublicCode);
 
     public WxPublic getAll();
 
     public int updateById(WxPublic wxPublic);
 
-    public int deleteById(int id);
+    public int deleteById(int wxPublicCode);
 }

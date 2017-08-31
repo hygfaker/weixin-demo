@@ -17,7 +17,7 @@ public class WXPublicTest {
     @org.junit.Test
     public void insertTest()throws Exception{
         //增加
-        WxPublic wxPublic=new WxPublic();
+        WxPublic wxPublic = new WxPublic();
         wxPublic.setWxPublicAeskey("aeskey2222");
         wxPublic.setWxPublicAppid("appid222");
         wxPublic.setWxPublicAppSerct("appseret222");
@@ -28,14 +28,23 @@ public class WXPublicTest {
         wxPublic.setWxPublicOpenid("openid");
         wxPublic.setWxPublicToken("token");
         wxPublic.setWxPublicUrl("url");
+        wxPublic.setWxPublicHeadImgName("headimgname");
+        wxPublic.setWxPublicQrcodeName("qrcodeName");
 
-//        byte[] bytes = new byte[1024];
-//        wxPublic.setWxPublicHeadImg(bytes);
-//        wxPublic.setWxPublicQrcode(bytes);
+        byte[] bytes = new byte[1024];
+        wxPublic.setWxPublicHeadImg(bytes);
+        wxPublic.setWxPublicQrcode(bytes);
 
         int insertCount = wxPublicMapper.insert(wxPublic);
         assert insertCount==1;
     }
+    @org.junit.Test
+    public void selectTest()throws Exception{
+        WxPublic wxPublic = new WxPublic();
+        wxPublic = wxPublicMapper.getByCode(1);
+        assert wxPublic.getWxPublicCode() > 0;
+    }
+
 
 //    @org.junit.Test
 //    public void test(){

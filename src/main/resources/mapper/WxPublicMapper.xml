@@ -4,6 +4,23 @@
 
 <mapper namespace="com.minstone.wechat.mapper.WxPublicMapper">
 
+
+    <resultMap type="com.minstone.wechat.domain.WxPublic" id="wxPublic">
+        <id column="WXPUBLIC_CODE" property="wxPublicCode"/>
+        <result column="WXPUBLIC_OPENID" property="wxPublicOpenid"/>
+        <result column="WXPUBLIC_NAME" property="wxPublicName"/>
+        <result column="WXPUBLIC_NICKNAME" property="wxPublicNickName"/>
+        <result column="WXPUBLIC_HEADIMG" property="wxPublicHeadImg"/>
+        <result column="WXPUBLIC_QRCODE" property="wxPublicQrcode"/>
+        <result column="WXPUBLIC_APPID" property="wxPublicAppid"/>
+        <result column="WXPUBLIC_APPSERCT" property="wxPublicAppSerct"/>
+        <result column="WXPUBLIC_TOKEN" property="wxPublicToken"/>
+        <result column="WXPUBLIC_AESKEY" property="wxPublicAeskey"/>
+        <result column="WXPUBLIC_URL" property="wxPublicUrl"/>
+        <result column="WXPUBLIC_HEADIMG_NAME" property="wxPublicHeadImgName"/>
+        <result column="WXPUBLIC_QRCODE_NAME" property="wxPublicQrcodeName"/>
+    </resultMap>
+
     <sql id="basePublic">
         WXPUBLIC_APPID,WXPUBLIC_APPSERCT,WXPUBLIC_TOKEN,WXPUBLIC_AESKEY
     </sql>
@@ -55,22 +72,17 @@
         <include refid="allValue" />
     </insert>
 
-    <select id="selectById" parameterType="int" resultType="com.minstone.wechat.domain.WxPublic">
-        SELECT
-        <include refid="basePublic"/>
-        FROM WXPUBLIC
-        WHERE wxPublicCode = #{wxPublicCode}
+    <select id="getByCode" parameterType="int" resultMap="wxPublic">
+        SELECT * FROM WXPUBLIC WHERE WXPUBLIC_CODE = #{wxPublicCode}
     </select>
 
-    <select id="getAll" resultType="com.minstone.wechat.domain.WxPublic">
-        SELECT
-        <include refid="allColumn"/>
-        FROM WXPUBLIC
+    <select id="getAll" resultMap="wxPublic">
+        SELECT * FROM WXPUBLIC
     </select>
 
     <update id="updateById" parameterType="com.minstone.wechat.domain.WxPublic">
         UPDATE WXPUBLIC SET WXPUBLIC_OPENID = #{wxPublicOpenid},
-        WXPUBLIC_NAME = #{wxPublicName},
+        WXPUBLIC_NAME=#{wxPublicName},
         WXPUBLIC_NICKNAME = #{wxPublicNickName},
         WXPUBLIC_HEADIMG = #{wxPublicHeadImg},
         WXPUBLIC_QRCODE = #{wxPublicQrcode},
@@ -81,6 +93,7 @@
         WXPUBLIC_URL = #{wxPublicUrl}
         WXPUBLIC_HEADIMG_NAME = #{wxPublicHeadImgName},
         WXPUBLIC_QRCODE_NAME = #{wxPublicQrcodeName}
+        WHERE WXPUBLIC_CODE = #{wxPublicCode}
     </update>
 
     <delete id="deleteById" parameterType="int">

@@ -37,6 +37,6 @@ public class ResultUtil {
 
 
     public static Result success(){
-        return success(null);
+        return success(new int[0]);
     }
 }

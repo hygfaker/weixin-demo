@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.sql.Blob;
+import java.util.Map;
 
 
 /**
@@ -20,10 +21,8 @@ public class WxPublic {
     private String wxPublicName;
     @NotEmpty
     private String wxPublicNickName;
-    @NotEmpty
-    private File wxPublicHeadImg;
-    @NotEmpty
-    private File wxPublicQrcode;
+    private byte[] wxPublicHeadImg;
+    private byte[] wxPublicQrcode;
     @NotEmpty
     private String wxPublicAppid;
     @NotEmpty
@@ -38,6 +37,26 @@ public class WxPublic {
     private String wxPublicHeadImgName;
     @NotEmpty
     private String wxPublicQrcodeName;
+
+
+    public WxPublic(Map<String,Object>reqMap) {
+        this.setWxPublicQrcodeName((String) reqMap.get("wxPublicCode"));
+        this.setWxPublicOpenid((String) reqMap.get("wxPublicOpenid"));
+        this.setWxPublicName((String) reqMap.get("wxPublicName"));
+        this.setWxPublicNickName((String) reqMap.get("wxPublicNickName"));
+        this.setWxPublicAppid((String) reqMap.get("wxPublicAppid"));
+        this.setWxPublicAppSerct((String) reqMap.get("wxPublicAppSerct"));
+        this.setWxPublicToken((String) reqMap.get("wxPublicToken"));
+        this.setWxPublicAeskey((String) reqMap.get("wxPublicAeskey"));
+        this.setWxPublicUrl((String) reqMap.get("wxPublicUrl"));
+        this.setWxPublicHeadImgName((String) reqMap.get("wxPublicHeadImgName"));
+        this.setWxPublicQrcodeName((String) reqMap.get("wxPublicQrcodeName"));
+    }
+
+    public WxPublic() {
+        super();
+    }
+
 
     public String getWxPublicHeadImgName(String imgname) {
         return wxPublicHeadImgName;
@@ -87,19 +106,19 @@ public class WxPublic {
         this.wxPublicNickName = wxPublicNickName;
     }
 
-    public File getWxPublicHeadImg() {
+    public byte[] getWxPublicHeadImg() {
         return wxPublicHeadImg;
     }
 
-    public void setWxPublicHeadImg(File wxPublicHeadImg) {
+    public void setWxPublicHeadImg(byte[] wxPublicHeadImg) {
         this.wxPublicHeadImg = wxPublicHeadImg;
     }
 
-    public File getWxPublicQrcode() {
+    public byte[] getWxPublicQrcode() {
         return wxPublicQrcode;
     }
 
-    public void setWxPublicQrcode(File wxPublicQrcode) {
+    public void setWxPublicQrcode(byte[] wxPublicQrcode) {
         this.wxPublicQrcode = wxPublicQrcode;
     }
 
