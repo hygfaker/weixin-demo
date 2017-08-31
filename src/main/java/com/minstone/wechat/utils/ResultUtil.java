@@ -26,6 +26,7 @@ public class ResultUtil {
         result.setStatus(resultEnums.getCode());
         result.setTime(DateUtil.getStringDate());
         result.setDesc(resultEnums.getMsg());
+        result.setData(new int[0]);
         logger.info(result.toString());
         return result;
     }

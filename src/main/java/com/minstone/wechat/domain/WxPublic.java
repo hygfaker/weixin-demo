@@ -2,10 +2,6 @@ package com.minstone.wechat.domain;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.sql.Blob;
 import java.util.Map;
 
 
@@ -21,7 +17,9 @@ public class WxPublic {
     private String wxPublicName;
     @NotEmpty
     private String wxPublicNickName;
+    @NotEmpty
     private byte[] wxPublicHeadImg;
+    @NotEmpty
     private byte[] wxPublicQrcode;
     @NotEmpty
     private String wxPublicAppid;
@@ -40,7 +38,6 @@ public class WxPublic {
 
 
     public WxPublic(Map<String,Object>reqMap) {
-        this.setWxPublicQrcodeName((String) reqMap.get("wxPublicCode"));
         this.setWxPublicOpenid((String) reqMap.get("wxPublicOpenid"));
         this.setWxPublicName((String) reqMap.get("wxPublicName"));
         this.setWxPublicNickName((String) reqMap.get("wxPublicNickName"));
@@ -58,7 +55,7 @@ public class WxPublic {
     }
 
 
-    public String getWxPublicHeadImgName(String imgname) {
+    public String getWxPublicHeadImgName() {
         return wxPublicHeadImgName;
     }
 
@@ -66,7 +63,7 @@ public class WxPublic {
         this.wxPublicHeadImgName = wxPublicHeadImgName;
     }
 
-    public String getWxPublicQrcodeName(String qrcodename) {
+    public String getWxPublicQrcodeName() {
         return wxPublicQrcodeName;
     }
 

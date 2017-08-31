@@ -1,6 +1,7 @@
 package com.minstone.wechat.controller;
 
 import com.minstone.wechat.domain.WxPublic;
+import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.mapper.WxPublicMapper;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +37,8 @@ public class WxPublicController {
     // 添加公众号
     // 获取某个公众号
     // 获取所有公众号
+    // 编辑公众号
+    // 解除绑定公众号
 
     @Autowired
     private WxMpService service;
@@ -55,31 +60,39 @@ public class WxPublicController {
     @GetMapping("/get")
     public Result getPublicAccount(@RequestParam int publicCode){
         WxPublic wxPublic = wxPublicMapper.getByCode(publicCode);
-        return ResultUtil.success(wxPublic);
+        if (wxPublic == null){
+            return  ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
+        }else{
+            return ResultUtil.success(wxPublic);
+        }
     }
 
     // 获取所有公众号
     @GetMapping("/getAll")
     public Result getAllPublicAccount(){
-        return ResultUtil.success(wxPublicMapper.getAll());
+        List<WxPublic> list = wxPublicMapper.getAll();
+        if (list.size() > 0){
+            return ResultUtil.success(list);
+        }else{
+            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
+        }
     }
 
     // 编辑公众号
     @PostMapping("/update")
-    public Result updatePublicAccount(@RequestParam int publicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
-
+    public Result updatePublicAccount(@RequestParam int wxPublicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
         WxPublic wxPublic = this.createPublicAccount(reqMap,wxPublicHeadImg,wxPublicQrcode);
         // 保存 publicCode
-        wxPublic.setWxPublicCode(publicCode);
+        wxPublic.setWxPublicCode(wxPublicCode);
         // 保存公众号信息到数据库
         wxPublicMapper.updateById(wxPublic);
         return ResultUtil.success();
     }
 
     // 解除绑定公众号
-    @PostMapping("/delete")
-    public Result deletePublicAccount(@RequestParam int publicCode){
-        wxPublicMapper.deleteById(publicCode);
+    @GetMapping("/delete")
+    public Result deletePublicAccount(@RequestParam int wxPublicCode){
+        wxPublicMapper.deleteById(wxPublicCode);
         return ResultUtil.success();
     }
 

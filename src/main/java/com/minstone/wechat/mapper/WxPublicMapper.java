@@ -3,6 +3,8 @@ package com.minstone.wechat.mapper;
 import com.minstone.wechat.domain.WxPublic;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by huangyg on 2017/8/29.
  */
@@ -13,7 +15,7 @@ public interface WxPublicMapper {
 
     public WxPublic getByCode(int wxPublicCode);
 
-    public WxPublic getAll();
+    public List<WxPublic> getAll();
 
     public int updateById(WxPublic wxPublic);
 

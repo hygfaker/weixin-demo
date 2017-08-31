@@ -4,7 +4,6 @@
 
 <mapper namespace="com.minstone.wechat.mapper.WxPublicMapper">
 
-
     <resultMap type="com.minstone.wechat.domain.WxPublic" id="wxPublic">
         <id column="WXPUBLIC_CODE" property="wxPublicCode"/>
         <result column="WXPUBLIC_OPENID" property="wxPublicOpenid"/>
@@ -55,15 +54,6 @@
         #{wxPublicQrcodeName})
     </sql>
 
-
-    <!--<insert id="insert" parameterTyWxPublicblic">-->
-        <!--INSERT INTO-->
-        <!--WXPUBLIC-->
-        <!--<include refid="allColumn"/>-->
-        <!--VALUES-->
-        <!--<include refid="allValue"/>-->
-    <!--</insert>-->
-
     <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublic">
         INSERT INTO
         WXPUBLIC
@@ -90,7 +80,7 @@
         WXPUBLIC_APPSERCT = #{wxPublicAppSerct},
         WXPUBLIC_TOKEN = #{wxPublicToken},
         WXPUBLIC_AESKEY = #{wxPublicAeskey},
-        WXPUBLIC_URL = #{wxPublicUrl}
+        WXPUBLIC_URL = #{wxPublicUrl},
         WXPUBLIC_HEADIMG_NAME = #{wxPublicHeadImgName},
         WXPUBLIC_QRCODE_NAME = #{wxPublicQrcodeName}
         WHERE WXPUBLIC_CODE = #{wxPublicCode}

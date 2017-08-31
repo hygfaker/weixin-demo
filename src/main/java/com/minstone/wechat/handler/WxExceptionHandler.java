@@ -11,6 +11,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 /**
  * Created by huangyg on 2017/8/15.
@@ -40,7 +41,13 @@ public class WxExceptionHandler {
             String msg = "【" + exception.getParameterType() + "】" + "类型的"
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
-        }else{
+
+        }else if (e instanceof MissingServletRequestPartException){
+
+            MissingServletRequestPartException exception= (MissingServletRequestPartException)e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getMessage());
+        }
+        else{
             logger.error("【系统异常】= {}",e);
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }

@@ -32,6 +32,7 @@ public class Result<T> {
     public void setTime(String time) {
         this.time = time;
     }
+
     public T getData() {
         return data;
     }
