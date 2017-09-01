@@ -22,7 +22,7 @@ public class FileUtil {
 
         // 新建临时文件
         File file = null;
-        file = File.createTempFile("tmp", suffix);
+        file = File.createTempFile(multipartFile.getName(), suffix);
         logger.info("上传的临时文件的路径：" + file.getAbsolutePath());
 
         // MultipartFile -> File

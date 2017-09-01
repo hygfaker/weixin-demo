@@ -93,7 +93,7 @@ public class WechatController {
                     requestBody, this.wxService.getWxMpConfigStorage(), timestamp,
                     nonce, msgSignature);
 
-            this.logger.debug("\n消息解密后内容为：\n{} ", inMessage.toString());
+            this.logger.info("\n消息解密后内容为：\n{} ", inMessage.toString());
 
             WxMpXmlOutMessage outMessage = this.route(inMessage);
             if (outMessage == null) {
@@ -104,7 +104,7 @@ public class WechatController {
                     .toEncryptedXml(this.wxService.getWxMpConfigStorage());
         }
 
-        this.logger.debug("\n======================组装回复信息======================\n{}", out);
+        this.logger.info("\n======================组装回复信息======================\n{}", out);
 
         return out;
     }
@@ -116,15 +116,15 @@ public class WechatController {
             // 路由规则
             this.router.rule()
                     .msgType(WxConsts.EVT_SUBSCRIBE)
-                    .handler(new SubscribeHandler())
+                    .handler(new SubscribeHandler()) // 订阅时事件
                     .end()
                     .rule()
                     .msgType(WxConsts.EVT_UNSUBSCRIBE)
-                    .handler(new UnsubscribeHandler())
+                    .handler(new UnsubscribeHandler())  // 取消关注事件
                     .end()
                     .rule()
                     .msgType(WxConsts.XML_MSG_TEXT)
-                    .handler(new MsgHandler())
+                    .handler(new MsgHandler())  // 用户发送消息
                     .end()
             ;
 
