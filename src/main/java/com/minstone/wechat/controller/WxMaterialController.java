@@ -47,6 +47,7 @@ public class WxMaterialController {
                               @RequestParam String name,
                               @RequestParam(value = "file") MultipartFile multipartFile,
                               @RequestParam(value = "title",required = false) String title,
+                              @RequestParam(value = "url",required = false) String url,
                               @RequestParam(value = "introduction",required = false) String introduction) throws WxErrorException, IOException {
 
         File file = FileUtil.transfer(multipartFile);
