@@ -28,21 +28,27 @@
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <!-- 生成 DAO 的类文件路径配置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.minstone.wechat.mapper"  targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-        </javaClientGenerator>
-
         <!-- 生成 sqlXML 文件路径配置 -->
         <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
+
+        <!-- 生成 DAO 的类文件路径配置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.minstone.wechat.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
 
         <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
         <table schema="mdweixin" tableName="mdwxrule" domainObjectName="WxRule"
             enableCountByExample="false" enableUpdateByExample="false"
             enableDeleteByExample="false" enableSelectByExample="false"
             selectByExampleQueryId="false">
+        </table>
+
+        <table schema="mdweixin" tableName="mdwxkeyword" domainObjectName="WxKeyword"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
         </table>
 
     </context>

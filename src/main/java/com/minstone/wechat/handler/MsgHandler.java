@@ -4,7 +4,6 @@ import com.minstone.wechat.builder.ImageBuilder;
 import com.minstone.wechat.builder.TextBuilder;
 import com.minstone.wechat.builder.VideoBuilder;
 import com.minstone.wechat.builder.VoiceBuilder;
-import com.minstone.wechat.domain.WxTextMsg;
 import com.minstone.wechat.utils.JsonUtil;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -12,8 +11,6 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutVideoMessage;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

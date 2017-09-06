@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minstone.wechat.mapper.WxRuleMapper">
+  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxRule">
+    <id column="WXRULE_CODE" jdbcType="INTEGER" property="wxruleCode" />
+    <result column="WXPUBLIC_CODE" jdbcType="INTEGER" property="wxpublicCode" />
+    <result column="WXRULE_NAME" jdbcType="VARCHAR" property="wxruleName" />
+    <result column="WXRULE_ON" jdbcType="VARCHAR" property="wxruleOn" />
+    <result column="WXRULE_KEFU" jdbcType="BIT" property="wxruleKefu" />
+    <result column="WXRULE_CONTENT" jdbcType="VARCHAR" property="wxruleContent" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    WXRULE_CODE, WXPUBLIC_CODE, WXRULE_NAME, WXRULE_ON, WXRULE_KEFU, WXRULE_CONTENT
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MDWXRULE
+    where WXRULE_CODE = #{wxruleCode,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from MDWXRULE
+    where WXRULE_CODE = #{wxruleCode,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.minstone.wechat.domain.WxRule">
+    insert into MDWXRULE (WXPUBLIC_CODE, WXRULE_NAME,
+      WXRULE_ON, WXRULE_KEFU, WXRULE_CONTENT
+      )
+    values (#{wxpublicCode,jdbcType=INTEGER}, #{wxruleName,jdbcType=VARCHAR},
+      #{wxruleOn,jdbcType=VARCHAR}, #{wxruleKefu,jdbcType=BIT}, #{wxruleContent,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxRule">
+    insert into MDWXRULE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wxruleCode != null">
+        WXRULE_CODE,
+      </if>
+      <if test="wxpublicCode != null">
+        WXPUBLIC_CODE,
+      </if>
+      <if test="wxruleName != null">
+        WXRULE_NAME,
+      </if>
+      <if test="wxruleOn != null">
+        WXRULE_ON,
+      </if>
+      <if test="wxruleKefu != null">
+        WXRULE_KEFU,
+      </if>
+      <if test="wxruleContent != null">
+        WXRULE_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wxruleCode != null">
+        #{wxruleCode,jdbcType=INTEGER},
+      </if>
+      <if test="wxpublicCode != null">
+        #{wxpublicCode,jdbcType=INTEGER},
+      </if>
+      <if test="wxruleName != null">
+        #{wxruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="wxruleOn != null">
+        #{wxruleOn,jdbcType=VARCHAR},
+      </if>
+      <if test="wxruleKefu != null">
+        #{wxruleKefu,jdbcType=BIT},
+      </if>
+      <if test="wxruleContent != null">
+        #{wxruleContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxRule">
+    update MDWXRULE
+    <set>
+      <if test="wxpublicCode != null">
+        WXPUBLIC_CODE = #{wxpublicCode,jdbcType=INTEGER},
+      </if>
+      <if test="wxruleName != null">
+        WXRULE_NAME = #{wxruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="wxruleOn != null">
+        WXRULE_ON = #{wxruleOn,jdbcType=VARCHAR},
+      </if>
+      <if test="wxruleKefu != null">
+        WXRULE_KEFU = #{wxruleKefu,jdbcType=BIT},
+      </if>
+      <if test="wxruleContent != null">
+        WXRULE_CONTENT = #{wxruleContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where WXRULE_CODE = #{wxruleCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxRule">
+    update MDWXRULE
+    set WXPUBLIC_CODE = #{wxpublicCode,jdbcType=INTEGER},
+      WXRULE_NAME = #{wxruleName,jdbcType=VARCHAR},
+      WXRULE_ON = #{wxruleOn,jdbcType=VARCHAR},
+      WXRULE_KEFU = #{wxruleKefu,jdbcType=BIT},
+      WXRULE_CONTENT = #{wxruleContent,jdbcType=VARCHAR}
+    where WXRULE_CODE = #{wxruleCode,jdbcType=INTEGER}
+  </update>
+</mapper>
