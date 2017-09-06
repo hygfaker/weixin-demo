@@ -6,7 +6,7 @@
 <generatorConfiguration>
     <!-- 配置mysql 驱动jar包路径.用了绝对路径 -->
     <classPathEntry location="/Users/huangyg/Documents/javaWeb/maven/mysql/mysql-connector-java/5.1.24/mysql-connector-java-5.1.24.jar" />
-f
+
     <context id="mdweixin" targetRuntime="MyBatis3">
 
         <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
