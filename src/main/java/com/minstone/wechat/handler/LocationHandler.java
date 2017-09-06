@@ -23,7 +23,7 @@ public class LocationHandler extends AbstractHandler {
 
         //TODO 从数据库拿出数据判断是否有开启地理位置推送
 
-        if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_LOCATION)) {
+        if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) {
             //TODO 接收处理用户发送的地理位置消息
             try {
                 String content = "感谢反馈，您的的地理位置已收到！";
