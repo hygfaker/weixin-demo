@@ -30,6 +30,14 @@
       )
   </insert>
 
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO  MDWXKEYWORD (WXRULE_KEYWORD,WXRULE_CODE,WXRULE_MATCH)
+    VALUES
+    <foreach collection="keywords" item="item" index="index" separator=",">
+      (#{item.wxruleKeyword},#{item.wxruleCode},#{item.wxruleMatch})
+    </foreach>
+  </insert>
+
   <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxKeyword">
     insert into MDWXKEYWORD
     <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -44,6 +44,7 @@ public class WxPublicController {
     private WxMpService service;
     @Autowired
     private WxPublicMapper wxPublicMapper;
+
     private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
 
     // 添加公众号
