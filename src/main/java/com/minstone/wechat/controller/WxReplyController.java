@@ -1,6 +1,7 @@
 package com.minstone.wechat.controller;
 
 import com.google.gson.Gson;
+import com.minstone.wechat.domain.WxKeyword;
 import com.minstone.wechat.domain.WxRule;
 import com.minstone.wechat.mapper.WxKeywordMapper;
 import com.minstone.wechat.mapper.WxRuleMapper;
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,16 +45,18 @@ public class WxReplyController {
         map = gson.fromJson(wxKeywords, map.getClass());
         int ruleCode = wxRuleMapper.insert(wxRule);
 
-//        Gson gson = new Gson();
-//        List<WxKeyword> keywords = new ArrayList<WxKeyword>();
-//        for(Entry<String, Boolean> item : keywordMap.entrySet()){
-//            WxKeyword keyword = new WxKeyword();
-//            keyword.setWxruleCode(ruleCode);
-//            keyword.setWxruleMatch(item.getValue());
-//            keyword.setWxruleKeyword(item.getKey());
-//            keywords.add(keyword);
-//        }
-//        logger.info("keywords = " + keywords);
+        List<WxKeyword> keywords = new ArrayList<WxKeyword>();
+        for(Map.Entry<String, Boolean> item : map.entrySet()){
+            WxKeyword keyword = new WxKeyword();
+            keyword.setWxruleCode(ruleCode);
+            keyword.setWxruleMatch(item.getValue());
+            keyword.setWxruleKeyword(item.getKey());
+            keywords.add(keyword);
+        }
+        logger.info("--keywords = " + keywords);
+
+        int keyword = wxKeywordMapper.batchInsert(keywords);
+        logger.info("keywords = " + keywords);
         return ResultUtil.success();
     }
 

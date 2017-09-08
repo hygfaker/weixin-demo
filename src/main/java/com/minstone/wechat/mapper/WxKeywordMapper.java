@@ -11,8 +11,7 @@ public interface WxKeywordMapper {
 
     int insert(WxKeyword record);
 
-    int batchInsert(List<WxKeyword>keywords);
-
+    int batchInsert(List<WxKeyword> keywords);
 
     int insertSelective(WxKeyword record);
 
