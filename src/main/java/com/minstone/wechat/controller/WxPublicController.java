@@ -59,7 +59,7 @@ public class WxPublicController {
 
     // 获取某个公众号
     @GetMapping("/get")
-    public Result getPublicAccount(@RequestParam int publicCode){
+    public Result getPublicAccount(@RequestParam int publicCode) throws WxErrorException, IOException{
         WxPublic wxPublic = wxPublicMapper.getByCode(publicCode);
         if (wxPublic == null){
             return  ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
@@ -70,7 +70,7 @@ public class WxPublicController {
 
     // 获取所有公众号
     @GetMapping("/getAll")
-    public Result getAllPublicAccount(){
+    public Result getAllPublicAccount() throws WxErrorException, IOException{
         List<WxPublic> list = wxPublicMapper.getAll();
         if (list.size() > 0){
             return ResultUtil.success(list);
@@ -92,7 +92,7 @@ public class WxPublicController {
 
     // 解除绑定公众号
     @GetMapping("/delete")
-    public Result deletePublicAccount(@RequestParam int wxPublicCode){
+    public Result deletePublicAccount(@RequestParam int wxPublicCode) throws WxErrorException, IOException{
         wxPublicMapper.deleteById(wxPublicCode);
         return ResultUtil.success();
     }
