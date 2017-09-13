@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minstone.wechat.mapper.WxPublicFileMapper">
+  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicFile">
+    <id column="FILE_CODE" jdbcType="INTEGER" property="fileCode" />
+    <result column="PUBLIC_CODE" jdbcType="INTEGER" property="publicCode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
+    <result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />
+    <result column="QECODE" jdbcType="LONGVARBINARY" property="qecode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    FILE_CODE, PUBLIC_CODE
+  </sql>
+  <sql id="Blob_Column_List">
+    HEADIMG, QECODE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MP_YY_PUB_FILE
+    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from MP_YY_PUB_FILE
+    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
+    insert into MP_YY_PUB_FILE (FILE_CODE, PUBLIC_CODE, HEADIMG, 
+      QECODE)
+    values (#{fileCode,jdbcType=INTEGER}, #{publicCode,jdbcType=INTEGER}, #{headimg,jdbcType=LONGVARBINARY}, 
+      #{qecode,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
+    insert into MP_YY_PUB_FILE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileCode != null">
+        FILE_CODE,
+      </if>
+      <if test="publicCode != null">
+        PUBLIC_CODE,
+      </if>
+      <if test="headimg != null">
+        HEADIMG,
+      </if>
+      <if test="qecode != null">
+        QECODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileCode != null">
+        #{fileCode,jdbcType=INTEGER},
+      </if>
+      <if test="publicCode != null">
+        #{publicCode,jdbcType=INTEGER},
+      </if>
+      <if test="headimg != null">
+        #{headimg,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="qecode != null">
+        #{qecode,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
+    update MP_YY_PUB_FILE
+    <set>
+      <if test="publicCode != null">
+        PUBLIC_CODE = #{publicCode,jdbcType=INTEGER},
+      </if>
+      <if test="headimg != null">
+        HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="qecode != null">
+        QECODE = #{qecode,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
+    update MP_YY_PUB_FILE
+    set PUBLIC_CODE = #{publicCode,jdbcType=INTEGER},
+      HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
+      QECODE = #{qecode,jdbcType=LONGVARBINARY}
+    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxPublicFile">
+    update MP_YY_PUB_FILE
+    set PUBLIC_CODE = #{publicCode,jdbcType=INTEGER}
+    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+  </update>
+</mapper>

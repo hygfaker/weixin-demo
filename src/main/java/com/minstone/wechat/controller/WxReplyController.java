@@ -1,10 +1,6 @@
 package com.minstone.wechat.controller;
 
 import com.google.gson.Gson;
-import com.minstone.wechat.domain.WxKeyword;
-import com.minstone.wechat.domain.WxRule;
-import com.minstone.wechat.mapper.WxKeywordMapper;
-import com.minstone.wechat.mapper.WxRuleMapper;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
 import org.slf4j.Logger;

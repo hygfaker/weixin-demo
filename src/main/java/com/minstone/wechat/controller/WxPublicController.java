@@ -2,6 +2,7 @@ package com.minstone.wechat.controller;
 
 import com.minstone.wechat.domain.WxPublic;
 import com.minstone.wechat.enums.ResultEnum;
+import com.minstone.wechat.mapper.WxPublicFileMapper;
 import com.minstone.wechat.mapper.WxPublicMapper;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,22 +45,27 @@ public class WxPublicController {
     @Autowired
     private WxPublicMapper wxPublicMapper;
 
+    @Autowired
+    private WxPublicFileMapper wxPublicFileMapper;
+
     private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
 
     // 添加公众号
     @PostMapping("/add")
     public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
 
-        WxPublic wxPublic = this.createPublicAccount(reqMap,wxPublicHeadImg,wxPublicQrcode);
+        WxPublic wxPublic = new WxPublic(reqMap);
         // 保存公众号信息到数据库
-        wxPublicMapper.insert(wxPublic);
+        Integer publicCode = wxPublicMapper.insert(wxPublic);
+
+
         return ResultUtil.success();
     }
 
     // 获取某个公众号
     @GetMapping("/get")
     public Result getPublicAccount(@RequestParam int publicCode) throws WxErrorException, IOException{
-        WxPublic wxPublic = wxPublicMapper.getByCode(publicCode);
+        WxPublic wxPublic = wxPublicMapper.selectByPrimaryKey(publicCode);
         if (wxPublic == null){
             return  ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
         }else{
@@ -71,7 +76,7 @@ public class WxPublicController {
     // 获取所有公众号
     @GetMapping("/getAll")
     public Result getAllPublicAccount() throws WxErrorException, IOException{
-        List<WxPublic> list = wxPublicMapper.getAll();
+        List<WxPublic> list = wxPublicMapper.selectAll();
         if (list.size() > 0){
             return ResultUtil.success(list);
         }else{
@@ -84,16 +89,16 @@ public class WxPublicController {
     public Result updatePublicAccount(@RequestParam int wxPublicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
         WxPublic wxPublic = this.createPublicAccount(reqMap,wxPublicHeadImg,wxPublicQrcode);
         // 保存 publicCode
-        wxPublic.setWxPublicCode(wxPublicCode);
+        wxPublic.setPublicCode(wxPublicCode);
         // 保存公众号信息到数据库
-        wxPublicMapper.updateById(wxPublic);
+        wxPublicMapper.updateByPrimaryKey(wxPublic);
         return ResultUtil.success();
     }
 
     // 解除绑定公众号
     @GetMapping("/delete")
     public Result deletePublicAccount(@RequestParam int wxPublicCode) throws WxErrorException, IOException{
-        wxPublicMapper.deleteById(wxPublicCode);
+        wxPublicMapper.deleteByPrimaryKey(wxPublicCode);
         return ResultUtil.success();
     }
 
@@ -103,17 +108,15 @@ public class WxPublicController {
         // 将 multipartfile 转化成 byte[]
         byte[] imgByte = wxPublicHeadImg.getBytes();
         byte[] qrcodeByte = wxPublicQrcode.getBytes();
-        wxPublic.setWxPublicQrcodeName(wxPublicQrcode.getOriginalFilename());
-        wxPublic.setWxPublicHeadImgName(wxPublicHeadImg.getOriginalFilename());
-        wxPublic.setWxPublicQrcode(qrcodeByte);
+        wxPublic.setqro(qrcodeByte);
         wxPublic.setWxPublicHeadImg(imgByte);
 
         // 保存公众号信息
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
-        wxConfigProvider.setAppId(wxPublic.getWxPublicAppid());
-        wxConfigProvider.setSecret(wxPublic.getWxPublicAppSerct());
-        wxConfigProvider.setToken(wxPublic.getWxPublicToken());
-        wxConfigProvider.setAesKey(wxPublic.getWxPublicAeskey());
+        wxConfigProvider.setAppId(wxPublic.getAppId());
+        wxConfigProvider.setSecret(wxPublic.getAppSerct());
+        wxConfigProvider.setToken(wxPublic.getToken());
+        wxConfigProvider.setAesKey(wxPublic.getAeskey());
         service.setWxMpConfigStorage(wxConfigProvider);
 
         return wxPublic;

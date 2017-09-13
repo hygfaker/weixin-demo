@@ -1,162 +1,163 @@
 package com.minstone.wechat.domain;
 
-
-import org.hibernate.validator.constraints.NotEmpty;
 import java.util.Map;
 
-
-/**
- * Created by huangyg on 2017/8/28.
- */
 public class WxPublic {
+    private Integer publicCode;
 
-    private int wxPublicCode;
-    @NotEmpty
-    private String wxPublicOpenid;
-    @NotEmpty
-    private String wxPublicName;
-    @NotEmpty
-    private String wxPublicNickName;
-    @NotEmpty
-    private byte[] wxPublicHeadImg;
-    @NotEmpty
-    private byte[] wxPublicQrcode;
-    @NotEmpty
-    private String wxPublicAppid;
-    @NotEmpty
-    private String wxPublicAppSerct;
-    @NotEmpty
-    private String wxPublicToken;
-    @NotEmpty
-    private String wxPublicAeskey;
-    @NotEmpty
-    private String wxPublicUrl;
-    @NotEmpty
-    private String wxPublicHeadImgName;
-    @NotEmpty
-    private String wxPublicQrcodeName;
+    private String openId;
+
+    private String publicName;
+
+    private String publicNickname;
+
+    private String appId;
+
+    private String appSerct;
+
+    private String token;
+
+    private String aeskey;
+
+    private String url;
+
+    private String creator;
+
+    private String createDate;
+
+    private String modifyDate;
+
+    private String modifyer;
+
+    private Integer delFlag;
 
 
-    public WxPublic(Map<String,Object>reqMap) {
-        this.setWxPublicOpenid((String) reqMap.get("wxPublicOpenid"));
-        this.setWxPublicName((String) reqMap.get("wxPublicName"));
-        this.setWxPublicNickName((String) reqMap.get("wxPublicNickName"));
-        this.setWxPublicAppid((String) reqMap.get("wxPublicAppid"));
-        this.setWxPublicAppSerct((String) reqMap.get("wxPublicAppSerct"));
-        this.setWxPublicToken((String) reqMap.get("wxPublicToken"));
-        this.setWxPublicAeskey((String) reqMap.get("wxPublicAeskey"));
-        this.setWxPublicUrl((String) reqMap.get("wxPublicUrl"));
-        this.setWxPublicHeadImgName((String) reqMap.get("wxPublicHeadImgName"));
-        this.setWxPublicQrcodeName((String) reqMap.get("wxPublicQrcodeName"));
+    public WxPublic(Map<String,Object> reqMap) {
+        this.publicCode = (Integer) reqMap.get("publicCode");
+        this.openId = (String) reqMap.get("openId");
+        this.publicName = (String) reqMap.get("publicName");
+        this.publicNickname = (String) reqMap.get("publicNickname");
+        this.appId = (String) reqMap.get("appId");
+        this.appSerct = (String) reqMap.get("appSerct");
+        this.token = (String) reqMap.get("token");
+        this.aeskey = (String) reqMap.get("aeskey");
+        this.url = (String) reqMap.get("url");
+        this.creator = (String) reqMap.get("creator");
+        this.createDate = (String) reqMap.get("createDate");
+        this.modifyDate = (String) reqMap.get("modifyDate");
+        this.modifyer = (String) reqMap.get("modifyer");
+        this.delFlag = (Integer) reqMap.get("delFlag");
     }
 
-    public WxPublic() {
-        super();
+    public Integer getPublicCode() {
+        return publicCode;
     }
 
-
-    public String getWxPublicHeadImgName() {
-        return wxPublicHeadImgName;
+    public void setPublicCode(Integer publicCode) {
+        this.publicCode = publicCode;
     }
 
-    public void setWxPublicHeadImgName(String wxPublicHeadImgName) {
-        this.wxPublicHeadImgName = wxPublicHeadImgName;
+    public String getOpenId() {
+        return openId;
     }
 
-    public String getWxPublicQrcodeName() {
-        return wxPublicQrcodeName;
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
     }
 
-    public void setWxPublicQrcodeName(String wxPublicQrcodeName) {
-        this.wxPublicQrcodeName = wxPublicQrcodeName;
+    public String getPublicName() {
+        return publicName;
     }
 
-    public int getWxPublicCode() {
-        return wxPublicCode;
+    public void setPublicName(String publicName) {
+        this.publicName = publicName == null ? null : publicName.trim();
     }
 
-    public void setWxPublicCode(int wxPublicCode) {
-        this.wxPublicCode = wxPublicCode;
+    public String getPublicNickname() {
+        return publicNickname;
     }
 
-    public String getWxPublicOpenid() {
-        return wxPublicOpenid;
+    public void setPublicNickname(String publicNickname) {
+        this.publicNickname = publicNickname == null ? null : publicNickname.trim();
     }
 
-    public void setWxPublicOpenid(String wxPublicOpenid) {
-        this.wxPublicOpenid = wxPublicOpenid;
+    public String getAppId() {
+        return appId;
     }
 
-    public String getWxPublicName() {
-        return wxPublicName;
+    public void setAppId(String appId) {
+        this.appId = appId == null ? null : appId.trim();
     }
 
-    public void setWxPublicName(String wxPublicName) {
-        this.wxPublicName = wxPublicName;
+    public String getAppSerct() {
+        return appSerct;
     }
 
-    public String getWxPublicNickName() {
-        return wxPublicNickName;
+    public void setAppSerct(String appSerct) {
+        this.appSerct = appSerct == null ? null : appSerct.trim();
     }
 
-    public void setWxPublicNickName(String wxPublicNickName) {
-        this.wxPublicNickName = wxPublicNickName;
+    public String getToken() {
+        return token;
     }
 
-    public byte[] getWxPublicHeadImg() {
-        return wxPublicHeadImg;
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
     }
 
-    public void setWxPublicHeadImg(byte[] wxPublicHeadImg) {
-        this.wxPublicHeadImg = wxPublicHeadImg;
+    public String getAeskey() {
+        return aeskey;
     }
 
-    public byte[] getWxPublicQrcode() {
-        return wxPublicQrcode;
+    public void setAeskey(String aeskey) {
+        this.aeskey = aeskey == null ? null : aeskey.trim();
     }
 
-    public void setWxPublicQrcode(byte[] wxPublicQrcode) {
-        this.wxPublicQrcode = wxPublicQrcode;
+    public String getUrl() {
+        return url;
     }
 
-    public String getWxPublicAppid() {
-        return wxPublicAppid;
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public void setWxPublicAppid(String wxPublicAppid) {
-        this.wxPublicAppid = wxPublicAppid;
+    public String getCreator() {
+        return creator;
     }
 
-    public String getWxPublicAppSerct() {
-        return wxPublicAppSerct;
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
-    public void setWxPublicAppSerct(String wxPublicAppSerct) {
-        this.wxPublicAppSerct = wxPublicAppSerct;
+    public String getCreateDate() {
+        return createDate;
     }
 
-    public String getWxPublicToken() {
-        return wxPublicToken;
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate == null ? null : createDate.trim();
     }
 
-    public void setWxPublicToken(String wxPublicToken) {
-        this.wxPublicToken = wxPublicToken;
+    public String getModifyDate() {
+        return modifyDate;
     }
 
-    public String getWxPublicAeskey() {
-        return wxPublicAeskey;
+    public void setModifyDate(String modifyDate) {
+        this.modifyDate = modifyDate == null ? null : modifyDate.trim();
     }
 
-    public void setWxPublicAeskey(String wxPublicAeskey) {
-        this.wxPublicAeskey = wxPublicAeskey;
+    public String getModifyer() {
+        return modifyer;
     }
 
-    public String getWxPublicUrl() {
-        return wxPublicUrl;
+    public void setModifyer(String modifyer) {
+        this.modifyer = modifyer == null ? null : modifyer.trim();
     }
 
-    public void setWxPublicUrl(String wxPublicUrl) {
-        this.wxPublicUrl = wxPublicUrl;
+    public Integer getDelFlag() {
+        return delFlag;
     }
 
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
 }

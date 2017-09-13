@@ -5,19 +5,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by huangyg on 2017/8/29.
- */
 @Component
 public interface WxPublicMapper {
+    int deleteByPrimaryKey(Integer publicCode);
 
-    public int insert(WxPublic wxPublic);
+    int insert(WxPublic record);
 
-    public WxPublic getByCode(int wxPublicCode);
+    int insertSelective(WxPublic record);
 
-    public List<WxPublic> getAll();
+    WxPublic selectByPrimaryKey(Integer publicCode);
 
-    public int updateById(WxPublic wxPublic);
+    List<WxPublic> selectAll();
 
-    public int deleteById(int wxPublicCode);
+    int updateByPrimaryKeySelective(WxPublic record);
+
+    int updateByPrimaryKey(WxPublic record);
 }
