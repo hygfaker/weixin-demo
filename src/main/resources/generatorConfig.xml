@@ -39,13 +39,13 @@
         </javaClientGenerator>
 
         <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
-        <table schema="mdweixin" tableName="mdwxrule" domainObjectName="WxRule"
+        <table schema="mdweixin" tableName="MP_YY_PUB_FILE" domainObjectName="WxPublicFile"
             enableCountByExample="false" enableUpdateByExample="false"
             enableDeleteByExample="false" enableSelectByExample="false"
             selectByExampleQueryId="false">
         </table>
 
-        <table schema="mdweixin" tableName="mdwxkeyword" domainObjectName="WxKeyword"
+        <table schema="mdweixin" tableName="MP_YY_PUBLIC" domainObjectName="WxPublic"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
