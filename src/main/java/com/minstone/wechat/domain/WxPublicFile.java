@@ -1,23 +1,24 @@
 package com.minstone.wechat.domain;
 
 public class WxPublicFile {
-    private Integer fileCode;
 
-    private Integer publicCode;
+    private String fileCode;
 
-    public Integer getFileCode() {
+    private String publicCode;
+
+    public String getFileCode() {
         return fileCode;
     }
 
-    public void setFileCode(Integer fileCode) {
+    public void setFileCode(String fileCode) {
         this.fileCode = fileCode;
     }
 
-    public Integer getPublicCode() {
+    public String getPublicCode() {
         return publicCode;
     }
 
-    public void setPublicCode(Integer publicCode) {
+    public void setPublicCode(String publicCode) {
         this.publicCode = publicCode;
     }
 }

@@ -87,6 +87,7 @@
 
 	</dependencies>
 
+	<!-- mybatis 自动生成代码插件-->
 	<build>
 		<plugins>
 			<plugin>

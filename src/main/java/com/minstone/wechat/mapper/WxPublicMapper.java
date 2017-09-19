@@ -7,13 +7,13 @@ import java.util.List;
 
 @Component
 public interface WxPublicMapper {
-    int deleteByPrimaryKey(Integer publicCode);
+    int deleteByPrimaryKey(String publicCode);
 
     int insert(WxPublic record);
 
     int insertSelective(WxPublic record);
 
-    WxPublic selectByPrimaryKey(Integer publicCode);
+    WxPublic selectByPrimaryKey(String publicCode);
 
     List<WxPublic> selectAll();
 

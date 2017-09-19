@@ -1,9 +1,11 @@
 package com.minstone.wechat.domain;
 
+import com.minstone.wechat.utils.code.IdGen;
+
 import java.util.Map;
 
 public class WxPublic {
-    private Integer publicCode;
+    private String publicCode;
 
     private String openId;
 
@@ -33,7 +35,7 @@ public class WxPublic {
 
 
     public WxPublic(Map<String,Object> reqMap) {
-        this.publicCode = (Integer) reqMap.get("publicCode");
+        this.publicCode = IdGen.uuid();
         this.openId = (String) reqMap.get("openId");
         this.publicName = (String) reqMap.get("publicName");
         this.publicNickname = (String) reqMap.get("publicNickname");
@@ -49,11 +51,11 @@ public class WxPublic {
         this.delFlag = (Integer) reqMap.get("delFlag");
     }
 
-    public Integer getPublicCode() {
+    public String getPublicCode() {
         return publicCode;
     }
 
-    public void setPublicCode(Integer publicCode) {
+    public void setPublicCode(String publicCode) {
         this.publicCode = publicCode;
     }
 

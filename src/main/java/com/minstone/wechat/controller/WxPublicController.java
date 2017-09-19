@@ -1,11 +1,14 @@
 package com.minstone.wechat.controller;
 
 import com.minstone.wechat.domain.WxPublic;
+import com.minstone.wechat.domain.WxPublicFile;
+import com.minstone.wechat.domain.WxPublicFileWithBLOBs;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.mapper.WxPublicFileMapper;
 import com.minstone.wechat.mapper.WxPublicMapper;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
+import com.minstone.wechat.utils.code.IdGen;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -55,16 +58,34 @@ public class WxPublicController {
     public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
 
         WxPublic wxPublic = new WxPublic(reqMap);
+
+        // todo 开启事务
         // 保存公众号信息到数据库
         Integer publicCode = wxPublicMapper.insert(wxPublic);
+        // 保存文件到另一张表
+        Integer fileCode = this.saveImg(wxPublicHeadImg,wxPublicQrcode,publicCode.toString());
 
+        // 切换公众号
+        WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
+        wxConfigProvider.setAppId(wxPublic.getAppId());
+        wxConfigProvider.setSecret(wxPublic.getAppSerct());
+        wxConfigProvider.setToken(wxPublic.getToken());
+        wxConfigProvider.setAesKey(wxPublic.getAeskey());
+        service.setWxMpConfigStorage(wxConfigProvider);
 
         return ResultUtil.success();
     }
 
+
+    public int saveImg(MultipartFile publicHeadImg,MultipartFile publicQrcode,String publicCode) throws IOException {
+        WxPublicFileWithBLOBs wxPublicFileWithBLOBs = new WxPublicFileWithBLOBs(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
+        wxPublicFileWithBLOBs.setFileCode(IdGen.uuid());
+        return wxPublicFileMapper.insert(wxPublicFileWithBLOBs);
+    }
+
     // 获取某个公众号
     @GetMapping("/get")
-    public Result getPublicAccount(@RequestParam int publicCode) throws WxErrorException, IOException{
+    public Result getPublicAccount(@RequestParam String publicCode) throws WxErrorException, IOException{
         WxPublic wxPublic = wxPublicMapper.selectByPrimaryKey(publicCode);
         if (wxPublic == null){
             return  ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
@@ -84,42 +105,27 @@ public class WxPublicController {
         }
     }
 
-    // 编辑公众号
+    // 编辑公众号p
     @PostMapping("/update")
-    public Result updatePublicAccount(@RequestParam int wxPublicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
-        WxPublic wxPublic = this.createPublicAccount(reqMap,wxPublicHeadImg,wxPublicQrcode);
+    public Result updatePublicAccount(@RequestParam String publicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
+        WxPublic wxPublic = new WxPublic(reqMap);
         // 保存 publicCode
-        wxPublic.setPublicCode(wxPublicCode);
+        wxPublic.setPublicCode(publicCode);
         // 保存公众号信息到数据库
         wxPublicMapper.updateByPrimaryKey(wxPublic);
+
+        // 保存头像
+        WxPublicFileWithBLOBs wxPublicFileWithBLOBs = new WxPublicFileWithBLOBs(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
+        wxPublicFileMapper.updateByPrimaryKey(wxPublicFileWithBLOBs);
         return ResultUtil.success();
     }
 
     // 解除绑定公众号
     @GetMapping("/delete")
-    public Result deletePublicAccount(@RequestParam int wxPublicCode) throws WxErrorException, IOException{
+    public Result deletePublicAccount(@RequestParam String wxPublicCode) throws WxErrorException, IOException{
         wxPublicMapper.deleteByPrimaryKey(wxPublicCode);
         return ResultUtil.success();
     }
 
-    public WxPublic createPublicAccount(Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws IOException {
-        WxPublic wxPublic = new WxPublic(reqMap);
-
-        // 将 multipartfile 转化成 byte[]
-        byte[] imgByte = wxPublicHeadImg.getBytes();
-        byte[] qrcodeByte = wxPublicQrcode.getBytes();
-        wxPublic.setqro(qrcodeByte);
-        wxPublic.setWxPublicHeadImg(imgByte);
-
-        // 保存公众号信息
-        WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
-        wxConfigProvider.setAppId(wxPublic.getAppId());
-        wxConfigProvider.setSecret(wxPublic.getAppSerct());
-        wxConfigProvider.setToken(wxPublic.getToken());
-        wxConfigProvider.setAesKey(wxPublic.getAeskey());
-        service.setWxMpConfigStorage(wxConfigProvider);
-
-        return wxPublic;
-    }
 
 }

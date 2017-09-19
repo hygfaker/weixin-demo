@@ -15,22 +15,22 @@
   <sql id="Blob_Column_List">
     HEADIMG, QECODE
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from MP_YY_PUB_FILE
-    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+    where FILE_CODE = #{fileCode,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey">
     delete from MP_YY_PUB_FILE
-    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+    where FILE_CODE = #{fileCode,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
     insert into MP_YY_PUB_FILE (FILE_CODE, PUBLIC_CODE, HEADIMG, 
       QECODE)
-    values (#{fileCode,jdbcType=INTEGER}, #{publicCode,jdbcType=INTEGER}, #{headimg,jdbcType=LONGVARBINARY}, 
+    values (#{fileCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{headimg,jdbcType=LONGVARBINARY},
       #{qecode,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
@@ -51,10 +51,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="fileCode != null">
-        #{fileCode,jdbcType=INTEGER},
+        #{fileCode,jdbcType=VARCHAR},
       </if>
       <if test="publicCode != null">
-        #{publicCode,jdbcType=INTEGER},
+        #{publicCode,jdbcType=VARCHAR},
       </if>
       <if test="headimg != null">
         #{headimg,jdbcType=LONGVARBINARY},
@@ -68,7 +68,7 @@
     update MP_YY_PUB_FILE
     <set>
       <if test="publicCode != null">
-        PUBLIC_CODE = #{publicCode,jdbcType=INTEGER},
+        PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       </if>
       <if test="headimg != null">
         HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
@@ -77,18 +77,18 @@
         QECODE = #{qecode,jdbcType=LONGVARBINARY},
       </if>
     </set>
-    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+    where FILE_CODE = #{fileCode,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
     update MP_YY_PUB_FILE
-    set PUBLIC_CODE = #{publicCode,jdbcType=INTEGER},
+    set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
       QECODE = #{qecode,jdbcType=LONGVARBINARY}
-    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+    where FILE_CODE = #{fileCode,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxPublicFile">
     update MP_YY_PUB_FILE
-    set PUBLIC_CODE = #{publicCode,jdbcType=INTEGER}
-    where FILE_CODE = #{fileCode,jdbcType=INTEGER}
+    set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    where FILE_CODE = #{fileCode,jdbcType=VARCHAR}
   </update>
 </mapper>
