@@ -177,4 +177,25 @@ public class WxPublic {
     public void setSystemCode(String systemCode) {
         this.systemCode = systemCode == null ? null : systemCode.trim();
     }
+
+    @Override
+    public String toString() {
+        return "WxPublic{" +
+                "publicCode='" + publicCode + '\'' +
+                ", openId='" + openId + '\'' +
+                ", publicName='" + publicName + '\'' +
+                ", publicNickname='" + publicNickname + '\'' +
+                ", appId='" + appId + '\'' +
+                ", appSerct='" + appSerct + '\'' +
+                ", token='" + token + '\'' +
+                ", aeskey='" + aeskey + '\'' +
+                ", url='" + url + '\'' +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", modifyDate='" + modifyDate + '\'' +
+                ", modifyer='" + modifyer + '\'' +
+                ", delFlag=" + delFlag +
+                ", systemCode='" + systemCode + '\'' +
+                '}';
+    }
 }

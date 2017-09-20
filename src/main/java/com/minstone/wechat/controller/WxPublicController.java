@@ -1,7 +1,7 @@
 package com.minstone.wechat.controller;
 
 import com.minstone.wechat.domain.WxPublic;
-import com.minstone.wechat.domain.WxPublicFileWithBLOBs;
+import com.minstone.wechat.domain.WxPublicFile;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.mapper.WxPublicFileMapper;
 import com.minstone.wechat.mapper.WxPublicMapper;
@@ -56,10 +56,10 @@ public class WxPublicController {
     @PostMapping("/add")
     public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
 
-        WxPublic wxPublic = new WxPublic(reqMap);
 
         // todo 开启事务
         // 保存公众号信息到数据库
+        WxPublic wxPublic = new WxPublic(reqMap);
         Integer publicCode = wxPublicMapper.insert(wxPublic);
         // 保存文件到另一张表
         Integer fileCode = this.saveImg(publicHeadImg,publicQrcode,publicCode.toString());
@@ -77,9 +77,9 @@ public class WxPublicController {
 
 
     public int saveImg(MultipartFile publicHeadImg,MultipartFile publicQrcode,String publicCode) throws IOException {
-        WxPublicFileWithBLOBs wxPublicFileWithBLOBs = new WxPublicFileWithBLOBs(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
-        wxPublicFileWithBLOBs.setFileCode(IdGen.uuid());
-        return wxPublicFileMapper.insert(wxPublicFileWithBLOBs);
+        WxPublicFile wxPublicFile = new WxPublicFile(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
+        wxPublicFile.setFileCode(IdGen.uuid());
+        return wxPublicFileMapper.insert(wxPublicFile);
     }
 
     // 获取某个公众号
@@ -114,8 +114,8 @@ public class WxPublicController {
         wxPublicMapper.updateByPrimaryKey(wxPublic);
 
         // 保存头像
-        WxPublicFileWithBLOBs wxPublicFileWithBLOBs = new WxPublicFileWithBLOBs(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
-        wxPublicFileMapper.updateByPrimaryKey(wxPublicFileWithBLOBs);
+        WxPublicFile wxPublicFile = new WxPublicFile(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
+        wxPublicFileMapper.updateByPrimaryKey(wxPublicFile);
         return ResultUtil.success();
     }
 

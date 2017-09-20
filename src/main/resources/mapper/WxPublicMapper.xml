@@ -19,9 +19,6 @@
     <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
   </resultMap>
 
-  
-
-
 
   <sql id="Base_Column_List">
     PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY, 

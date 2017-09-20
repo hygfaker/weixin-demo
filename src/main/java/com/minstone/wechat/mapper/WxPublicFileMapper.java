@@ -1,21 +1,20 @@
 package com.minstone.wechat.mapper;
 
 import com.minstone.wechat.domain.WxPublicFile;
-import com.minstone.wechat.domain.WxPublicFileWithBLOBs;
 import org.springframework.stereotype.Component;
 @Component
 public interface WxPublicFileMapper {
     int deleteByPrimaryKey(String fileCode);
 
-    int insert(WxPublicFileWithBLOBs record);
+    int insert(WxPublicFile record);
 
-    int insertSelective(WxPublicFileWithBLOBs record);
+    int insertSelective(WxPublicFile record);
 
-    WxPublicFileWithBLOBs selectByPrimaryKey(String fileCode);
+    WxPublicFile selectByPrimaryKey(String fileCode);
 
-    int updateByPrimaryKeySelective(WxPublicFileWithBLOBs record);
+    int updateByPrimaryKeySelective(WxPublicFile record);
 
-    int updateByPrimaryKeyWithBLOBs(WxPublicFileWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(WxPublicFile record);
 
     int updateByPrimaryKey(WxPublicFile record);
 }
