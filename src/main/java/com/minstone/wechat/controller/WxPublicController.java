@@ -1,7 +1,6 @@
 package com.minstone.wechat.controller;
 
 import com.minstone.wechat.domain.WxPublic;
-import com.minstone.wechat.domain.WxPublicFile;
 import com.minstone.wechat.domain.WxPublicFileWithBLOBs;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.mapper.WxPublicFileMapper;
@@ -55,7 +54,7 @@ public class WxPublicController {
 
     // 添加公众号
     @PostMapping("/add")
-    public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile wxPublicHeadImg, @RequestParam MultipartFile wxPublicQrcode) throws WxErrorException, IOException {
+    public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
 
         WxPublic wxPublic = new WxPublic(reqMap);
 
@@ -63,7 +62,7 @@ public class WxPublicController {
         // 保存公众号信息到数据库
         Integer publicCode = wxPublicMapper.insert(wxPublic);
         // 保存文件到另一张表
-        Integer fileCode = this.saveImg(wxPublicHeadImg,wxPublicQrcode,publicCode.toString());
+        Integer fileCode = this.saveImg(publicHeadImg,publicQrcode,publicCode.toString());
 
         // 切换公众号
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();

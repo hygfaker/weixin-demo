@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minstone.wechat.mapper.WxPublicFileMapper">
+
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicFile">
-    <id column="FILE_CODE" jdbcType="INTEGER" property="fileCode" />
-    <result column="PUBLIC_CODE" jdbcType="INTEGER" property="publicCode" />
+    <id column="FILE_CODE" jdbcType="VARCHAR" property="fileCode" />
+    <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
   </resultMap>
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.minstone.wechat.domain.WxPublicFileWithBLOBs">
     <result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />
     <result column="QECODE" jdbcType="LONGVARBINARY" property="qecode" />
   </resultMap>
+
   <sql id="Base_Column_List">
     FILE_CODE, PUBLIC_CODE
   </sql>
+
   <sql id="Blob_Column_List">
     HEADIMG, QECODE
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />

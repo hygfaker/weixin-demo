@@ -2,6 +2,10 @@ package com.minstone.wechat.domain;
 
 public class WxPublicFile {
 
+    public WxPublicFile() {
+    }
+
+
     private String fileCode;
 
     private String publicCode;

@@ -11,11 +11,12 @@ public interface WxPublicMapper {
 
     int insert(WxPublic record);
 
+    // 需要给 WxPublic 一个默认的构造函数
+    List<WxPublic> selectAll();
+
     int insertSelective(WxPublic record);
 
     WxPublic selectByPrimaryKey(String publicCode);
-
-    List<WxPublic> selectAll();
 
     int updateByPrimaryKeySelective(WxPublic record);
 

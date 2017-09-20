@@ -5,13 +5,13 @@ import com.minstone.wechat.domain.WxPublicFileWithBLOBs;
 import org.springframework.stereotype.Component;
 @Component
 public interface WxPublicFileMapper {
-    int deleteByPrimaryKey(Integer fileCode);
+    int deleteByPrimaryKey(String fileCode);
 
     int insert(WxPublicFileWithBLOBs record);
 
     int insertSelective(WxPublicFileWithBLOBs record);
 
-    WxPublicFileWithBLOBs selectByPrimaryKey(Integer fileCode);
+    WxPublicFileWithBLOBs selectByPrimaryKey(String fileCode);
 
     int updateByPrimaryKeySelective(WxPublicFileWithBLOBs record);
 

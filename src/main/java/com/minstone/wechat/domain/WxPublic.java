@@ -2,6 +2,7 @@ package com.minstone.wechat.domain;
 
 import com.minstone.wechat.utils.code.IdGen;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class WxPublic {
@@ -33,22 +34,28 @@ public class WxPublic {
 
     private Integer delFlag;
 
+    private String systemCode;
+
+    public WxPublic() {
+        super();
+    }
 
     public WxPublic(Map<String,Object> reqMap) {
-        this.publicCode = IdGen.uuid();
-        this.openId = (String) reqMap.get("openId");
-        this.publicName = (String) reqMap.get("publicName");
-        this.publicNickname = (String) reqMap.get("publicNickname");
-        this.appId = (String) reqMap.get("appId");
-        this.appSerct = (String) reqMap.get("appSerct");
-        this.token = (String) reqMap.get("token");
-        this.aeskey = (String) reqMap.get("aeskey");
-        this.url = (String) reqMap.get("url");
-        this.creator = (String) reqMap.get("creator");
-        this.createDate = (String) reqMap.get("createDate");
-        this.modifyDate = (String) reqMap.get("modifyDate");
-        this.modifyer = (String) reqMap.get("modifyer");
-        this.delFlag = (Integer) reqMap.get("delFlag");
+        this.setPublicCode(IdGen.uuid());
+        this.setOpenId((String) reqMap.get("openId"));
+        this.setPublicName((String) reqMap.get("publicName"));
+        this.setPublicNickname((String) reqMap.get("publicNickname"));
+        this.setAppId((String) reqMap.get("appId"));
+        this.setAppSerct((String) reqMap.get("appSerct"));
+        this.setToken((String) reqMap.get("token"));
+        this.setAeskey((String) reqMap.get("aeskey"));
+        this.setUrl((String) reqMap.get("url"));
+        this.setCreator((String) reqMap.get("creator"));
+        this.setCreateDate((String) reqMap.get("createDate"));
+        this.setModifyDate((String) reqMap.get("modifyDate"));
+        this.setModifyer((String) reqMap.get("modifyer"));
+        this.setDelFlag((Integer) reqMap.get("delFlag"));
+        this.setSystemCode((String) reqMap.get("systemCode"));
     }
 
     public String getPublicCode() {
@@ -56,7 +63,7 @@ public class WxPublic {
     }
 
     public void setPublicCode(String publicCode) {
-        this.publicCode = publicCode;
+        this.publicCode = publicCode == null ? null : publicCode.trim();
     }
 
     public String getOpenId() {
@@ -161,5 +168,13 @@ public class WxPublic {
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getSystemCode() {
+        return systemCode;
+    }
+
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode == null ? null : systemCode.trim();
     }
 }

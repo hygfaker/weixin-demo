@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minstone.wechat.mapper.WxPublicMapper">
-
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublic">
-    <id column="PUBLIC_CODE" jdbcType="INTEGER" property="publicCode" />
+    <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
     <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
     <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName" />
     <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname" />
@@ -17,24 +16,24 @@
     <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
     <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
     <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
+    <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
   </resultMap>
+
+  
+
+
 
   <sql id="Base_Column_List">
     PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY, 
-    URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG
+    URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE
   </sql>
-  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </select>
-
-  <select id="selectAll" resultMap="BaseResultMap">
-   SELECT * FROM MP_YY_PUBLIC
-  </select>
-
-  <delete id="deleteByPrimaryKey">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
@@ -43,13 +42,20 @@
       PUBLIC_NICKNAME, APP_ID, APP_SERCT, 
       TOKEN, AESKEY, URL, 
       CREATOR, CREATE_DATE, MODIFY_DATE, 
-      MODIFYER, DEL_FLAG)
-    values (#{publicCode,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{publicName,jdbcType=VARCHAR},
+      MODIFYER, DEL_FLAG, SYSTEM_CODE
+      )
+    values (#{publicCode,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{publicName,jdbcType=VARCHAR}, 
       #{publicNickname,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSerct,jdbcType=VARCHAR}, 
       #{token,jdbcType=VARCHAR}, #{aeskey,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR}, 
-      #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER})
+      #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{systemCode,jdbcType=VARCHAR}
+      )
   </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM MP_YY_PUBLIC
+  </select>
+
   <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxPublic">
     insert into MP_YY_PUBLIC
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -95,6 +101,9 @@
       <if test="delFlag != null">
         DEL_FLAG,
       </if>
+      <if test="systemCode != null">
+        SYSTEM_CODE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="publicCode != null">
@@ -138,6 +147,9 @@
       </if>
       <if test="delFlag != null">
         #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="systemCode != null">
+        #{systemCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -183,6 +195,9 @@
       <if test="delFlag != null">
         DEL_FLAG = #{delFlag,jdbcType=INTEGER},
       </if>
+      <if test="systemCode != null">
+        SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
@@ -200,7 +215,8 @@
       CREATE_DATE = #{createDate,jdbcType=VARCHAR},
       MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
       MODIFYER = #{modifyer,jdbcType=VARCHAR},
-      DEL_FLAG = #{delFlag,jdbcType=INTEGER}
+      DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+      SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR}
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
 </mapper>

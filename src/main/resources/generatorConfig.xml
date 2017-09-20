@@ -22,13 +22,13 @@
                         password="123456">
         </jdbcConnection>
 
-        <!-- 生成 Model 对象路径配置  -->
+        <!-- 生成 Model 对象路径配置  &ndash;&gt;-->
         <javaModelGenerator targetPackage="com.minstone.wechat.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <!-- 生成 sqlXML 文件路径配置 -->
+        <!-- 生成 sqlXMLMapper 文件路径配置 -->
         <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
@@ -39,11 +39,11 @@
         </javaClientGenerator>
 
         <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
-        <table schema="mdweixin" tableName="MP_YY_PUB_FILE" domainObjectName="WxPublicFile"
-            enableCountByExample="false" enableUpdateByExample="false"
-            enableDeleteByExample="false" enableSelectByExample="false"
-            selectByExampleQueryId="false">
-        </table>
+        <!--<table schema="mdweixin" tableName="MP_YY_PUB_FILE" domainObjectName="WxPublicFile"-->
+            <!--enableCountByExample="false" enableUpdateByExample="false"-->
+            <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+            <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
 
         <table schema="mdweixin" tableName="MP_YY_PUBLIC" domainObjectName="WxPublic"
                enableCountByExample="false" enableUpdateByExample="false"

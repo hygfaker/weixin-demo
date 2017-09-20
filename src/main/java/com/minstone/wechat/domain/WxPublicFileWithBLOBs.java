@@ -3,6 +3,10 @@ package com.minstone.wechat.domain;
 import com.minstone.wechat.utils.code.IdGen;
 
 public class WxPublicFileWithBLOBs extends WxPublicFile {
+
+    public WxPublicFileWithBLOBs() {
+    }
+
     private byte[] headimg;
 
     private byte[] qecode;
