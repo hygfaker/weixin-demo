@@ -1,40 +1,13 @@
 package com.minstone.wechat.domain;
 
 import com.minstone.wechat.utils.code.IdGen;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class WxPublic {
-    private String publicCode;
 
-    private String openId;
-
-    private String publicName;
-
-    private String publicNickname;
-
-    private String appId;
-
-    private String appSerct;
-
-    private String token;
-
-    private String aeskey;
-
-    private String url;
-
-    private String creator;
-
-    private String createDate;
-
-    private String modifyDate;
-
-    private String modifyer;
-
-    private Integer delFlag;
-
-    private String systemCode;
 
     public WxPublic() {
         super();
@@ -57,6 +30,38 @@ public class WxPublic {
         this.setDelFlag((Integer) reqMap.get("delFlag"));
         this.setSystemCode((String) reqMap.get("systemCode"));
     }
+    @NotEmpty
+    private String publicCode;
+    @NotEmpty
+    private String openId;
+    @NotEmpty
+    private String publicName;
+    @NotEmpty
+    private String publicNickname;
+    @NotEmpty
+    private String appId;
+    @NotEmpty
+    private String appSerct;
+    @NotEmpty
+    private String token;
+    @NotEmpty
+    private String aeskey;
+
+    private String url;
+
+    private String creator;
+
+    private String createDate;
+
+    private String modifyDate;
+
+    private String modifyer;
+
+    private Integer delFlag;
+
+    private String systemCode;
+    @NotEmpty
+    private String imgCode;
 
     public String getPublicCode() {
         return publicCode;
@@ -178,24 +183,12 @@ public class WxPublic {
         this.systemCode = systemCode == null ? null : systemCode.trim();
     }
 
-    @Override
-    public String toString() {
-        return "WxPublic{" +
-                "publicCode='" + publicCode + '\'' +
-                ", openId='" + openId + '\'' +
-                ", publicName='" + publicName + '\'' +
-                ", publicNickname='" + publicNickname + '\'' +
-                ", appId='" + appId + '\'' +
-                ", appSerct='" + appSerct + '\'' +
-                ", token='" + token + '\'' +
-                ", aeskey='" + aeskey + '\'' +
-                ", url='" + url + '\'' +
-                ", creator='" + creator + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", modifyDate='" + modifyDate + '\'' +
-                ", modifyer='" + modifyer + '\'' +
-                ", delFlag=" + delFlag +
-                ", systemCode='" + systemCode + '\'' +
-                '}';
+    public String getImgCode() {
+        return imgCode;
     }
+
+    public void setImgCode(String imgCode) {
+        this.imgCode = imgCode == null ? null : imgCode.trim();
+    }
+
 }

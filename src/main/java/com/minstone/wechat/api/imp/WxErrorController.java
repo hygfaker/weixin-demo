@@ -1,4 +1,4 @@
-package com.minstone.wechat.controller;
+package com.minstone.wechat.api.imp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -7,18 +7,20 @@ import java.util.List;
 
 @Component
 public interface WxPublicMapper {
+
     int deleteByPrimaryKey(String publicCode);
 
     int insert(WxPublic record);
 
-    // 需要给 WxPublic 一个默认的构造函数
-    List<WxPublic> selectAll();
-
     int insertSelective(WxPublic record);
+
+    String selectImgCodeByPrimaryKey(String publicCode);
 
     WxPublic selectByPrimaryKey(String publicCode);
 
     int updateByPrimaryKeySelective(WxPublic record);
+
+    List<WxPublic> selectAll();
 
     int updateByPrimaryKey(WxPublic record);
 }

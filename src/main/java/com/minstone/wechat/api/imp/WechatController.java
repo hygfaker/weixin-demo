@@ -1,4 +1,4 @@
-package com.minstone.wechat.controller;
+package com.minstone.wechat.api.imp;
 
 import com.minstone.wechat.handler.MsgHandler;
 import com.minstone.wechat.handler.SubscribeHandler;

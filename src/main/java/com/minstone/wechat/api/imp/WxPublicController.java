@@ -1,9 +1,10 @@
-package com.minstone.wechat.controller;
+package com.minstone.wechat.api.imp;
 
+import com.minstone.wechat.api.WxPublicService;
 import com.minstone.wechat.domain.WxPublic;
-import com.minstone.wechat.domain.WxPublicFile;
+import com.minstone.wechat.domain.WxPublicImg;
 import com.minstone.wechat.enums.ResultEnum;
-import com.minstone.wechat.mapper.WxPublicFileMapper;
+import com.minstone.wechat.mapper.WxPublicImgMapper;
 import com.minstone.wechat.mapper.WxPublicMapper;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
@@ -14,6 +15,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,8 +34,9 @@ import java.util.Map;
  *
  */
 @RestController
+@Transactional
 @RequestMapping("public")
-public class WxPublicController {
+public class WxPublicController implements WxPublicService{
 
     //todo
     // 添加公众号
@@ -48,7 +51,7 @@ public class WxPublicController {
     private WxPublicMapper wxPublicMapper;
 
     @Autowired
-    private WxPublicFileMapper wxPublicFileMapper;
+    private WxPublicImgMapper wxPublicImgMapper;
 
     private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
 
@@ -58,12 +61,15 @@ public class WxPublicController {
 
 
         // todo 开启事务
-        // 保存公众号信息到数据库
-        WxPublic wxPublic = new WxPublic(reqMap);
-        Integer publicCode = wxPublicMapper.insert(wxPublic);
-        // 保存文件到另一张表
-        Integer fileCode = this.saveImg(publicHeadImg,publicQrcode,publicCode.toString());
+        // 保存公众号图片
+        String imgCode = IdGen.uuid(); // 保存图片imgCode
+        WxPublicImg wxPublicImg = new WxPublicImg(imgCode,publicHeadImg.getBytes(),publicQrcode.getBytes());
+        wxPublicImgMapper.insert(wxPublicImg);
 
+        // 保存公众号信息
+        WxPublic wxPublic = new WxPublic(reqMap);
+        wxPublic.setImgCode(imgCode);
+        wxPublicMapper.insert(wxPublic);
         // 切换公众号
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(wxPublic.getAppId());
@@ -75,12 +81,6 @@ public class WxPublicController {
         return ResultUtil.success();
     }
 
-
-    public int saveImg(MultipartFile publicHeadImg,MultipartFile publicQrcode,String publicCode) throws IOException {
-        WxPublicFile wxPublicFile = new WxPublicFile(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
-        wxPublicFile.setFileCode(IdGen.uuid());
-        return wxPublicFileMapper.insert(wxPublicFile);
-    }
 
     // 获取某个公众号
     @GetMapping("/get")
@@ -106,23 +106,31 @@ public class WxPublicController {
 
     // 编辑公众号p
     @PostMapping("/update")
-    public Result updatePublicAccount(@RequestParam String publicCode,@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
-        WxPublic wxPublic = new WxPublic(reqMap);
-        // 保存 publicCode
-        wxPublic.setPublicCode(publicCode);
-        // 保存公众号信息到数据库
-        wxPublicMapper.updateByPrimaryKey(wxPublic);
+    public Result updatePublicAccount(@RequestParam String publicCode, @RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
 
-        // 保存头像
-        WxPublicFile wxPublicFile = new WxPublicFile(publicHeadImg.getBytes(),publicQrcode.getBytes(),publicCode);
-        wxPublicFileMapper.updateByPrimaryKey(wxPublicFile);
+        // 更新公众号图片
+        String imgCode = wxPublicMapper.selectImgCodeByPrimaryKey(publicCode);
+        WxPublicImg wxPublicImg = new WxPublicImg(imgCode,publicHeadImg.getBytes(),publicQrcode.getBytes());
+        wxPublicImgMapper.updateByPrimaryKey(wxPublicImg);
+
+        // 更新公众号信息
+        WxPublic newPublic = new WxPublic(reqMap);
+        newPublic.setPublicCode(publicCode);
+        wxPublicMapper.updateByPrimaryKey(newPublic);
+
         return ResultUtil.success();
     }
 
     // 解除绑定公众号
     @GetMapping("/delete")
-    public Result deletePublicAccount(@RequestParam String wxPublicCode) throws WxErrorException, IOException{
-        wxPublicMapper.deleteByPrimaryKey(wxPublicCode);
+    public Result deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException{
+
+        // 删除公众号图片
+        String imgCode = wxPublicMapper.selectImgCodeByPrimaryKey(publicCode);
+        wxPublicImgMapper.deleteByPrimaryKey(imgCode);
+
+        // 删除公众号信息
+        wxPublicMapper.deleteByPrimaryKey(publicCode);
         return ResultUtil.success();
     }
 

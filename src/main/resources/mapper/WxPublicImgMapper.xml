@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minstone.wechat.mapper.WxPublicImgMapper">
+  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicImg">
+    <id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.minstone.wechat.domain.WxPublicImg">
+    <result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />
+    <result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    IMG_CODE
+  </sql>
+  <sql id="Blob_Column_List">
+    HEADIMG, QRCODE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MP_YY_PUB_IMG
+    where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from MP_YY_PUB_IMG
+    where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublicImg">
+    insert into MP_YY_PUB_IMG (IMG_CODE, HEADIMG, QRCODE
+      )
+    values (#{imgCode,jdbcType=VARCHAR}, #{headimg,jdbcType=LONGVARBINARY}, #{qrcode,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxPublicImg">
+    insert into MP_YY_PUB_IMG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="imgCode != null">
+        IMG_CODE,
+      </if>
+      <if test="headimg != null">
+        HEADIMG,
+      </if>
+      <if test="qrcode != null">
+        QRCODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="imgCode != null">
+        #{imgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="headimg != null">
+        #{headimg,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="qrcode != null">
+        #{qrcode,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxPublicImg">
+    update MP_YY_PUB_IMG
+    <set>
+      <if test="headimg != null">
+        HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="qrcode != null">
+        QRCODE = #{qrcode,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxPublicImg">
+    update MP_YY_PUB_IMG
+    set HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
+      QRCODE = #{qrcode,jdbcType=LONGVARBINARY}
+    where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </update>
+
+</mapper>
