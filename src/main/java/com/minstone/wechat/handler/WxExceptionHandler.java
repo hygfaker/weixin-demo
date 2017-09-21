@@ -4,9 +4,11 @@ import com.minstone.wechat.model.ErrorCodeMsg;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.utils.ResultUtil;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +27,14 @@ public class WxExceptionHandler {
     @ResponseBody
     public Result handle(Exception e){
 
-        if (e instanceof WxErrorException){
+        if (e instanceof DataIntegrityViolationException){ // 数据库报错
+            DataIntegrityViolationException exception = (DataIntegrityViolationException)e;
+
+            String msg = exception.getCause().getMessage();
+
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
+        }
+        if (e instanceof WxErrorException){ // 微信框架的报错
 
             WxErrorException exception = (WxErrorException)e;
 
@@ -35,14 +44,14 @@ public class WxExceptionHandler {
             }
             return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
 
-        }else if (e instanceof MissingServletRequestParameterException){ // 参数缺失
+        }else if (e instanceof MissingServletRequestParameterException){ // 控制器提交参数缺失
 
             MissingServletRequestParameterException exception= (MissingServletRequestParameterException)e;
             String msg = "【" + exception.getParameterType() + "】" + "类型的"
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
 
-        }else if (e instanceof MissingServletRequestPartException){
+        }else if (e instanceof MissingServletRequestPartException){  // 控制器提交参数缺失
 
             MissingServletRequestPartException exception= (MissingServletRequestPartException)e;
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getMessage());

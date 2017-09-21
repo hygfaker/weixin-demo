@@ -1,18 +1,16 @@
 package com.minstone.wechat.domain;
 
 import com.minstone.wechat.utils.code.IdGen;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
-
 public class WxPublic {
-
-
     public WxPublic() {
         super();
     }
-
     public WxPublic(Map<String,Object> reqMap) {
         this.setPublicCode(IdGen.uuid());
         this.setOpenId((String) reqMap.get("openId"));
@@ -32,11 +30,11 @@ public class WxPublic {
     }
     @NotEmpty
     private String publicCode;
-    @NotEmpty
+    @NotNull
     private String openId;
     @NotEmpty
     private String publicName;
-    @NotEmpty
+    @NotNull(message = "publicNickname 不能为空")
     private String publicNickname;
     @NotEmpty
     private String appId;

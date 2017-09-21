@@ -1,10 +1,10 @@
-package com.minstone.wechat.mapper;
+package com.minstone.wechat.dao;
 
 import com.minstone.wechat.domain.WxPublicImg;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface WxPublicImgMapper {
+public interface WxPublicImgDao {
     int deleteByPrimaryKey(String imgCode);
 
     int insert(WxPublicImg record);

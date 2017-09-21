@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.wechat.mapper.WxPublicMapper">
+<mapper namespace="com.minstone.wechat.dao.WxPublicDao">
 
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublic">
       <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />

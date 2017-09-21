@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.wechat.mapper.WxPublicImgMapper">
+<mapper namespace="com.minstone.wechat.dao.WxPublicImgDao">
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicImg">
     <id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
   </resultMap>

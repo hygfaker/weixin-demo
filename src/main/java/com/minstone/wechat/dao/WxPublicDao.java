@@ -1,4 +1,4 @@
-package com.minstone.wechat.mapper;
+package com.minstone.wechat.dao;
 
 import com.minstone.wechat.domain.WxPublic;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface WxPublicMapper {
+public interface WxPublicDao {
 
     int deleteByPrimaryKey(String publicCode);
 
