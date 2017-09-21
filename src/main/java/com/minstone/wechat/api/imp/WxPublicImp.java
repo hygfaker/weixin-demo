@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -79,7 +82,7 @@ public class WxPublicImp implements WxPublicApi{
     @Override
     @GetMapping("/getAll")
     public Result getAllPublicAccount() throws WxErrorException, IOException{
-         return publicService.getAllPublicAccount();
+        return publicService.getAllPublicAccount();
     }
 
     // 编辑公众号
@@ -93,8 +96,32 @@ public class WxPublicImp implements WxPublicApi{
     @Override
     @GetMapping("/delete")
     public Result deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException{
-       return publicService.deletePublicAccount(publicCode);
+        return publicService.deletePublicAccount(publicCode);
     }
 
+    @Override
+    @GetMapping("/downloadIcon")
+    public void downloadIcon(String imgCode, Integer imgType, HttpServletResponse response) throws WxErrorException, IOException {
 
+        if (imgType != 0 && imgType != 1 ){
+//            return ResultUtil.failure(ResultEnum.PARAM_ERROR,"imgType 参数错误");
+            return ;
+        }
+
+        byte[] bs = publicService.icon(imgCode,imgType);
+        String fileName = "test.png";
+        response.setHeader("Content-Disposition","attachment;filename=\"" + fileName + "\"");
+        response.setContentLength(bs.length);
+        response.setContentType("application/octet-stream;charset=UTF-8");
+
+        OutputStream os = new BufferedOutputStream(response.getOutputStream());
+        os.write(bs,0,bs.length);
+        os.flush();
+        os.close();
+    }
+
+    @Override
+    public void showIcon(String imgCode, Integer imgType) throws WxErrorException, IOException {
+
+    }
 }

@@ -142,4 +142,16 @@ public class WxPublicService {
         return ResultUtil.success();
     }
 
+
+    //todo 下载图片文件
+    public byte[] icon(String imgCode,Integer imgType) throws WxErrorException, IOException{
+        byte[] bs = null;
+        if (imgType == 0){
+            bs = wxPublicImgDao.selectHeadimgByImgCode(imgCode);
+        }
+        if (imgType == 1){
+            bs = wxPublicImgDao.selectQrcodeByImgCode(imgCode);
+        }
+        return bs;
+    }
 }

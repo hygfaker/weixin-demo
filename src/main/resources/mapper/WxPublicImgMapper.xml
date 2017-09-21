@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minstone.wechat.dao.WxPublicImgDao">
+
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicImg">
     <id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
   </resultMap>
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.minstone.wechat.domain.WxPublicImg">
     <result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />
     <result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />
   </resultMap>
+
   <sql id="Base_Column_List">
     IMG_CODE
   </sql>
+
   <sql id="Blob_Column_List">
     HEADIMG, QRCODE
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
@@ -80,5 +85,13 @@
       QRCODE = #{qrcode,jdbcType=LONGVARBINARY}
     where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectHeadimgByImgCode" parameterType="java.lang.String" resultType="java.lang.Byte">
+    select HEADIMG from MP_YY_PUB_IMG where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectQrcodeByImgCode" parameterType="java.lang.String" resultType="java.lang.Byte">
+    select QRCODE from MP_YY_PUB_IMG where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </select>
 
 </mapper>

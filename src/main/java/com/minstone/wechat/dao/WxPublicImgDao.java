@@ -3,6 +3,8 @@ package com.minstone.wechat.dao;
 import com.minstone.wechat.domain.WxPublicImg;
 import org.springframework.stereotype.Component;
 
+import java.sql.Blob;
+
 @Component
 public interface WxPublicImgDao {
     int deleteByPrimaryKey(String imgCode);
@@ -16,4 +18,8 @@ public interface WxPublicImgDao {
     int updateByPrimaryKeySelective(WxPublicImg record);
 
     int updateByPrimaryKey(WxPublicImg record);
+
+    byte[] selectHeadimgByImgCode(String imgCode);
+
+    byte[] selectQrcodeByImgCode(String imgCode);
 }

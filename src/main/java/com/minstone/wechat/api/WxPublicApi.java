@@ -5,6 +5,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -74,4 +75,8 @@ public interface WxPublicApi {
      */
     Result deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException;
 
+
+    void downloadIcon(@RequestParam String imgCode , @RequestParam Integer imgType , HttpServletResponse response) throws WxErrorException, IOException;
+
+    void showIcon(@RequestParam String imgCode,@RequestParam Integer imgType) throws WxErrorException, IOException;
 }
