@@ -23,8 +23,7 @@ public class WxPublicImg {
         this.setQrcode(qrcode);
     }
 
-    public WxPublicImg() {
-    }
+    public WxPublicImg() { super(); }
 
     public String getImgCode() {
         return imgCode;

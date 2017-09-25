@@ -1,7 +1,7 @@
 package com.minstone.wechat.api.imp;
 
 import com.minstone.wechat.api.WxPublicApi;
-import com.minstone.wechat.api.WxPublicService;
+import com.minstone.wechat.api.service.WxPublicService;
 import com.minstone.wechat.domain.WxPublic;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.model.Result;
@@ -72,6 +72,7 @@ public class WxPublicImp implements WxPublicApi{
             wxConfigProvider.setSecret(wxPublic.getAppSerct());
             wxConfigProvider.setToken(wxPublic.getToken());
             wxConfigProvider.setAesKey(wxPublic.getAeskey());
+
             service.setWxMpConfigStorage(wxConfigProvider);
             return ResultUtil.success(wxPublic);
         }

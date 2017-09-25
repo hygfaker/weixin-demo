@@ -1,4 +1,4 @@
-package com.minstone.wechat.api.imp;
+package com.minstone.wechat.api.contoller;
 
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.FileUtil;

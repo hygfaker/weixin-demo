@@ -1,4 +1,4 @@
-package com.minstone.wechat.api;
+package com.minstone.wechat.api.service;
 
 import com.minstone.wechat.dao.WxPublicDao;
 import com.minstone.wechat.dao.WxPublicImgDao;

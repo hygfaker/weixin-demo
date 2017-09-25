@@ -26,7 +26,7 @@ public interface WxPublicApi {
      *
      * 添加公众号信息
      */
-    Result addPublicAccount(@RequestParam Map<String, Object> reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException;
+    Result addPublicAccount(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
 
     /**
@@ -38,7 +38,7 @@ public interface WxPublicApi {
      *
      * 获取某个公众号信息
      */
-    Result getPublicAccount(@RequestParam String publicCode) throws WxErrorException, IOException;
+    Result getPublicAccount(String publicCode) throws WxErrorException, IOException;
 
     /**
      *
@@ -62,7 +62,7 @@ public interface WxPublicApi {
      *
      * 更新公众号信息
      */
-    Result updatePublicAccount(@RequestParam String publicCode, @RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException;
+    Result updatePublicAccount(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
     /**
      *
@@ -73,10 +73,10 @@ public interface WxPublicApi {
      *
      * 删除某个公众号
      */
-    Result deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException;
+    Result deletePublicAccount(String publicCode) throws WxErrorException, IOException;
 
 
-    void downloadIcon(@RequestParam String imgCode , @RequestParam Integer imgType , HttpServletResponse response) throws WxErrorException, IOException;
+    void downloadIcon(String imgCode, Integer imgType , HttpServletResponse response) throws WxErrorException, IOException;
 
-    void showIcon(@RequestParam String imgCode,@RequestParam Integer imgType) throws WxErrorException, IOException;
+    void showIcon(String imgCode, Integer imgType) throws WxErrorException, IOException;
 }
