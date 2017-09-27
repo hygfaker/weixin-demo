@@ -1,16 +1,34 @@
 package com.minstone.wechat.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@Component
 public class WxReplyRule {
+    public WxReplyRule() {
+        super();
+    }
+
+
     private String ruleCode;
 
-    private String trplyCode;
+    private String publicCode;
 
+    @NotEmpty(message = "【ruleName】参数缺失（且内容不为空）")
     private String ruleName;
 
+    @NotNull(message = "【useFlag】参数缺失（且内容不为空）")
     private Integer useFlag;
 
+    @NotNull(message = "【kefuReplyFlag】参数缺失（且内容不为空）")
     private Integer kefuReplyFlag;
 
+    @NotEmpty(message = "【content】参数缺失（且内容不为空）")
     private String content;
 
     private String creator;
@@ -23,6 +41,12 @@ public class WxReplyRule {
 
     private Integer delFlag;
 
+    @Valid
+    @NotEmpty(message = "【keywords】参数内容不能为空")
+    @NotNull(message = "【keywords】 参数缺失")
+    private List<WxReplyKeyword> keywords;
+
+
     public String getRuleCode() {
         return ruleCode;
     }
@@ -31,12 +55,12 @@ public class WxReplyRule {
         this.ruleCode = ruleCode == null ? null : ruleCode.trim();
     }
 
-    public String getTrplyCode() {
-        return trplyCode;
+    public String getPublicCode() {
+        return publicCode;
     }
 
-    public void setTrplyCode(String trplyCode) {
-        this.trplyCode = trplyCode == null ? null : trplyCode.trim();
+    public void setPublicCode(String publicCode) {
+        this.publicCode = publicCode == null ? null : publicCode.trim();
     }
 
     public String getRuleName() {
@@ -109,5 +133,13 @@ public class WxReplyRule {
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public List<WxReplyKeyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<WxReplyKeyword> keywords) {
+        this.keywords = keywords;
     }
 }

@@ -9,11 +9,14 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by huangyg on 2017/8/15.
@@ -26,6 +29,12 @@ public class WxExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result handle(Exception e){
+
+        if (e instanceof MethodArgumentNotValidException){
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException)e;
+            String msg = exception.getBindingResult().getFieldError().getDefaultMessage();
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
+        }
 
         if (e instanceof DataIntegrityViolationException){ // 数据库报错
             DataIntegrityViolationException exception = (DataIntegrityViolationException)e;
