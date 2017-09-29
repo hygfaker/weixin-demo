@@ -5,11 +5,11 @@
     <id column="KEYWORD_CODE" jdbcType="VARCHAR" property="keywordCode" />
     <result column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode" />
     <result column="KEYWORD" jdbcType="VARCHAR" property="keyword" />
-    <result column="MATCH_FLGA" jdbcType="INTEGER" property="matchFlag" />
+    <result column="MATCH_FLAG" jdbcType="INTEGER" property="matchFlag" />
     <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
   </resultMap>
   <sql id="Base_Column_List">
-    KEYWORD_CODE, RULE_CODE, KEYWORD, MATCH_FLGA, DEL_FLAG
+    KEYWORD_CODE, RULE_CODE, KEYWORD, MATCH_FLAG, DEL_FLAG
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -51,20 +51,19 @@
 
   <insert id="insert" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
     insert into MP_YY_REP_KEYWORD (KEYWORD_CODE, RULE_CODE, KEYWORD, 
-      MATCH_FLGA, DEL_FLAG)
+      MATCH_FLAG, DEL_FLAG)
     values (#{keywordCode,jdbcType=VARCHAR}, #{ruleCode,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
       #{matchFlag,jdbcType=INTEGER}, #{delFlag,jdbcType=INTEGER})
   </insert>
 
   <insert id="insertPatch" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
-    insert into MP_YY_REP_KEYWORD (KEYWORD_CODE, RULE_CODE, KEYWORD,MATCH_FLGA, DEL_FLAG)
+    insert into MP_YY_REP_KEYWORD (KEYWORD_CODE, RULE_CODE, KEYWORD,MATCH_FLAG, DEL_FLAG)
     values
      <foreach collection="list" item="keyword" index="index" separator=",">
        (
          #{keyword.keywordCode,jdbcType=VARCHAR},#{keyword.ruleCode,jdbcType=VARCHAR},#{keyword.keyword,jdbcType=VARCHAR},#{keyword.matchFlag,jdbcType=INTEGER},#{keyword.delFlag,jdbcType=INTEGER}
        )
      </foreach>
-
   </insert>
 
 
@@ -81,7 +80,7 @@
         KEYWORD,
       </if>
       <if test="matchFlag != null">
-        MATCH_FLGA,
+        MATCH_FLAG,
       </if>
       <if test="delFlag != null">
         DEL_FLAG,
@@ -105,6 +104,9 @@
       </if>
     </trim>
   </insert>
+
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
     update MP_YY_REP_KEYWORD
     <set>
@@ -115,7 +117,7 @@
         KEYWORD = #{keyword,jdbcType=VARCHAR},
       </if>
       <if test="matchFlag != null">
-        MATCH_FLGA = #{matchFlag,jdbcType=INTEGER},
+        MATCH_FLAG = #{matchFlag,jdbcType=INTEGER},
       </if>
       <if test="delFlag != null">
         DEL_FLAG = #{delFlag,jdbcType=INTEGER},
@@ -123,12 +125,45 @@
     </set>
     where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
   </update>
+
+  <update id="updatePatch" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
+    update MP_YY_REP_KEYWORD
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="RULE_CODE = CASE KEYWORD_CODE" suffix="end,">
+        <foreach collection="list" item="keyword" index="index">
+          when RULE_CODE = #{keyword.keywordCode} then #{keyword.ruleCode}
+        </foreach>
+      </trim>
+      <trim prefix="KEYWORD = CASE KEYWORD_CODE " suffix="end,">
+        <foreach collection="list" item="keyword" index="index">
+          when KEYWORD = #{keyword.keywordCode} then #{keyword.keyword}
+        </foreach>
+      </trim>
+      <trim prefix="MATCH_FLAG = CASE KEYWORD_CODE" suffix="end,">
+        <foreach collection="list" item="keyword" index="index">
+          when MATCH_FLAG= #{keyword.keywordCode} then #{keyword.matchFlag}
+        </foreach>
+      </trim>
+      <trim prefix="DEL_FLAG = CASE KEYWORD_CODE" suffix="end">
+        <foreach collection="list" item="keyword" index="index">
+          when DEL_FLAG = #{keyword.keywordCode} then #{keyword.delFlag}
+        </foreach>
+      </trim>
+    </trim>
+    where KEYWORD_CODE in (
+      <foreach collection="list" item="keyword" index="index" separator=",">
+        #{keyword.keywordCode,jdbcType=VARCHAR}
+      </foreach>
+    )
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
     update MP_YY_REP_KEYWORD
     set RULE_CODE = #{ruleCode,jdbcType=VARCHAR},
       KEYWORD = #{keyword,jdbcType=VARCHAR},
-      MATCH_FLGA = #{matchFlag,jdbcType=INTEGER},
+      MATCH_FLAG = #{matchFlag,jdbcType=INTEGER},
       DEL_FLAG = #{delFlag,jdbcType=INTEGER}
     where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
   </update>
+
 </mapper>

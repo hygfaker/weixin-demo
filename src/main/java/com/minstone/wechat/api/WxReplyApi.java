@@ -32,6 +32,6 @@ public interface WxReplyApi {
     // 添加规则
 //    public Result addReplyRule(Map<String,Object>paramsMap) throws WxErrorException;
 
-    public Result addReplyRule(WxReplyRule wxReplyRule) throws WxErrorException;
+    public Result saveReplyRule(WxReplyRule wxReplyRule) throws WxErrorException;
 
 }

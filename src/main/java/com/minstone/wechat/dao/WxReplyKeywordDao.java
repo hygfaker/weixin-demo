@@ -8,8 +8,6 @@ import java.util.List;
 @Component
 public interface WxReplyKeywordDao {
 
-
-
     int FDeleteByRuleCode(String ruleCode);
 
     int FDeleteByPrimaryKey(String keywordCode);
@@ -27,6 +25,8 @@ public interface WxReplyKeywordDao {
     List<WxReplyKeyword> selectByPrimaryKey(String keywordCode);
 
     List<WxReplyKeyword> selectByRuleCode(String publicCode);
+
+    int updatePatch(List<WxReplyKeyword> keywords);
 
     int updateByPrimaryKeySelective(WxReplyKeyword record);
 
