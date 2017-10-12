@@ -1,4 +1,4 @@
-package com.minstone.wechat.api.contoller;
+package com.minstone.wechat.contoller;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;

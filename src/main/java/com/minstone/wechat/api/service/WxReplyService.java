@@ -34,29 +34,59 @@ public class WxReplyService {
     @Autowired
     private WxReplyKeywordDao wxReplyKeywordDao;
 
-    //    添加回复内容,添加的时候应该判断数据库是否有 public_code 和 reply_type 是否有重复
+    /**
+     *  添加/修改回复内容,添加的时候应该判断数据库是否有 public_code 和 reply_type 是否有重复
+     *
+     * @param publicCode 公众号主键
+     * @param content   回复的内容
+     * @param replyType 消息回复类型。0为关注时回复，1为非关键词消息默认回复，2为关键词回复。
+     * @return
+     * @throws WxErrorException
+     */
     public int addReplyContent(String publicCode, String content, Integer replyType) throws WxErrorException {
         // 先查询是否存在
         WxReply selectResult = this.getReplyByPubCodeAndReplyType(publicCode,replyType);
-        if (selectResult != null){ // 回复信息已经存在
-            return -1;
+         if (selectResult != null){ // 回复信息已经存在，则更新该回复信息
+            return wxReplyDao.updateContent(publicCode,content,replyType);
         }else{
-            WxReply wxReply = new WxReply(publicCode,content,replyType);
-            return wxReplyDao.insert(wxReply);
+             WxReply wxReply = new WxReply(publicCode,content,replyType);
+             return wxReplyDao.insert(wxReply);
         }
     }
 
-    //    根据主键修改回复内容
+    /**
+     *  根据主键修改回复内容
+     *
+     * @param replyCode  消息回复主键
+     * @param content   回复的内容
+     * @return
+     * @throws WxErrorException
+     */
     public int updateContentByKey(String replyCode , String content) throws WxErrorException {
         return wxReplyDao.updateContentByKey(replyCode,content);
     }
 
-    //    根据公众号主键和回复类型修改回复内容
+    /**
+     *  根据公众号主键和回复类型修改回复内容
+     *
+     * @param publicCode 公众号主键
+     * @param content   回复内容
+     * @param replyType 消息回复类型。0为关注时回复，1为非关键词消息默认回复，2为关键词回复。
+     * @return
+     * @throws WxErrorException
+     */
     public int updateReplyContent(String publicCode , String content , Integer replyType) throws WxErrorException {
         return wxReplyDao.updateContent(publicCode,content,replyType);
     }
 
-    //    根据主键修改回复开关
+    /**
+     *  根据主键修改回复开关
+     *
+     * @param replyCode 消息回复主键
+     * @param replyFlag 回复是否开启。0为关闭，1为开启，默认为1开启
+     * @return
+     * @throws WxErrorException
+     */
     public int updateReplyFlagByKey(String replyCode , Integer replyFlag) throws WxErrorException {
         WxReply selectResult = this.getReplyByKey(replyCode);
         if (selectResult == null){ // 回复信息不存在的时候
@@ -66,7 +96,16 @@ public class WxReplyService {
         }
     }
 
-    //    根据公众号主键和回复类型修改回复开关。有可能存在，有可能不存在
+    /**
+     *
+     * 根据公众号主键和回复类型修改回复开关。有可能存在，有可能不存在
+     *
+     * @param publicCode 公众号主键
+     * @param replyType  消息回复类型。0为关注时回复，1为非关键词消息默认回复，2为关键词回复。
+     * @param replyFlag  回复是否开启。0为关闭，1为开启，默认为1开启
+     * @return
+     * @throws WxErrorException
+     */
     public int updateReplyFlag(String publicCode, Integer replyType, Integer replyFlag) throws WxErrorException{
         WxReply selectResult = this.getReplyByPubCodeAndReplyType(publicCode , replyType);
         if (selectResult == null){  // 回复信息不存在的时候
@@ -75,6 +114,7 @@ public class WxReplyService {
             return wxReplyDao.updateReplyFlag(publicCode,replyType,replyFlag);
         }
     }
+
 
     //    根据公众号主键和回复类型获取回复内容以及开关,获取列表，防止数据库数据混乱，多条数据相同
     public WxReply getReplyByPubCodeAndReplyType(String publicCode, Integer replyType){

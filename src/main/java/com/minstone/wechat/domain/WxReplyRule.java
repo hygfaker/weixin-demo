@@ -8,6 +8,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * 关键词回复规则
+ */
 @Component
 public class WxReplyRule {
     public WxReplyRule() {

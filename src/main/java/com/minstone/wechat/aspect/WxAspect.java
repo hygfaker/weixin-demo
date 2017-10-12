@@ -20,7 +20,7 @@ public class WxAspect {
 
     private String echostr;
 
-    @Pointcut("execution(public * com.minstone.wechat.api.contoller..*(..))")
+    @Pointcut("execution(public * com.minstone.wechat.contoller..*(..))")
     public void pointCut(){}
 
     @Before("pointCut()")

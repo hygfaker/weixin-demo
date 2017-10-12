@@ -1,4 +1,4 @@
-package com.minstone.wechat.api.contoller;
+package com.minstone.wechat.contoller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

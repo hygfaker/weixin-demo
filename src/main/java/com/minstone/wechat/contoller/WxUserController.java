@@ -1,4 +1,4 @@
-package com.minstone.wechat.api.contoller;
+package com.minstone.wechat.contoller;
 
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.config.WechatMpProperties;

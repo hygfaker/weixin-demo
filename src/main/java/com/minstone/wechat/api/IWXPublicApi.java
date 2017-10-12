@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * 对外提供的公众号管理的接口
  */
-public interface WxPublicApi {
+public interface IWXPublicApi {
     /**
      *
      * @param reqMap 公众号信息

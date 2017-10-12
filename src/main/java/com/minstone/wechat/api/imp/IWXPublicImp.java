@@ -1,6 +1,6 @@
 package com.minstone.wechat.api.imp;
 
-import com.minstone.wechat.api.WxPublicApi;
+import com.minstone.wechat.api.IWXPublicApi;
 import com.minstone.wechat.api.service.WxPublicService;
 import com.minstone.wechat.domain.WxPublic;
 import com.minstone.wechat.enums.ResultEnum;
@@ -33,7 +33,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("public")
-public class WxPublicImp implements WxPublicApi{
+public class IWXPublicImp implements IWXPublicApi {
 
     //todo
     // 添加公众号
@@ -48,7 +48,7 @@ public class WxPublicImp implements WxPublicApi{
     @Autowired
     private WxPublicService publicService;
 
-    private static Logger logger = LoggerFactory.getLogger(WxPublicImp.class);
+    private static Logger logger = LoggerFactory.getLogger(IWXPublicImp.class);
 
     // 添加公众号
     @Override

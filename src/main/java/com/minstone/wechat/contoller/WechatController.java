@@ -1,4 +1,4 @@
-package com.minstone.wechat.api.contoller;
+package com.minstone.wechat.contoller;
 
 import com.minstone.wechat.handler.MsgHandler;
 import com.minstone.wechat.handler.SubscribeHandler;
