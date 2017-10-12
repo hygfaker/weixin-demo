@@ -8,7 +8,6 @@ import com.minstone.wechat.domain.WxReplyRule;
 import com.minstone.wechat.enums.ResultEnum;
 import com.minstone.wechat.model.Result;
 import com.minstone.wechat.utils.ResultUtil;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -97,27 +96,20 @@ public class WxReplyImp implements WxReplyApi {
 
     /***********************  添加关键词规则  **********************/
     //  添加关键词回复规则内容
-
     @Override
-    @PostMapping("/saveReplyRule")
-    public Result saveReplyRule(@RequestBody @Valid WxReplyRule replyRule) throws WxErrorException {
-        int result;
-        if (replyRule.getRuleCode() == null){   // 插入关键词回复
-            result = wxReplyService.insertReplyRule(replyRule);
-        }else{                                  // 更新关键词回复
-            result = wxReplyService.updateReplyRule(replyRule);
-        }
-        return wxReplyService.returnResult(result);
+    @PostMapping("/addReplyRule")
+    public Result addReplyRule(@RequestBody @Valid WxReplyRule replyRule) throws WxErrorException {
+        int addResult = wxReplyService.addReplyRule(replyRule);
+        return wxReplyService.returnResult(addResult);
     }
 
-    //  查找时候注意顺序顺序，是否删除，分页；
-    //  根据公众号主键查找所有关键词回复规则
+    //  查询回复规则
     @GetMapping("/findRules")
     public Result findReplyRule(@RequestParam String publicCode) throws WxErrorException{
         return ResultUtil.success(wxReplyService.findRules(publicCode));
     }
 
-    //  查找某条关键词回复
+    //  根据关键词主键查找关键词回复规则
     @GetMapping("findReplyRule")
     public Result findReplyRuleByKey(@RequestParam String ruleCode) throws WxErrorException{
         return ResultUtil.success(wxReplyService.findRuleByKey(ruleCode));

@@ -25,19 +25,13 @@
     RULE_CODE, PUBLIC_CODE, RULE_NAME, USE_FLAG, KEFU_REPLY_FLAG, CONTENT, CREATOR, CREATE_DATE,
     MODIFY_DATE, MODIFYER, DEL_FLAG
   </sql>
-<!--
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from MP_YY_REP_RULE
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-  </select>
--->
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT R.*, K.*
-    FROM MP_YY_REP_RULE R, MP_YY_REP_KEYWORD K
-    WHERE R.RULE_CODE = K.RULE_CODE AND
-    R.RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+
   </select>
 
   <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -71,7 +65,6 @@
     #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR},
     #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER})
   </insert>
-
   <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxReplyRule">
     insert into MP_YY_REP_RULE
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -181,10 +174,6 @@
     </set>
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
-
-
-  <!-- 更新的时候关联更新关键词表 -->
-  <!--
   <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxReplyRule">
     update MP_YY_REP_RULE
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
@@ -199,21 +188,4 @@
     DEL_FLAG = #{delFlag,jdbcType=INTEGER}
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
-  -->
-  <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxReplyRule">
-    update R.*,K.*
-    set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
-    RULE_NAME = #{ruleName,jdbcType=VARCHAR},
-    USE_FLAG = #{useFlag,jdbcType=INTEGER},
-    KEFU_REPLY_FLAG = #{kefuReplyFlag,jdbcType=INTEGER},
-    CONTENT = #{content,jdbcType=VARCHAR},
-    CREATOR = #{creator,jdbcType=VARCHAR},
-    CREATE_DATE = #{createDate,jdbcType=VARCHAR},
-    MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
-    MODIFYER = #{modifyer,jdbcType=VARCHAR},
-    DEL_FLAG = #{delFlag,jdbcType=INTEGER}
-    from MP_YY_REP_RULE R, MP_YY_REP_KEYWORD
-    where R.RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-  </update>
-
 </mapper>

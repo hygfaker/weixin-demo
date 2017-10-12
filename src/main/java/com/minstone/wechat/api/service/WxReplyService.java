@@ -103,7 +103,8 @@ public class WxReplyService {
     }
     /***********************  添加关键词规则  **********************/
     // 添加关键词回复规则
-    public int insertReplyRule(WxReplyRule replyRule){
+    public int addReplyRule(WxReplyRule replyRule){
+
         List<WxReplyKeyword> keywords = replyRule.getKeywords();
         String ruleCode = IdGen.uuid();
         for (WxReplyKeyword keyword : keywords){
@@ -143,17 +144,15 @@ public class WxReplyService {
 
     // 查找关键词回复规则 - 根据规则主键
     public WxReplyRule findRuleByKey(String ruleCode){
-        /*
         // 查找规则表
         WxReplyRule replyRule = wxReplyRuleDao.selectByPrimaryKey(ruleCode);
         // 查找关键字表
         List<WxReplyKeyword> keywords = wxReplyKeywordDao.selectByPrimaryKey(ruleCode);
         replyRule.setKeywords(keywords);
-        */
-        WxReplyRule replyRule = wxReplyRuleDao.selectByPrimaryKey(ruleCode);
-
         return replyRule;
     }
+
+
 
     // 查找某条规则里面的关键词内容
     public List<WxReplyKeyword> findKeywords(String ruleCode){
@@ -165,41 +164,6 @@ public class WxReplyService {
         List<WxReplyRule> replyRules =  wxReplyRuleDao.selectAll(publicCode);
         return replyRules;
     }
-
-/*
-*
-*  List<WxReplyKeyword> keywords = replyRule.getKeywords();
-        String ruleCode = IdGen.uuid();
-        for (WxReplyKeyword keyword : keywords){
-            keyword.setKeywordCode(IdGen.uuid());
-            keyword.setRuleCode(ruleCode);
-        }
-        int insertKeyWordResult = wxReplyKeywordDao.insertPatch(keywords);
-
-        int insertRuleResult = -1;
-        if (insertKeyWordResult > 0){
-            replyRule.setRuleCode(ruleCode);
-            insertRuleResult = wxReplyRuleDao.insert(replyRule);
-        }
-
-*/
-    // 更新
-
-    /***
-     *
-     * @param replyRule
-     * @return
-     */
-    public int updateReplyRule(WxReplyRule replyRule){
-        List<WxReplyKeyword> keywords = replyRule.getKeywords();
-        int insertKeyWordResult = wxReplyKeywordDao.updatePatch(keywords);
-        int insertRuleResult = -1;
-        if (insertKeyWordResult > 0){
-            insertRuleResult = wxReplyRuleDao.updateByPrimaryKey(replyRule);
-        }
-        return insertRuleResult;
-    }
-
 
 
 }
