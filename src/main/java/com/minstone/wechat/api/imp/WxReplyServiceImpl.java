@@ -17,7 +17,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("reply")
-public class WxReplyService implements WxReplyService {
+public class WxReplyServiceImpl implements WxReplyService {
 //    todo
 //    获取消息回复内容列表（全部）
 //    获取关注时回复内容消息
@@ -33,31 +33,6 @@ public class WxReplyService implements WxReplyService {
     @Autowired
     private com.minstone.wechat.api.service.WxReplyService wxReplyService;
 
-
-    //  根据主键获取回复内容
-    @Override
-    @GetMapping("/getInfoByReplyCode")
-    public Result getInfoByReplyCode(@RequestParam String replyCode) throws WxErrorException{
-        WxReply wxReply = wxReplyService.getReplyByKey(replyCode);
-        if (wxReply == null){
-            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
-        }else{
-            return ResultUtil.success(wxReply);
-        }
-    }
-
-    //  根据公众号主键和回复类型获取回复内容以及开关
-    @Override
-    @GetMapping("/getInfo")
-    public Result getInfo(@RequestParam String publicCode , @RequestParam Integer replyType) throws WxErrorException{
-        WxReply wxReply = wxReplyService.getReplyByPubCodeAndReplyType(publicCode,replyType);
-        if (wxReply == null){
-            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
-        }else{
-            return ResultUtil.success(wxReply);
-        }
-    }
-
     /**
      * 1-1.获取消息回复内容列表（全部）
      *
@@ -67,7 +42,7 @@ public class WxReplyService implements WxReplyService {
      */
     @Override
     public Result getList(String publicCode) throws WxErrorException {
-        return null;
+
     }
 
     /**
@@ -106,14 +81,6 @@ public class WxReplyService implements WxReplyService {
         return null;
     }
 
-    //  添加回复内容
-    @Override
-    @PostMapping("/addContent")
-    public Result addReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
-        int addResult = wxReplyService.addReplyContent(publicCode,content,replyType);
-        return wxReplyService.returnResult(addResult);
-    }
-
     /**
      * 2-1.添加、修改关注时回复内容
      *
@@ -140,37 +107,6 @@ public class WxReplyService implements WxReplyService {
         return null;
     }
 
-    //  根据主键修改回复内容
-    @Override
-    @PostMapping("/updateContentByKey")
-    public Result updateReplyContent(@RequestParam String replyCode , @RequestParam String content) throws WxErrorException{
-        int updateResult = wxReplyService.updateContentByKey(replyCode,content);
-        return wxReplyService.returnResult(updateResult);
-    }
-
-    //  根据公众号主键和回复类型修改回复内容
-    @Override
-    @PostMapping("/updateContent")
-    public Result updateReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
-        int updateResult = wxReplyService.updateReplyContent(publicCode,content,replyType);
-        return wxReplyService.returnResult(updateResult);
-    }
-
-    //  根据主键修改回复内容
-    @Override
-    @PostMapping("/updateSwitchByKey")
-    public Result updateReplyFlagByKey(@RequestParam String replyCode , @RequestParam  Integer replyFlag) throws WxErrorException{
-        int updateResult = wxReplyService.updateReplyFlagByKey(replyCode,replyFlag);
-        return wxReplyService.returnResult(updateResult);
-    }
-
-    //  根据公众号主键和回复类型修改回复开关
-    @Override
-    @PostMapping("/updateSwitch")
-    public Result updateReplyFlag(@RequestParam String publicCode , @RequestParam  Integer replyFlag , @RequestParam Integer replyType) throws WxErrorException{
-        int updateResult = wxReplyService.updateReplyFlag(publicCode,replyType,replyFlag);
-        return wxReplyService.returnResult(updateResult);
-    }
 
     /**
      * 3-1.开启/关闭，关注时回复
@@ -209,6 +145,71 @@ public class WxReplyService implements WxReplyService {
     @Override
     public Result keywordReplyFlag(String publicCode, Integer replyType) throws WxErrorException {
         return null;
+    }
+
+    //  根据主键获取回复内容
+    @Override
+    @GetMapping("/getInfoByReplyCode")
+    public Result getInfoByReplyCode(@RequestParam String replyCode) throws WxErrorException{
+        WxReply wxReply = wxReplyService.getReplyByKey(replyCode);
+        if (wxReply == null){
+            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
+        }else{
+            return ResultUtil.success(wxReply);
+        }
+    }
+
+    //  根据公众号主键和回复类型获取回复内容以及开关
+    @Override
+    @GetMapping("/getInfo")
+    public Result getInfo(@RequestParam String publicCode , @RequestParam Integer replyType) throws WxErrorException{
+        WxReply wxReply = wxReplyService.getReplyByPubCodeAndReplyType(publicCode,replyType);
+        if (wxReply == null){
+            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
+        }else{
+            return ResultUtil.success(wxReply);
+        }
+    }
+
+
+    //  添加回复内容
+    @Override
+    @PostMapping("/addContent")
+    public Result addReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
+        int addResult = wxReplyService.addReplyContent(publicCode,content,replyType);
+        return wxReplyService.returnResult(addResult);
+    }
+
+
+    //  根据主键修改回复内容
+    @Override
+    @PostMapping("/updateContentByKey")
+    public Result updateReplyContent(@RequestParam String replyCode , @RequestParam String content) throws WxErrorException{
+        int updateResult = wxReplyService.updateContentByKey(replyCode,content);
+        return wxReplyService.returnResult(updateResult);
+    }
+
+    //  根据公众号主键和回复类型修改回复内容
+    @Override
+    @PostMapping("/updateContent")
+    public Result updateReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
+        int updateResult = wxReplyService.updateReplyContent(publicCode,content,replyType);
+        return wxReplyService.returnResult(updateResult);
+    }
+
+    //  根据主键修改回复内容
+    @PostMapping("/updateSwitchByKey")
+    public Result updateReplyFlagByKey(@RequestParam String replyCode , @RequestParam  Integer replyFlag) throws WxErrorException{
+        int updateResult = wxReplyService.updateReplyFlagByKey(replyCode,replyFlag);
+        return wxReplyService.returnResult(updateResult);
+    }
+
+    //  根据公众号主键和回复类型修改回复开关
+    @Override
+    @PostMapping("/updateSwitch")
+    public Result updateReplyFlag(@RequestParam String publicCode , @RequestParam  Integer replyFlag , @RequestParam Integer replyType) throws WxErrorException{
+        int updateResult = wxReplyService.updateReplyFlag(publicCode,replyType,replyFlag);
+        return wxReplyService.returnResult(updateResult);
     }
 
     /***********************  添加关键词规则  **********************/
