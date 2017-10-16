@@ -15,9 +15,14 @@ public interface WxReplyDao {
 
     int deleteByPrimaryKey(String replyCode);
 
+
+//    String selectPublicCode(@Param("publicCode") String publicCode,@Param("replyType") Integer replyType);
+
     WxReply selectByPrimaryKey(String replyCode);
 
     List<WxReply> selectByPulCodeAndReplyType(@Param("publicCode") String publicCode , @Param("replyType") Integer replyType);
+
+    List<WxReply> selectByPulCode(@Param("publicCode") String publicCode);
 
     int updateContentByKey(@Param("replyCode") String replyCode, @Param("content") String content);
 
@@ -25,7 +30,7 @@ public interface WxReplyDao {
 
     int updateReplyFlagByKey(@Param("replyCode") String replyCode, @Param("replyFlag") Integer replyFlag);
 
-    int updateReplyFlag(@Param("publicCode") String publicCode , @Param("replyFlag") Integer replyFlag , @Param("replyType") Integer replyType);
+    int updateReplyFlag(@Param("publicCode") String publicCode, @Param("replyType") Integer replyType, @Param("replyFlag") Integer replyFlag );
 
     int updateByPrimaryKeySelective(WxReply record);
 

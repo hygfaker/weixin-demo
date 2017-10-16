@@ -8,8 +8,14 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by huangyg on 2017/8/7.
  */
-public class ResultUtil {
+public final class ResultUtil {
+
+
     public static Logger logger = LoggerFactory.getLogger(ResultUtil.class);
+
+    private ResultUtil() {
+        throw new RuntimeException("this is a util class,can not instance!");
+    }
 
     public static Result success(Object object){
         Result result = new Result();
@@ -26,7 +32,7 @@ public class ResultUtil {
         result.setStatus(resultEnums.getCode());
         result.setTime(DateUtil.getStringDate());
         result.setDesc(resultEnums.getMsg());
-        result.setData(new int[0]);
+//        result.setData(new int[0]);
         logger.info(result.toString());
         return result;
     }
@@ -36,6 +42,18 @@ public class ResultUtil {
         return result;
     }
 
+    //    DAO 操作统一在这里处理：对返回的数据做结果判断
+    public static Result returnResult(Integer result){
+        if (result > 0){
+            return success();
+        } else if (result == 0 || result == -1){     // 0表示 update 时候失败 ， -1表示 select 的时候没找到资源
+            return failure(ResultEnum.NOTFOUND_ERROR);
+        } else if (result == ResultEnum.PUBLIC_NOTFOUND.getCode()){
+            return failure(ResultEnum.NOTFOUND_ERROR);
+        } else{
+            return failure(ResultEnum.SERVER_ERROR);
+        }
+    }
 
     public static Result success(){
         return success(new int[0]);

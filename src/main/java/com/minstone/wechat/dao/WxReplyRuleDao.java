@@ -1,6 +1,7 @@
 package com.minstone.wechat.dao;
 
 import com.minstone.wechat.domain.WxReplyRule;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface WxReplyRuleDao {
     int updateByPrimaryKeySelective(WxReplyRule record);
 
     int updateByPrimaryKey(WxReplyRule record);
+
+    // 开启、关闭规则
+    int updateRuleFlag(@Param("ruleCode") String ruleCode,@Param("useFlag") int useFlag);
+
 }

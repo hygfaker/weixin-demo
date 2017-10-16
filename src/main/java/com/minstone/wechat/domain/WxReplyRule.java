@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -17,7 +19,6 @@ public class WxReplyRule {
         super();
     }
 
-
     private String ruleCode;
 
     private String publicCode;
@@ -26,9 +27,13 @@ public class WxReplyRule {
     private String ruleName;
 
     @NotNull(message = "【useFlag】参数缺失（且内容不为空）")
+    @Min(value = 0, message = "useFlag 的值只能为0或者为1")
+    @Max(value = 1, message = "useFlag 的值只能为0或者为1")
     private Integer useFlag;
 
     @NotNull(message = "【kefuReplyFlag】参数缺失（且内容不为空）")
+    @Min(value = 0, message = "kefuReplyFlag 的值只能为0或者为1")
+    @Max(value = 1, message = "kefuReplyFlag 的值只能为0或者为1")
     private Integer kefuReplyFlag;
 
     @NotEmpty(message = "【content】参数缺失（且内容不为空）")

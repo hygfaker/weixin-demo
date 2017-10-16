@@ -1,12 +1,15 @@
 package com.minstone.wechat.dao;
 
 import com.minstone.wechat.domain.WxPublic;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public interface WxPublicDao {
+
+    String selectPublicCode(@Param("publicCode") String publicCode);
 
     int deleteByPrimaryKey(String publicCode);
 

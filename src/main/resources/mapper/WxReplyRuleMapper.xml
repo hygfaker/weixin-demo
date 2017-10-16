@@ -107,7 +107,7 @@
         #{ruleCode,jdbcType=VARCHAR},
       </if>
       <if test="publicCode != null">
-        #{trplyCode,jdbcType=VARCHAR},
+        #{publicCode,jdbcType=VARCHAR},
       </if>
       <if test="ruleName != null">
         #{ruleName,jdbcType=VARCHAR},
@@ -142,7 +142,7 @@
     update MP_YY_REP_RULE
     <set>
       <if test="publicCode != null">
-        TRPLY_CODE = #{trplyCode,jdbcType=VARCHAR},
+        PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       </if>
       <if test="ruleName != null">
         RULE_NAME = #{ruleName,jdbcType=VARCHAR},
@@ -186,6 +186,12 @@
     MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
     MODIFYER = #{modifyer,jdbcType=VARCHAR},
     DEL_FLAG = #{delFlag,jdbcType=INTEGER}
+    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateRuleFlag" parameterType="java.lang.String">
+    update MP_YY_REP_RULE
+    set USE_FLAG = #{ruleFlag,jdbcType=VARCHAR}
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
 </mapper>
