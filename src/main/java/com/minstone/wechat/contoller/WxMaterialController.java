@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.FileUtil;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -32,7 +32,7 @@ public class WxMaterialController {
 
     // 上传图文消息内的图片获取URL
     @PostMapping("/uploadImg")
-    public Result mediaImgUpload(@RequestParam MultipartFile img) throws WxErrorException, IOException {
+    public CommonResult mediaImgUpload(@RequestParam MultipartFile img) throws WxErrorException, IOException {
 
         File file = FileUtil.transfer(img);
         WxMediaImgUploadResult result = this.wxService.getMaterialService().mediaImgUpload(file);
@@ -43,12 +43,12 @@ public class WxMaterialController {
 
     // 新增其他类型永久素材
     @PostMapping("/uploadMedia")
-    public Result uploadMedia(@RequestParam String mediaType,
-                              @RequestParam String name,
-                              @RequestParam(value = "file") MultipartFile multipartFile,
-                              @RequestParam(value = "title",required = false) String title,
-                              @RequestParam(value = "url",required = false) String url,
-                              @RequestParam(value = "introduction",required = false) String introduction) throws WxErrorException, IOException {
+    public CommonResult uploadMedia(@RequestParam String mediaType,
+                                    @RequestParam String name,
+                                    @RequestParam(value = "file") MultipartFile multipartFile,
+                                    @RequestParam(value = "title",required = false) String title,
+                                    @RequestParam(value = "url",required = false) String url,
+                                    @RequestParam(value = "introduction",required = false) String introduction) throws WxErrorException, IOException {
 
         File file = FileUtil.transfer(multipartFile);
         WxMpMaterial mpMaterial = new WxMpMaterial(name,file,title,introduction);
@@ -58,20 +58,20 @@ public class WxMaterialController {
 
     // 新增永久图文素材
     @PostMapping("/uploadNews")
-    public Result uploadNews(@RequestBody WxMpMaterialNews news) throws WxErrorException {
+    public CommonResult uploadNews(@RequestBody WxMpMaterialNews news) throws WxErrorException {
         WxMpMaterialUploadResult result = this.wxService.getMaterialService().materialNewsUpload(news);
         return ResultUtil.success(result);
     }
 
     // 获取图文永久素材的信息
     @GetMapping("/news")
-    public Result materialNewsInfo(@RequestParam String mediaid) throws WxErrorException {
+    public CommonResult materialNewsInfo(@RequestParam String mediaid) throws WxErrorException {
          return ResultUtil.success(this.wxService.getMaterialService().materialNewsInfo(mediaid));
     }
 
     // 获取声音或者图片素材的信息
     @GetMapping("/mediainfo")
-    public Result newsOrVoiceInfo(@RequestParam String mediaid) throws Exception{
+    public CommonResult newsOrVoiceInfo(@RequestParam String mediaid) throws Exception{
         /* todo 应该建立数据库，将 mediaid、filename、mediatype、length 记录起来，防止每次都重新获取微信数据。并且，由于下载声音图片素材
            todo 的接口返回的是数据流，不包含文件名称等信息。所以需要额外调用获取素材列表的接口，然后匹配 mediaid 获取相应的信息。这样操作太
            todo 麻烦。
@@ -100,7 +100,7 @@ public class WxMaterialController {
 
     // 下载视频永久素材的信息
     @GetMapping("/video")
-    public Result videoInfo(@RequestParam String mediaid) throws WxErrorException {
+    public CommonResult videoInfo(@RequestParam String mediaid) throws WxErrorException {
         return ResultUtil.success(this.wxService.getMaterialService().materialVideoInfo(mediaid));
     }
 
@@ -109,7 +109,7 @@ public class WxMaterialController {
      * @param count  返回素材的数量，取值在1到20之间
      */
     @GetMapping("/newsList")
-    public Result getLigetNewsListst(@RequestParam int offest , @RequestParam int count) throws WxErrorException{
+    public CommonResult getLigetNewsListst(@RequestParam int offest , @RequestParam int count) throws WxErrorException{
         WxMpMaterialNewsBatchGetResult result = this.wxService.getMaterialService().materialNewsBatchGet(offest,count);
         return ResultUtil.success(result);
     }
@@ -120,14 +120,14 @@ public class WxMaterialController {
      * @param count  返回素材的数量，取值在1到20之间
      */
     @GetMapping("/mediaList")
-    public Result getMediaList(@RequestParam String type,@RequestParam int offest , @RequestParam int count) throws WxErrorException{
+    public CommonResult getMediaList(@RequestParam String type, @RequestParam int offest , @RequestParam int count) throws WxErrorException{
         WxMpMaterialFileBatchGetResult result = this.wxService.getMaterialService().materialFileBatchGet(type,offest,count);
         return ResultUtil.success(result);
     }
 
     // 获取各类素材总数，包括公众平台上素材管理的素材
     @GetMapping("/allCount")
-    public Result getMaterial() throws WxErrorException {
+    public CommonResult getMaterial() throws WxErrorException {
         return ResultUtil.success(this.wxService.getMaterialService().materialCount());
     }
 }

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 public class WxReplyKeyword {
 
-
     public WxReplyKeyword() {
         super();
     }
@@ -21,7 +20,7 @@ public class WxReplyKeyword {
     @NotNull(message = "【matchFlag】参数缺失")
     private Integer matchFlag;
 
-    @NotNull(message = "【delFlag】参数缺失")
+    // 默认值为0
     private Integer delFlag;
 
     public String getKeywordCode() {

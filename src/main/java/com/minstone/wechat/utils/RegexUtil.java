@@ -78,6 +78,7 @@ public class RegexUtil {
         return m.replaceAll(REPLACE);
     }
 
+
     /**
      * 从INPUT中找到第一串数字
      * @param INPUT

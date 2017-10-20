@@ -4,8 +4,8 @@ import com.minstone.wechat.dao.WxPublicDao;
 import com.minstone.wechat.dao.WxPublicImgDao;
 import com.minstone.wechat.domain.WxPublic;
 import com.minstone.wechat.domain.WxPublicImg;
-import com.minstone.wechat.enums.ResultEnum;
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.ResultEnum;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import com.minstone.wechat.utils.code.IdGen;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -45,7 +45,7 @@ public class WxPublicService {
      *
      * 添加公众号信息
      */
-    public Result addPublicAccount(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException{
+    public CommonResult addPublicAccount(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException{
 
         // 保存公众号图片
         String imgCode = IdGen.uuid(); // 保存图片imgCode
@@ -82,7 +82,7 @@ public class WxPublicService {
      *
      * 获取所有公众号信息
      */
-    public Result getAllPublicAccount() throws WxErrorException, IOException{
+    public CommonResult getAllPublicAccount() throws WxErrorException, IOException{
         List<WxPublic> list = wxPublicDao.selectAll();
         if (list.size() > 0){
             return ResultUtil.success(list);
@@ -103,7 +103,7 @@ public class WxPublicService {
      *
      * 更新公众号信息
      */
-    public Result updatePublicAccount(String publicCode,Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException{
+    public CommonResult updatePublicAccount(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException{
 
         // 更新公众号图片
         String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(publicCode);
@@ -129,7 +129,7 @@ public class WxPublicService {
      *
      * 删除某个公众号
      */
-    public Result deletePublicAccount(String  publicCode) throws WxErrorException, IOException{
+    public CommonResult deletePublicAccount(String  publicCode) throws WxErrorException, IOException{
         // 删除公众号图片
         String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(publicCode);
         if (imgCode == null){

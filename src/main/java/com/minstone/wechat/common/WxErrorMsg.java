@@ -1,9 +1,9 @@
-package com.minstone.wechat.model;
+package com.minstone.wechat.common;
 
 /**
  * Created by huangyg on 2017/8/16.
  */
-public class ErrorCodeMsg {
+public class WxErrorMsg {
     public static String errorMsg(int errorcode) {
         String errmsg = "";
         switch (errorcode) {

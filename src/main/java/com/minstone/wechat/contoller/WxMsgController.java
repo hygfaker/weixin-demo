@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import com.google.gson.JsonObject;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -32,21 +32,21 @@ public class WxMsgController {
 
     // 按 openId 列表群发消息
     @PostMapping("/openids")
-    public Result massOpenIdsMessageSend(@ModelAttribute WxMpMassOpenIdsMessage wxMpMassOpenIdsMessage) throws WxErrorException {
+    public CommonResult massOpenIdsMessageSend(@ModelAttribute WxMpMassOpenIdsMessage wxMpMassOpenIdsMessage) throws WxErrorException {
         WxMpMassSendResult result = this.wxMpService.massOpenIdsMessageSend(wxMpMassOpenIdsMessage);
         return ResultUtil.success(result);
     }
 
     // 按分组群发消息
     @PostMapping("/group")
-    public Result massGroupMessageSend(@ModelAttribute WxMpMassTagMessage wxMpMassTagMessage) throws WxErrorException {
+    public CommonResult massGroupMessageSend(@ModelAttribute WxMpMassTagMessage wxMpMassTagMessage) throws WxErrorException {
         WxMpMassSendResult result = this.wxMpService.massGroupMessageSend(wxMpMassTagMessage);
         return ResultUtil.success(result);
     }
 
     // 群发消息预览接口
     @PostMapping("/preview")
-    public Result massMessagePreview(@ModelAttribute WxMpMassPreviewMessage wxMpMassPreviewMessage) throws Exception {
+    public CommonResult massMessagePreview(@ModelAttribute WxMpMassPreviewMessage wxMpMassPreviewMessage) throws Exception {
         WxMpMassSendResult result = this.wxMpService.massMessagePreview(wxMpMassPreviewMessage);
         return ResultUtil.success();
     }
@@ -62,7 +62,7 @@ public class WxMsgController {
      * @param articleidx   最大时间跨度1天，endDate不能早于begingDate
      */
     @PostMapping("/delete")
-    public Result massMessageDelete(@RequestParam String msgid,@RequestParam(value = "articleidx",required = false) String articleidx) throws WxErrorException {
+    public CommonResult massMessageDelete(@RequestParam String msgid, @RequestParam(value = "articleidx",required = false) String articleidx) throws WxErrorException {
 
         JsonObject json = new JsonObject();
         json.addProperty("msg_id", msgid);

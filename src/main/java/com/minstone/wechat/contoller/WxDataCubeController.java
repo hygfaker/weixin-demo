@@ -1,5 +1,5 @@
 package com.minstone.wechat.contoller;
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.DateUtil;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -40,7 +40,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度1天，endDate不能早于begingDate
      */
     @RequestMapping("/newsSummary")
-    public Result getArticleSummary(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getArticleSummary(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getArticleSummary(begin,end));
@@ -58,7 +58,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度1天，endDate不能早于begingDate，最晚为昨天。
      */
     @RequestMapping("/newsTotal")
-    public Result getArticleTotal(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getArticleTotal(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getArticleTotal(begin,end));
@@ -74,7 +74,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度3天，endDate不能早于begingDate
      */
     @RequestMapping("/newsRead")
-    public Result getUserRead(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getUserRead(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getUserRead(begin,end));
@@ -90,7 +90,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度1天，endDate不能早于begingDate
      */
     @RequestMapping("/newsHour")
-    public Result getUserReadHour(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getUserReadHour(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getUserReadHour(begin,end));
@@ -106,7 +106,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度7天，endDate不能早于begingDate
      */
     @RequestMapping("/newsShare")
-    public Result getUserShare(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getUserShare(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getUserShare(begin,end));
@@ -122,7 +122,7 @@ public class WxDataCubeController {
      * @param endDate   最大时间跨度1天，endDate不能早于begingDate
      */
     @RequestMapping("/newsShareHour")
-    public Result getUserShareHour(@RequestParam String beginDate,@RequestParam String endDate) throws WxErrorException {
+    public CommonResult getUserShareHour(@RequestParam String beginDate, @RequestParam String endDate) throws WxErrorException {
         Date begin = DateUtil.dateToUnixTimestamp(beginDate, "yyyy-MM-dd");
         Date end = DateUtil.dateToUnixTimestamp(endDate, "yyyy-MM-dd");
         return ResultUtil.success(this.wxMpService.getDataCubeService().getUserShareHour(begin,end));

@@ -1,4 +1,4 @@
-package com.minstone.wechat.aspect;
+package com.minstone.wechat.common;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Aspect
 @Component
-public class WxAspect {
-    private static Logger logger = LoggerFactory.getLogger(WxAspect.class);
+public class CommonAspect {
+    private static Logger logger = LoggerFactory.getLogger(CommonAspect.class);
 
     private String echostr;
 
@@ -30,15 +30,15 @@ public class WxAspect {
 
         logger.info("============================ WeiXin ============================");
 
-        logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        logger.info("执行的方法：{}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
-        logger.info("url={}",request.getRequestURI());
+        logger.info("调用的API：{}",request.getRequestURI());
 
-        logger.info("method={}",request.getMethod());
+        logger.info("请求方法：{}",request.getMethod());
 
-        logger.info("ip={}",request.getRemoteAddr());
+        logger.info("ip地址为：{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());
 
-        logger.info("args={}",joinPoint.getArgs());
+        logger.info("传递的参数：{}",request.getQueryString());
 
         logger.info("================================================================");
 

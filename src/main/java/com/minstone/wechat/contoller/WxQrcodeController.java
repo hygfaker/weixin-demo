@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -30,8 +30,8 @@ public class WxQrcodeController {
      * @param expireSeconds 该二维码有效时间，以秒为单位。 最大不超过2592000（即30天），此字段如果不填，则默认有效期为30秒。
      */
     @GetMapping("/createTmpTicket")
-    public Result qrCodeCreateTmpTicket(@RequestParam("sceneid") int sceneid,
-                                        @RequestParam(value = "expireSecondes") Integer expireSeconds) throws WxErrorException{
+    public CommonResult qrCodeCreateTmpTicket(@RequestParam("sceneid") int sceneid,
+                                              @RequestParam(value = "expireSecondes") Integer expireSeconds) throws WxErrorException{
         return ResultUtil.success(wxMpService.getQrcodeService().qrCodeCreateTmpTicket(sceneid,expireSeconds));
     }
 
@@ -44,7 +44,7 @@ public class WxQrcodeController {
      * @param sceneid 场景值ID，最大值为100000（目前参数只支持1--100000）
      */
     @GetMapping("/createrLastTicket")
-    public Result qrCodeCreateLastTicket(@RequestParam("sceneid") int sceneid) throws WxErrorException{
+    public CommonResult qrCodeCreateLastTicket(@RequestParam("sceneid") int sceneid) throws WxErrorException{
         return ResultUtil.success(wxMpService.getQrcodeService().qrCodeCreateLastTicket(sceneid));
     }
 
@@ -58,7 +58,7 @@ public class WxQrcodeController {
      * @param needShortUrl 是否需要压缩的二维码地址
      */
     @GetMapping("/qrocdeUrl")
-    public Result  qrCodePictureUrl(@RequestParam("ticket") String ticket,@RequestParam(value = "needShortUrl",defaultValue = "true") boolean needShortUrl) throws WxErrorException{
+    public CommonResult qrCodePictureUrl(@RequestParam("ticket") String ticket, @RequestParam(value = "needShortUrl",defaultValue = "true") boolean needShortUrl) throws WxErrorException{
         return ResultUtil.success(wxMpService.getQrcodeService().qrCodePictureUrl(ticket,needShortUrl));
     }
 

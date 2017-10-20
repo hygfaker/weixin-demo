@@ -1,4 +1,4 @@
-package com.minstone.wechat.enums;
+package com.minstone.wechat.common;
 
 /**
  * Created by huangyg on 2017/8/9.

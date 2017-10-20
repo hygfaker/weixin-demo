@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -24,7 +24,7 @@ public class WxTemplateController {
 
     // 设置所属行业
     @PostMapping("/setIndustry")
-    public Result setIndustry(@RequestParam String primary,@RequestParam String second) throws WxErrorException{
+    public CommonResult setIndustry(@RequestParam String primary, @RequestParam String second) throws WxErrorException{
         WxMpTemplateIndustry industry = new WxMpTemplateIndustry(new WxMpTemplateIndustry.Industry(primary),
                 new WxMpTemplateIndustry.Industry(second));
         return ResultUtil.success(this.wxService.getTemplateMsgService().setIndustry(industry));
@@ -32,24 +32,24 @@ public class WxTemplateController {
 
     // 获取设置的行业信息
     @GetMapping("/industry")
-    public Result setIndustry() throws WxErrorException{
+    public CommonResult setIndustry() throws WxErrorException{
            return ResultUtil.success(this.wxService.getTemplateMsgService().getIndustry());
     }
     // 获得模板列表
     @GetMapping("/list")
-    public Result getAllPrivateTemplate() throws WxErrorException {
+    public CommonResult getAllPrivateTemplate() throws WxErrorException {
         return ResultUtil.success(this.wxService.getTemplateMsgService().getAllPrivateTemplate());
     }
 
     // 删除模板
     @GetMapping("/delete")
-    public Result delPrivateTemplate(@RequestParam ("templateId") String templateId) throws WxErrorException{
+    public CommonResult delPrivateTemplate(@RequestParam ("templateId") String templateId) throws WxErrorException{
         return ResultUtil.success(this.wxService.getTemplateMsgService().delPrivateTemplate(templateId));
     }
 
     // 发送模板消息
     @PostMapping("/send")
-    public Result sendTemplateMsg(@RequestBody WxMpTemplateMessage templateMessage) throws WxErrorException{
+    public CommonResult sendTemplateMsg(@RequestBody WxMpTemplateMessage templateMessage) throws WxErrorException{
         String msgid = this.wxService.getTemplateMsgService().sendTemplateMsg(templateMessage);
         HashMap<String,String> res = new HashMap<>();
         res.put("msgid",msgid);

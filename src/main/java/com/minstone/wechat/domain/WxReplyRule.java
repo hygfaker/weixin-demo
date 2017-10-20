@@ -54,7 +54,6 @@ public class WxReplyRule {
     @NotNull(message = "【keywords】 参数缺失")
     private List<WxReplyKeyword> keywords;
 
-
     public String getRuleCode() {
         return ruleCode;
     }

@@ -1,23 +1,25 @@
 package com.minstone.wechat.api.imp;
 
+import com.github.pagehelper.PageInfo;
 import com.minstone.wechat.api.WxReplyService;
+import com.minstone.wechat.common.CommonException;
 import com.minstone.wechat.dao.WxPublicDao;
 import com.minstone.wechat.dao.WxReplyDao;
 import com.minstone.wechat.dao.WxReplyKeywordDao;
 import com.minstone.wechat.dao.WxReplyRuleDao;
-import com.minstone.wechat.domain.WxPublic;
 import com.minstone.wechat.domain.WxReply;
 import com.minstone.wechat.domain.WxReplyKeyword;
 import com.minstone.wechat.domain.WxReplyRule;
-import com.minstone.wechat.enums.ResultEnum;
+import com.minstone.wechat.common.ResultEnum;
 import com.minstone.wechat.utils.code.IdGen;
+import me.chanjar.weixin.common.bean.result.WxError;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,12 +35,14 @@ public class WxReplyServiceImpl implements WxReplyService {
 //    1-1.获取消息回复内容列表（全部）
 //    1-2.获取关注时回复内容消息
 //    1-3.获取非关键词消息默认回复
-//    1-4.获取关键词回复内容列表
+//    1-4.分页关键词回复内容列表
+//    1-5.获取关键词回复内容列表
 
 //    2.添加回复内容
 //    2-1.添加、修改关注时消息回复内容
 //    2-2.添加、修改非关键词消息默认回复内容
 //    2-3.关键词回复 - 添加规则
+//    2-4.批量更新关键词
 
 //    3.修改开关。
 //    3-1.开启、关闭关注时回复
@@ -49,8 +53,10 @@ public class WxReplyServiceImpl implements WxReplyService {
 //    4-2.添加某个规则 (同2-3)
 //    4-3.逻辑删除某个规则
 //    4-4.物理删除某个规则
-//    4-5.编辑某个规则
+//    4-5.更新某个规则
 //    4-6.开启、关闭某个规则
+//    4-7.逻辑删除关键词
+//    4-8.物理删除关键词
 
     @Autowired
     private WxReplyDao wxReplyDao;
@@ -61,6 +67,21 @@ public class WxReplyServiceImpl implements WxReplyService {
 
     @Autowired
     private WxPublicDao wxPublicDao;
+
+    /**
+     * 获取单个关键词规则
+     *
+     * @param ruleCode 关键词规则主键
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public WxReplyRule getReplyRule(String ruleCode) throws WxErrorException,CommonException {
+        List<WxReplyRule> selectResult = wxReplyRuleDao.selectByPrimaryKey(ruleCode);
+        if (selectResult.size() > 0)
+            return selectResult.get(0);
+        else throw new CommonException(404,"该关键词不存在");
+    }
 
     /**
      * 添加公众号的时候，初始化【消息回复】数据
@@ -139,18 +160,23 @@ public class WxReplyServiceImpl implements WxReplyService {
     }
 
     /**
-     * 1-4.获取关键词回复内容列表
+     * 1-4.分页获取关键词回复内容列表
      *
-     * @param publicCode 公众号主键
-     * @return
+     * @param publicCode  公众号主键
+     * @param currentPage
+     * @param pageSize    @return
      * @throws WxErrorException
      */
     @Override
-    public List<WxReplyRule> getKeyWordInfo(String publicCode) throws WxErrorException {
+    public PageInfo<WxReplyRule> getKeywordPage(String publicCode, int currentPage, int pageSize) throws WxErrorException {
+
         // 查找公众号是否存在
         String selectResult = wxPublicDao.selectPublicCode(publicCode);
         if (selectResult != null){
-            return wxReplyRuleDao.selectAll(publicCode);
+            List<WxReplyRule> list = wxReplyRuleDao.selectAll(publicCode);
+            PageInfo<WxReplyRule> page = new PageInfo<>(list);
+
+            return page;
         }else {
             return null;
         }
@@ -236,15 +262,30 @@ public class WxReplyServiceImpl implements WxReplyService {
         for (WxReplyKeyword keyword : keywords){
             keyword.setKeywordCode(IdGen.uuid());
             keyword.setRuleCode(ruleCode);
+            // 设置默认值
+            keyword.setDelFlag(0);
         }
-        int insertKeyWordResult = wxReplyKeywordDao.insertPatch(keywords);
+        int insertKeyWordResult = wxReplyKeywordDao.insertBatch(keywords); // 保存关键词
 
         int insertRuleResult = -1;
         if (insertKeyWordResult > 0){
             replyRule.setRuleCode(ruleCode);
-            insertRuleResult = wxReplyRuleDao.insert(replyRule);
+            insertRuleResult = wxReplyRuleDao.insertSelective(replyRule); // 保存关键词规则
         }
         return insertRuleResult;
+    }
+
+
+    /**
+     * 2-4.批量更新关键词
+     *
+     * @param lists 关键词列表
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public int updateKeywordBatch(List<WxReplyKeyword> lists) throws WxErrorException {
+        return wxReplyKeywordDao.updateBatch(lists);
     }
 
     /**
@@ -347,22 +388,49 @@ public class WxReplyServiceImpl implements WxReplyService {
     }
 
     /**
-     * 4-5.编辑某个规则（测试：如果没有该规则报什么错？）
+     * 4-5 更新某个规则（测试：如果没有该规则报什么错？）
      *
      * @param replyRule 规则内容
      * @return
      * @throws WxErrorException
      */
+
+//  todo :1.不要在循环里面写 dao 操作，改成批处理； 2.去除关键词可以改成接口操作。
     @Override
-    public int editRule(WxReplyRule replyRule) throws WxErrorException {
+    public int updateRule(WxReplyRule replyRule) throws WxErrorException {
+
+        // 判断 ruleCode 是否存在
+//        if (wxReplyRuleDao.selectByPrimaryKey(replyRule.getRuleCode()) == null){
+//             return ResultUtil.failure(ResultEnum.PARAM_ERROR,"【ruleCode】参数有误");
+//        }
         List<WxReplyKeyword>keywords = replyRule.getKeywords();
+        // 更新关键词信息
         if (keywords.size() > 0){
+            ArrayList<WxReplyKeyword> updateList = new ArrayList<>();   //  记录需要更新的 keyword 的列表
+            ArrayList<WxReplyKeyword> insertList = new ArrayList<>();   //  记录需要插入的 keyword 的列表
             for (WxReplyKeyword replyKeyword : keywords){
-//                todo 编写更新关键词，当新增加关键词....
-                if (replyKeyword.getKeywordCode())
-                wxReplyKeywordDao.updateByPrimaryKeySelective(replyKeyword);
+//                todo  判断 keywordcode 是否存在
+                replyKeyword.setRuleCode(replyRule.getRuleCode());
+                if (replyKeyword.getKeywordCode() != null){
+                    updateList.add(replyKeyword);
+                }else{
+                    replyKeyword.setKeywordCode(IdGen.uuid());
+                    replyKeyword.setDelFlag(0); // 默认不删除
+                    insertList.add(replyKeyword);
+                }
+            }
+//            todo:插入一条回复内容数据的时候，会默认配置数据，批量插入的时候不会...
+//            批量更新 keyword
+            if (updateList.size() > 0 && wxReplyKeywordDao.updateBatch(updateList) < 0){
+//                return ResultUtil.failure(ResultEnum.SERVER_ERROR,"服务器异常 - 批量更新关键词时出错");
+            }
+//            批量插入 keyword
+            if (insertList.size() > 0 && wxReplyKeywordDao.insertBatch(insertList) < 0){
+//                return ResultUtil.failure(ResultEnum.SERVER_ERROR,"服务器异常 - 批量插入关键词时出错");
             }
         }
+//        if (wxReplyRuleDao.updateByPrimaryKeySelective(replyRule) > 0) return ResultUtil.success() ;
+//        else return ResultUtil.failure(ResultEnum.SERVER_ERROR,"服务器异常 - 更新消息规则时出错");
         return wxReplyRuleDao.updateByPrimaryKeySelective(replyRule);
     }
 
@@ -376,6 +444,59 @@ public class WxReplyServiceImpl implements WxReplyService {
     @Override
     public int updateRuleFlag(String ruleCode, int useFlag) throws WxErrorException {
         return wxReplyRuleDao.updateRuleFlag(ruleCode,useFlag);
+    }
+
+
+    /**
+     *  4-7.逻辑删除关键词
+     * @param keywordCode 关键词主键
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public int deleteKeyword(String keywordCode) throws WxErrorException {
+        return wxReplyKeywordDao.deleteByPrimaryKey(keywordCode);
+    }
+
+    /**
+     *  4-8.物理删除关键词
+     * @param keywordCode 关键词主键
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public int FDeleteKeyword(String keywordCode) throws WxErrorException {
+        return wxReplyKeywordDao.FDeleteByPrimaryKey(keywordCode);
+    }
+
+    /**
+     * 5-4.批量逻辑删除关键词规则回复
+     *
+     * @param ruleCodes 关键词规则回复主键们
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public int deleteRuleBatch(String[] ruleCodes) throws WxErrorException {
+        return wxReplyRuleDao.deleteBatch(ruleCodes);
+    }
+
+    @Override
+
+    /**
+     * 5-5.批量物理删除关键词规则回复
+     *
+     * @param ruleCodes 关键词规则回复主键们
+     * @return
+     * @throws WxErrorException
+     */
+    public int FDeleteRuleBatch(String[] ruleCodes) throws WxErrorException {
+        return wxReplyRuleDao.FDeleteBatch(ruleCodes);
+    }
+
+    @Override
+    public List<WxReplyRule> test(String publicCode) throws WxErrorException {
+        return wxReplyRuleDao.selectTest(publicCode);
     }
 
 }

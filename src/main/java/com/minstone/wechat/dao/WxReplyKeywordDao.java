@@ -8,27 +8,89 @@ import java.util.List;
 @Component
 public interface WxReplyKeywordDao {
 
-
-
-    int FDeleteByRuleCode(String ruleCode);
-
-    int FDeleteByPrimaryKey(String keywordCode);
-
-    int deleteByRuleCode(String ruleCode);
-
-    int deleteByPrimaryKey(String keywordCode);
-
-    int insert(WxReplyKeyword record);
-
+    /**
+     * 插入关键词信息
+     * @param record 关键词信息实体
+     * @return
+     */
     int insertSelective(WxReplyKeyword record);
 
-    int insertPatch(List<WxReplyKeyword> keywords);
+    /**
+     * 批量插入关键词信息
+     * @param list 关键词信息实体列表
+     * @return
+     */
+    int insertBatch(List<WxReplyKeyword> list);
 
-    List<WxReplyKeyword> selectByPrimaryKey(String keywordCode);
+    /**
+     * 物理删除关键词规则下的所有关键词信息
+     * @param ruleCode 关键词规则主键
+     * @return
+     */
+    int FDeleteByRuleCode(String ruleCode);
 
-    List<WxReplyKeyword> selectByRuleCode(String publicCode);
+    /**
+     * 物理删除关键词信息
+     * @param keywordCode 关键词主键
+     * @return
+     */
+    int FDeleteByPrimaryKey(String keywordCode);
 
+    /**
+     *  批量物理删除关键词信息
+     * @param list 关键词主键们
+     * @return
+     */
+    int FDeleteByPrimaryKeyBatch(String[] list);
+
+    /**
+     * 逻辑删除关键词回复下的所有关键词信息
+     * @param ruleCode 关键词规则主键
+     * @return
+     */
+    int deleteByRuleCode(String ruleCode);
+
+    /**
+     * 逻辑删除关键词信息
+     * @param keywordCode 关键词主键
+     * @return
+     */
+    int deleteByPrimaryKey(String keywordCode);
+
+//    todo
+    /**
+     * 逻辑删除关键词信息
+     * @param list 关键词主键们
+     * @return
+     */
+    int deleteByPrimaryKeyBatch(String[] list);
+
+    /**
+     * 更新关键词信息
+     * @param record 关键词信息实体
+     * @return
+     */
     int updateByPrimaryKeySelective(WxReplyKeyword record);
 
-    int updateByPrimaryKey(WxReplyKeyword record);
+    /**
+     * 批量更新关键词信息
+     * @param list 关键词信息实体列表
+     * @return
+     */
+    int updateBatch(List<WxReplyKeyword> list);
+
+    /**
+     * 获取关键词信息
+     * @param keywordCode 关键词主键
+     * @return
+     */
+    List<WxReplyKeyword> selectByPrimaryKey(String keywordCode);
+
+    /**
+     * 获取关键词规则下的关键词信息
+     * @param ruleCode 公众号主键
+     * @return
+     */
+    List<WxReplyKeyword> selectByRuleCode(String ruleCode);
+
 }

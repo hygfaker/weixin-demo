@@ -1,8 +1,7 @@
 package com.minstone.wechat.api;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +25,7 @@ public interface IWXPublicApi {
      *
      * 添加公众号信息
      */
-    Result addPublicAccount(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+    CommonResult addPublicAccount(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
 
     /**
@@ -38,7 +37,7 @@ public interface IWXPublicApi {
      *
      * 获取某个公众号信息
      */
-    Result getPublicAccount(String publicCode) throws WxErrorException, IOException;
+    CommonResult getPublicAccount(String publicCode) throws WxErrorException, IOException;
 
     /**
      *
@@ -48,7 +47,7 @@ public interface IWXPublicApi {
      *
      * 获取所有公众号信息
      */
-    Result getAllPublicAccount() throws WxErrorException, IOException;
+    CommonResult getAllPublicAccount() throws WxErrorException, IOException;
 
     /**
      *
@@ -62,7 +61,7 @@ public interface IWXPublicApi {
      *
      * 更新公众号信息
      */
-    Result updatePublicAccount(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+    CommonResult updatePublicAccount(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
     /**
      *
@@ -73,7 +72,7 @@ public interface IWXPublicApi {
      *
      * 删除某个公众号
      */
-    Result deletePublicAccount(String publicCode) throws WxErrorException, IOException;
+    CommonResult deletePublicAccount(String publicCode) throws WxErrorException, IOException;
 
 
     void downloadIcon(String imgCode, Integer imgType , HttpServletResponse response) throws WxErrorException, IOException;

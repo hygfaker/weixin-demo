@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.config.WechatMpProperties;
 import com.minstone.wechat.utils.JsonUtil;
 import com.minstone.wechat.utils.ResultUtil;
@@ -67,14 +67,14 @@ public class WxUserController {
 
     // 获取公众号的黑名单列表
     @GetMapping("/blacklist")
-    public Result blackList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid) throws WxErrorException{
+    public CommonResult blackList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid) throws WxErrorException{
         return ResultUtil.success(this.service.getBlackListService().getBlacklist(nextOpenid));
 
     }
 
     // 拉黑用户
     @PostMapping("/pushBlackList")
-    public Result pushToBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
+    public CommonResult pushToBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
         this.service.getBlackListService().pushToBlacklist(openidList);
         return ResultUtil.success();
 
@@ -82,7 +82,7 @@ public class WxUserController {
 
     // 取消拉黑用户
     @PostMapping("/removeBlackList")
-    public Result removeFromBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
+    public CommonResult removeFromBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException{
         this.service.getBlackListService().pullFromBlacklist(openidList);
         return ResultUtil.success();
     }
@@ -106,9 +106,9 @@ public class WxUserController {
 
     // 返回 openid
     @GetMapping("/openid/code")
-    public Result getAccessToken(@RequestParam(value = "code") String code,
-                               @RequestParam(value = "state") String callbackUrl,
-                               HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
+    public CommonResult getAccessToken(@RequestParam(value = "code") String code,
+                                       @RequestParam(value = "state") String callbackUrl,
+                                       HttpServletResponse response, HttpServletRequest request) throws WxErrorException, IOException {
 
         // 请求以下链接获取 access_token
         String url = "https://imp.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
@@ -136,9 +136,9 @@ public class WxUserController {
 
     }
     @GetMapping("/openid/info")
-    public Result getUserInfo(@RequestParam(value = "code") String code,
-                            @RequestParam(value = "state") String callbackUrl,
-                            HttpServletResponse response,HttpServletRequest request) throws WxErrorException, IOException {
+    public CommonResult getUserInfo(@RequestParam(value = "code") String code,
+                                    @RequestParam(value = "state") String callbackUrl,
+                                    HttpServletResponse response, HttpServletRequest request) throws WxErrorException, IOException {
 
         WxMpOAuth2AccessToken accessTokenObject =  this.service.oauth2getAccessToken(code);
         String accessToken = accessTokenObject.getAccessToken();

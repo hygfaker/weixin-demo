@@ -1,6 +1,6 @@
 package com.minstone.wechat.contoller;
 
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -37,7 +37,7 @@ public class WxMenuController{
      * @return 如果是个性化菜单，则返回menuid，否则返回null
      */
     @PostMapping("/create")
-    public Result menuCreate(@RequestBody WxMenu menu) throws WxErrorException {
+    public CommonResult menuCreate(@RequestBody WxMenu menu) throws WxErrorException {
         return ResultUtil.success(this.wxService.getMenuService().menuCreate(menu));
     }
 

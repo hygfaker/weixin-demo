@@ -3,8 +3,8 @@ package com.minstone.wechat.api.imp;
 import com.minstone.wechat.api.IWXPublicApi;
 import com.minstone.wechat.api.service.WxPublicService;
 import com.minstone.wechat.domain.WxPublic;
-import com.minstone.wechat.enums.ResultEnum;
-import com.minstone.wechat.model.Result;
+import com.minstone.wechat.common.ResultEnum;
+import com.minstone.wechat.common.CommonResult;
 import com.minstone.wechat.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -53,14 +53,14 @@ public class IWXPublicImp implements IWXPublicApi {
     // 添加公众号
     @Override
     @PostMapping("/add")
-    public Result addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
+    public CommonResult addPublicAccount(@RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
         return  publicService.addPublicAccount(reqMap,publicHeadImg,publicQrcode);
     }
 
     // 获取某个公众号并切换到当前公众号
     @Override
     @GetMapping("/get")
-    public Result getPublicAccount(@RequestParam String publicCode) throws WxErrorException, IOException{
+    public CommonResult getPublicAccount(@RequestParam String publicCode) throws WxErrorException, IOException{
 
         WxPublic wxPublic = publicService.getPublicAccount(publicCode);
         if (wxPublic == null){
@@ -82,21 +82,21 @@ public class IWXPublicImp implements IWXPublicApi {
     // 获取所有公众号
     @Override
     @GetMapping("/getAll")
-    public Result getAllPublicAccount() throws WxErrorException, IOException{
+    public CommonResult getAllPublicAccount() throws WxErrorException, IOException{
         return publicService.getAllPublicAccount();
     }
 
     // 编辑公众号
     @Override
     @PostMapping("/update")
-    public Result updatePublicAccount(@RequestParam String publicCode, @RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
+    public CommonResult updatePublicAccount(@RequestParam String publicCode, @RequestParam Map<String,Object>reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
         return publicService.updatePublicAccount(publicCode,reqMap,publicHeadImg,publicQrcode);
     }
 
     // 解除绑定公众号
     @Override
     @GetMapping("/delete")
-    public Result deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException{
+    public CommonResult deletePublicAccount(@RequestParam String  publicCode) throws WxErrorException, IOException{
         return publicService.deletePublicAccount(publicCode);
     }
 
