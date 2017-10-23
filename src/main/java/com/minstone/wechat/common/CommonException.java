@@ -21,6 +21,17 @@ public class CommonException extends RuntimeException {
         this.code = code;
         this.msg = String.format(msgFormat, args);
     }
+    public CommonException(ResultEnum resultEnum) {
+        super(resultEnum.getMsg());
+        this.code = resultEnum.getCode();
+        this.msg = resultEnum.getMsg();
+    }
+
+    public CommonException(ResultEnum resultEnum,String msg) {
+        super(msg);
+        this.code = resultEnum.getCode();
+        this.msg = msg;
+    }
 
     public CommonException() {
     }

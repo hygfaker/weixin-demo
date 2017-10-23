@@ -14,18 +14,15 @@
     <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
     <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
     <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
+    <!-- keyword 表的 DEL_FLAG、RULECODE 使用别名 -->
     <collection property="keywords" ofType="com.minstone.wechat.domain.WxReplyKeyword" autoMapping="true">
       <id property="keywordCode" column="KEYWORD_CODE" jdbcType="VARCHAR"/>
-      <result property="ruleCode" column="RULE_CODE" jdbcType="VARCHAR"/>
+      <result property="ruleCode" column="RULECODE" jdbcType="VARCHAR"/>
       <result property="keyword" column="KEYWORD" jdbcType="VARCHAR"/>
       <result property="matchFlag" column="MATCH_FLAG" jdbcType="INTEGER"/>
-      <result property="delFlag" column="DEL_FLAG" jdbcType="INTEGER"/>
+      <result property="delFlag" column="DELFLAG" jdbcType="INTEGER"/>
     </collection>
   </resultMap>
-
-  <sql id="Base_Column_List">
-    KEYWORD_CODE,KEYWORD,MATCH_FLAG,DEL_FLAG as delFlag
-  </sql>
 
   <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxReplyRule">
     insert into MP_YY_REP_RULE
@@ -34,7 +31,7 @@
         RULE_CODE,
       </if>
       <if test="publicCode != null">
-        TRPLY_CODE,
+        PUBLIC_CODE,
       </if>
       <if test="ruleName != null">
         RULE_NAME,
@@ -108,7 +105,7 @@
         RULE_CODE,
       </if>
       <if test="publicCode != null">
-        TRPLY_CODE,
+        PUBLIC_CODE,
       </if>
       <if test="ruleName != null">
         RULE_NAME,
@@ -193,9 +190,9 @@
   </delete>
 
   <update id="FDeleteByPrimaryKey" parameterType="java.lang.String">
-    update MP_YY_REP_RULE
-    set DEL_FLAG = 1
+    delete from  MP_YY_REP_RULE
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+    AND 1=1
   </update>
 
   <delete id="FDeleteBatch" parameterType="java.util.Arrays">
@@ -206,23 +203,27 @@
     </foreach>
   </delete>
 
+  <!-- keyword 表的 DEL_FLAG、RULE_CODE 使用别名 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT R.*, <include refid="Base_Column_List"></include>
-    FROM MP_YY_REP_RULE R, MP_YY_REP_KEYWORD K
-    WHERE R.RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-    AND K.RULE_CODE = R.RULE_CODE
-    AND R.DEL_FLAG = 0
-    AND k_delFlag = 0
+    SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+    FROM MP_YY_REP_RULE r
+    LEFT JOIN
+        MP_YY_REP_KEYWORD k
+    ON (r.RULE_CODE = k.RULE_CODE)
+    AND k.DEL_FLAG = 0
+    WHERE r.RULE_CODE= #{ruleCode,jdbcType=VARCHAR}
+    AND r.DEL_FLAG = 0
   </select>
 
   <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT *
-    FROM MP_YY_REP_RULE R, MP_YY_REP_KEYWORD K
-    WHERE R.RULE_CODE = K.RULE_CODE
-    AND R.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-    AND R.DEL_FLAG = 0
-    AND K.DEL_FLAG = 0
-    AND 1=1
+      SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+    FROM MP_YY_REP_RULE r
+    LEFT JOIN
+        MP_YY_REP_KEYWORD k
+    ON (r.RULE_CODE = k.RULE_CODE)
+    AND k.DEL_FLAG = 0
+    WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    AND r.DEL_FLAG = 0
   </select>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxReplyRule">
@@ -262,9 +263,9 @@
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
 
-  <update id="updateRuleFlag" parameterType="java.lang.String">
+  <update id="updateRuleFlag">
     update MP_YY_REP_RULE
-    set USE_FLAG = #{ruleFlag,jdbcType=VARCHAR}
+    set USE_FLAG = #{useFlag,jdbcType=INTEGER}
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
 

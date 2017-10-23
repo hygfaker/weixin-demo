@@ -78,18 +78,18 @@ public interface WxReplyRuleDao {
     int updateRuleFlag(@Param("ruleCode") String ruleCode,@Param("useFlag") int useFlag);
 
     /**
-     * 根据主键查找关键词规则列表
-     * @param ruleCode 关键词规则主键
-     * @return
-     */
-    List<WxReplyRule> selectByPrimaryKey(String ruleCode);
-
-    /**
      * 查找公众号下的关键词规则列表
      * @param publicCode 公众号主键
      * @return
      */
     List<WxReplyRule> selectAll(String publicCode);
+
+    /**
+     * 根据主键查找关键词规则列表
+     * @param ruleCode 关键词规则主键
+     * @return
+     */
+    List<WxReplyRule> selectByPrimaryKey(String ruleCode);
 
     /**
      * 查找公众号下的关键词规则列表（测试）

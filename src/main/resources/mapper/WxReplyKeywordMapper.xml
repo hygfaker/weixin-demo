@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minstone.wechat.dao.WxReplyKeywordDao">
+
   <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxReplyKeyword">
     <id column="KEYWORD_CODE" jdbcType="VARCHAR" property="keywordCode" />
     <result column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode" />
@@ -51,59 +52,13 @@
     </trim>
   </insert>
 
-  <!--待测试-->
   <insert id="insertBatch" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
-    insert into MP_YY_REP_KEYWORD
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="keywordCode != null">
-        KEYWORD_CODE,
-      </if>
-      <if test="ruleCode != null">
-        RULE_CODE,
-      </if>
-      <if test="keyword != null">
-        KEYWORD,
-      </if>
-      <if test="matchFlag != null">
-        MATCH_FLAG,
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG,
-      </if>
-    </trim>
+    insert into MP_YY_REP_KEYWORD (<include refid="Base_Column_List"/>)
     values
     <foreach collection="list" item="item" index="index" separator=",">
-      (<trim>
-      <if test="item.keywordCode!=null">
-        #{keyword.keywordCode},
-      </if>
-      <if test="item.ruleCode!=null">
-        #{keyword.ruleCode},
-      </if>
-      <if test="item.keyword!=null">
-        #{keyword.keyword},
-      </if>
-      <if test="item.matchFlag!=null">
-        #{keyword.matchFlag},
-      </if>
-      <if test="item.delFlag!=null">
-        #{keyword.delFlag}
-      </if>
-    </trim>)
-      #{keyword.keywordCode,jdbcType=VARCHAR},#{keyword.ruleCode,jdbcType=VARCHAR},#{keyword.keyword,jdbcType=VARCHAR},#{keyword.matchFlag,jdbcType=INTEGER},#{keyword.delFlag,jdbcType=INTEGER}
-
+      (#{item.keywordCode}, #{item.ruleCode},  #{item.keyword}, #{item.matchFlag}, #{item.delFlag})
     </foreach>
   </insert>
-
-  <delete id="FDeleteByPrimaryKey" parameterType="java.lang.String">
-    delete from MP_YY_REP_KEYWORD
-    where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
-  </delete>
-
-  <delete id="FDeleteByRuleCode" parameterType="java.lang.String">
-    delete from MP_YY_REP_KEYWORD
-    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-  </delete>
 
   <update id="deleteByPrimaryKey" parameterType="java.lang.String">
     update MP_YY_REP_KEYWORD
@@ -116,6 +71,24 @@
     set DEL_FLAG = 1
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
+
+  <delete id="FDeleteByPrimaryKey" parameterType="java.lang.String">
+    delete from MP_YY_REP_KEYWORD
+    where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="FDeleteByRuleCode" parameterType="java.lang.String">
+    delete from MP_YY_REP_KEYWORD
+    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="FDeleteByRuleCodeBatch" parameterType="java.lang.String">
+    delete from  MP_YY_REP_KEYWORD
+    where RULE_CODE IN
+    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -132,7 +105,7 @@
     from MP_YY_REP_KEYWORD
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
     and
-    DEL_FLAG = 0
+    1=1
   </select>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxReplyKeyword">

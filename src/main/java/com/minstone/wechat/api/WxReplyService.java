@@ -1,9 +1,11 @@
 package com.minstone.wechat.api;
 import com.github.pagehelper.PageInfo;
+import com.minstone.wechat.common.CommonException;
 import com.minstone.wechat.domain.WxReply;
 import com.minstone.wechat.domain.WxReplyKeyword;
 import com.minstone.wechat.domain.WxReplyRule;
 
+import me.chanjar.weixin.common.bean.result.WxError;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +95,43 @@ public interface WxReplyService {
 
 
     /**
+     * 1-1. 获取关注时回复
+     *
+     * @param publicCode 公众号主键
+     * @return
+     * @throws WxErrorException
+     */
+    public List<WxReply> getFollowInfo(String publicCode) throws WxErrorException ;
+    /**
+     *
+     * 1-2. 开启、关闭关注时回复开关
+     *
+     * @param publicCode 公众号主键
+     * @param useFlag  回复是否开启。0为关闭，1为开启，默认为1开启
+     * @return
+     * @throws WxErrorException
+     */
+    public boolean followReplyFlag(String publicCode, Integer useFlag) throws WxErrorException;
+    /**
+     *   1-3. 添加、修改关注时回复内容
+     *
+     * @param publicCode 公众号主键
+     * @param content   回复的内容
+     * @return
+     * @throws WxErrorException
+     */
+    public String addFollowReply(String publicCode, String content) throws WxErrorException;
+
+    /**
+     * 获取关键词规则下的所有关键词（包含删除）
+     * @param ruleCode 关键词规则主键
+     * @return
+     * @throws WxErrorException
+     * @throws CommonException
+     */
+    public List<WxReplyKeyword> selectByRuleCode(String ruleCode) throws WxErrorException,CommonException;
+
+    /**
      * 获取单个关键词规则
      * @param ruleCode 关键词规则主键
      * @return
@@ -135,14 +174,6 @@ public interface WxReplyService {
      */
     public List<WxReply> getList(String publicCode) throws WxErrorException ;
 
-    /**
-     *  1-2.获取关注时回复内容消息
-     *
-     * @param publicCode 公众号主键
-     * @return
-     * @throws WxErrorException
-     */
-    public List<WxReply> getFollowInfo(String publicCode) throws WxErrorException ;
 
     /**
      *  1-3.获取非关键词消息默认回复
@@ -172,17 +203,9 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int addReplyContent(String publicCode, String content, Integer replyType) throws WxErrorException;
+    public String addReplyContent(String publicCode, String content, Integer replyType) throws WxErrorException;
 
-    /**
-     *  2-1.添加、修改关注时回复内容
-     *
-     * @param publicCode 公众号主键
-     * @param content   回复的内容
-     * @return
-     * @throws WxErrorException
-     */
-    public int addFollowReply(String publicCode, String content) throws WxErrorException;
+
 
     /**
      *  2-2.添加、修改非关键词消息默认回复
@@ -192,7 +215,7 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int addNormalReply(String publicCode, String content) throws WxErrorException;
+    public String addNormalReply(String publicCode, String content) throws WxErrorException;
 
     /**
      *  2-3.关键词回复 - 添加规则
@@ -201,7 +224,8 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int addReplyRule(WxReplyRule wxReplyRule) throws WxErrorException;
+    public String addReplyRule(WxReplyRule wxReplyRule) throws WxErrorException,CommonException;
+
 
     /**
      *  2-4.批量更新关键词
@@ -209,7 +233,7 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int updateKeywordBatch(List<WxReplyKeyword> lists) throws WxErrorException;
+    public boolean updateKeywordBatch(List<WxReplyKeyword> lists) throws WxErrorException;
 
     /**
      *
@@ -221,18 +245,9 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int updateReplyFlag(String publicCode, Integer useFlag, Integer replyType) throws WxErrorException;
+    public boolean updateReplyFlag(String publicCode, Integer useFlag, Integer replyType) throws WxErrorException;
 
-    /**
-     *
-     * 3-1.开启/关闭，关注时回复
-     *
-     * @param publicCode 公众号主键
-     * @param useFlag  回复是否开启。0为关闭，1为开启，默认为1开启
-     * @return
-     * @throws WxErrorException
-     */
-    public int followReplyFlag(String publicCode, Integer useFlag) throws WxErrorException;
+
 
     /**
      *
@@ -243,18 +258,18 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int normalReplyFlag(String publicCode, Integer useFlag) throws WxErrorException;
+    public boolean normalReplyFlag(String publicCode, Integer useFlag) throws WxErrorException;
 
     /**
      *
-     * 3-3.开启、关闭关键词回复
+     * 3-3.开启、关闭关键词规则回复
      *
      * @param publicCode 公众号主键
      * @param useFlag  回复是否开启。0为关闭，1为开启，默认为1开启
      * @return
      * @throws WxErrorException
      */
-    public int keywordReplyFlag(String publicCode, Integer useFlag) throws WxErrorException;
+    public boolean replyRuleFlag(String publicCode, Integer useFlag) throws WxErrorException,CommonException;
 
     /**
      * 4-3.逻辑删除某个规则
@@ -263,7 +278,7 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int deleteRule(String ruleCode) throws WxErrorException;
+    public boolean deleteRule(String ruleCode) throws WxErrorException,CommonException;
 
     /**
      * 4-4.物理删除某个规则
@@ -272,7 +287,7 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int FDeleteRule(String ruleCode) throws WxErrorException;
+    public boolean FDeleteRule(String ruleCode) throws WxErrorException,CommonException;
 
     /**
      * 4-5.编辑某个规则
@@ -281,32 +296,33 @@ public interface WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public int updateRule(WxReplyRule replyRule) throws WxErrorException;
+    public boolean updateRule(WxReplyRule replyRule) throws WxErrorException,CommonException;
 
     /**
      * 4-6.开启、关闭某个规则
      *
      * @param ruleCode 关键词主键
      * @return
-    * @throws WxErrorException
+     * @throws WxErrorException
      */
-    public int updateRuleFlag(String ruleCode, int ruleFlag) throws WxErrorException;
+    public boolean updateRuleFlag(String ruleCode, int uesFlag) throws WxErrorException,CommonException;
 
     /**
      *  4-7.逻辑删除关键词
      * @param keywordCode 关键词主键
      * @return
-     * @throws WxErrorException
+     * @throws CommonException
      */
-    public int deleteKeyword(String keywordCode) throws WxErrorException;
+    public boolean deleteKeyword(String keywordCode) throws WxErrorException,CommonException;
 
     /**
      *  4-8.物理删除关键词
      * @param keywordCode 关键词主键
      * @return
      * @throws WxErrorException
+     * @throws CommonException
      */
-    public int FDeleteKeyword(String keywordCode) throws WxErrorException;
+    public boolean FDeleteKeyword(String keywordCode) throws WxErrorException,CommonException;
 
 
     /**
@@ -314,17 +330,19 @@ public interface WxReplyService {
      * @param ruleCodes 关键词规则主键们
      * @return
      * @throws WxErrorException
+     * @throws CommonException
      */
-    public int deleteRuleBatch(String[] ruleCodes) throws WxErrorException;
+    public boolean deleteRuleBatch(String[] ruleCodes) throws WxErrorException,CommonException;
 
     /**
      * 5-5.批量物理删除关键词规则
      * @param ruleCodes 关键词规则主键们
      * @return
      * @throws WxErrorException
+     * @throws CommonException
      */
-    public int FDeleteRuleBatch(String[] ruleCodes) throws WxErrorException;
+    public boolean FDeleteRuleBatch(String[] ruleCodes) throws WxErrorException,CommonException;
 
-    public List<WxReplyRule> test(String publicCode) throws WxErrorException;
+    public List<WxReplyRule> test(String publicCode) throws WxErrorException,CommonException;
 
 }

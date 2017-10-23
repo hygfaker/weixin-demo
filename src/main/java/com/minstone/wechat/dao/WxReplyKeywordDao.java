@@ -17,10 +17,10 @@ public interface WxReplyKeywordDao {
 
     /**
      * 批量插入关键词信息
-     * @param list 关键词信息实体列表
+     * @param keywords 关键词信息实体列表
      * @return
      */
-    int insertBatch(List<WxReplyKeyword> list);
+    int insertBatch(List<WxReplyKeyword> keywords);
 
     /**
      * 物理删除关键词规则下的所有关键词信息
@@ -38,10 +38,10 @@ public interface WxReplyKeywordDao {
 
     /**
      *  批量物理删除关键词信息
-     * @param list 关键词主键们
+     * @param array 关键词主键们
      * @return
      */
-    int FDeleteByPrimaryKeyBatch(String[] list);
+    int FDeleteByPrimaryKeyBatch(String[] array);
 
     /**
      * 逻辑删除关键词回复下的所有关键词信息
@@ -58,12 +58,13 @@ public interface WxReplyKeywordDao {
     int deleteByPrimaryKey(String keywordCode);
 
 //    todo
+    int FDeleteByRuleCodeBatch(String[] array);
     /**
      * 逻辑删除关键词信息
-     * @param list 关键词主键们
+     * @param array 关键词主键们
      * @return
      */
-    int deleteByPrimaryKeyBatch(String[] list);
+    int deleteByPrimaryKeyBatch(String[] array);
 
     /**
      * 更新关键词信息

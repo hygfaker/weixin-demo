@@ -20,7 +20,6 @@ public class WxReplyKeyword {
     @NotNull(message = "【matchFlag】参数缺失")
     private Integer matchFlag;
 
-    // 默认值为0
     private Integer delFlag;
 
     public String getKeywordCode() {
