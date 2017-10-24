@@ -31,14 +31,14 @@ public interface WxReplyRuleDao {
      * @param ruleCode 关键词规则回复主键
      * @return
      */
-    int FDeleteByPrimaryKey(String ruleCode);
+    int fDeleteByPrimaryKey(String ruleCode);
     // todo
     /**
      * 批量物理删除关键词规则回复
      * @param list 关键词规则 FD回复主键们
      * @return
      */
-    int FDeleteBatch(String[] list);
+    int fDeleteBatch(String[] list);
 
     /**
      * 逻辑删除关键词规则回复

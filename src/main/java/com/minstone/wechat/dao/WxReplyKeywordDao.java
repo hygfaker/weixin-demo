@@ -27,21 +27,21 @@ public interface WxReplyKeywordDao {
      * @param ruleCode 关键词规则主键
      * @return
      */
-    int FDeleteByRuleCode(String ruleCode);
+    int fDeleteByRuleCode(String ruleCode);
 
     /**
      * 物理删除关键词信息
      * @param keywordCode 关键词主键
      * @return
      */
-    int FDeleteByPrimaryKey(String keywordCode);
+    int fDeleteByPrimaryKey(String keywordCode);
 
     /**
      *  批量物理删除关键词信息
      * @param array 关键词主键们
      * @return
      */
-    int FDeleteByPrimaryKeyBatch(String[] array);
+    int fDeleteByPrimaryKeyBatch(String[] array);
 
     /**
      * 逻辑删除关键词回复下的所有关键词信息
@@ -58,7 +58,7 @@ public interface WxReplyKeywordDao {
     int deleteByPrimaryKey(String keywordCode);
 
 //    todo
-    int FDeleteByRuleCodeBatch(String[] array);
+    int fDeleteByRuleCodeBatch(String[] array);
     /**
      * 逻辑删除关键词信息
      * @param array 关键词主键们

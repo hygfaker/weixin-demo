@@ -111,9 +111,7 @@ public class WechatController {
 
 
     private WxMpXmlOutMessage route(WxMpXmlMessage message) {
-        try {
-
-            // 路由规则
+        try {// 路由规则
             this.router.rule()
                     .msgType(WxConsts.EVT_SUBSCRIBE)
                     .handler(new SubscribeHandler()) // 订阅时事件
@@ -125,9 +123,7 @@ public class WechatController {
                     .rule()
                     .msgType(WxConsts.XML_MSG_TEXT)
                     .handler(new MsgHandler())  // 用户发送消息
-                    .end()
-            ;
-
+                    .end();
             // 将消息交给路由器
             return this.router.route(message);
         } catch (Exception e) {

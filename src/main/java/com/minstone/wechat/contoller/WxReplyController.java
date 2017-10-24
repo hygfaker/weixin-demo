@@ -3,7 +3,6 @@ package com.minstone.wechat.contoller;
 import com.github.pagehelper.PageInfo;
 import com.minstone.wechat.api.WxReplyService;
 import com.minstone.wechat.common.CommonException;
-import com.minstone.wechat.domain.WxReply;
 import com.minstone.wechat.domain.WxReplyKeyword;
 import com.minstone.wechat.domain.WxReplyRule;
 import com.minstone.wechat.common.ResultEnum;
@@ -59,7 +58,7 @@ public class WxReplyController {
 
 //    3-7. 开启、关闭一个关键词回复开关
 
-    /************************ 关注时回复 ************************/
+    /************ 关注时回复 ************/
 
     //    1-1. 获取关注时回复
     @GetMapping("/getFollowReply")
@@ -70,59 +69,48 @@ public class WxReplyController {
     //    1-2. 开启、关闭关注时回复开关
     @PostMapping("/followReplyFlag")
     public CommonResult followReplyFlag(@RequestParam String publicCode, @RequestParam Integer useFlag) throws WxErrorException {
-        if (wxReplyService.followReplyFlag(publicCode,useFlag))
+        if (wxReplyService.followReplyFlag(publicCode,useFlag)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    1-3. 添加、修改关注时回复内容
     @PostMapping("/addFollowReply")
     public CommonResult addFollowReply(@RequestParam String publicCode, @RequestParam String content) throws WxErrorException {
-
         return ResultUtil.success(wxReplyService.addFollowReply(publicCode,content));
     }
 
-    /************************ 非关键词回复 ************************/
+    /************ 非关键词回复 ************/
 
     //    2-1. 获取非关键词回复
     @GetMapping("/getNormalInfo")
     public CommonResult getNormalInfo(@RequestParam String publicCode) throws WxErrorException {
-        List<WxReply> lists = wxReplyService.getFollowInfo(publicCode);
-        if (lists == null){
-            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
-        }else{
-            return ResultUtil.success(lists.get(0));
+        return ResultUtil.success(wxReplyService.getNormalInfo(publicCode).get(0));
+    }
+
+    //    2-2. 开启/关闭非关键词回复开关
+    @PostMapping("/normalReplyFlag")
+    public CommonResult normalReplyFlag(@RequestParam String publicCode, @RequestParam Integer useFlag) throws WxErrorException {
+        if (wxReplyService.normalReplyFlag(publicCode,useFlag)) {
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }
     }
 
-    //    2-2. 开启、关闭非关键词回复开关
-    @PostMapping("/normalReplyFlag")
-    public CommonResult normalReplyFlag(@RequestParam String publicCode, @RequestParam Integer useFlag) throws WxErrorException {
-        if (wxReplyService.normalReplyFlag(publicCode,useFlag))
-            return ResultUtil.success();
-        else
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
-    }
-
-    //    2-3. 添加、修改非关键词回复内容
+    //    2-3. 添加/修改非关键词回复内容
     @PostMapping("/addNormalReply")
     public CommonResult addNormalReply(@RequestParam String publicCode, @RequestParam String content) throws WxErrorException {
         return ResultUtil.success(wxReplyService.addNormalReply(publicCode,content));
     }
 
-    /************************ 关键词回复 ************************/
+    /************ 关键词回复 ************/
 
     //    3-1. 获取关键词规则列表（分页）
     @GetMapping("/getReplyRuleList")
     public CommonResult getKeywordPage(@RequestParam String publicCode, @RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException {
-        if (currentPage < 0 ){
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,"【currentPage】参数必须大于0");
-        }
-        if (pageSize < 0 ){
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,"【pageSize】参数必须大于0");
-        }
-
         PageInfo page = wxReplyService.getKeywordPage(publicCode, currentPage, pageSize);
         return ResultUtil.pageFormat(page);
     }
@@ -141,11 +129,13 @@ public class WxReplyController {
 
     //    3-2. 开启、关闭所有关键词回复开关
     @PostMapping("/replyRuleFlag")
-    public CommonResult replyRuleFlag(@RequestParam String publicCode, @RequestParam Integer useFlag) throws WxErrorException,CommonException {
-        if (wxReplyService.replyRuleFlag(publicCode,useFlag))
+    public CommonResult replyRuleFlag(@RequestParam String publicCode, @RequestParam Integer useFlag) throws WxErrorException, CommonException {
+
+        if (wxReplyService.replyRuleFlag(publicCode,useFlag)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-3. 添加关键词规则
@@ -157,55 +147,61 @@ public class WxReplyController {
     //    3-4. 删除关键词规则（逻辑）
     @GetMapping("/deleteRule")
     public CommonResult deleteRule(@RequestParam String ruleCode) throws WxErrorException {
-        if (wxReplyService.deleteRule(ruleCode))
+        if (wxReplyService.deleteRule(ruleCode)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
-    //    3-4.删除关键词规则（物理）
+    //    3-4.删除关键词规则（物理)
     @GetMapping("/fDeleteRule")
-    public CommonResult FDeleteRule(@RequestParam String ruleCode) throws WxErrorException {
-        if (wxReplyService.FDeleteRule(ruleCode))
+    public CommonResult fDeleteRule(@RequestParam String ruleCode) throws WxErrorException {
+        if (wxReplyService.fDeleteRule(ruleCode)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-4-1. 批量删除关键词规则（逻辑）
     @GetMapping("/deleteRuleBatch")
     public CommonResult deleteRuleBatch(@RequestParam String[] ruleCodes) throws WxErrorException{
-        if (wxReplyService.deleteRuleBatch(ruleCodes))
+        if (wxReplyService.deleteRuleBatch(ruleCodes)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-4-1. 批量删除关键词规则（物理）
-    @GetMapping("/fdeleteRuleBatch")
-    public CommonResult FDeleteRuleBatch(@RequestParam String[] ruleCodes) throws WxErrorException{
-        if (wxReplyService.FDeleteRuleBatch(ruleCodes))
+    @GetMapping("/fDeleteRuleBatch")
+    public CommonResult fDeleteRuleBatch(@RequestParam String[] ruleCodes) throws WxErrorException{
+        if (wxReplyService.fDeleteRuleBatch(ruleCodes)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-4-2. 删除关键词（逻辑）
     @GetMapping("/deleteKeyword")
     public CommonResult deleteKeyword(@RequestParam String keywordCode)throws WxErrorException {
-        if (wxReplyService.deleteKeyword(keywordCode))
+        if (wxReplyService.deleteKeyword(keywordCode)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-6. 修改关键词规则
     @PostMapping("/updateRule")
     public CommonResult editRule(@RequestBody @Valid WxReplyRule wxReplyRule) throws WxErrorException,CommonException {
-        if (wxReplyService.updateRule(wxReplyRule))
+        if (wxReplyService.updateRule(wxReplyRule)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
 
@@ -213,22 +209,22 @@ public class WxReplyController {
     @Deprecated
     @PostMapping("/updateKeywordPatch")
     public CommonResult updateKeywordPatch(@RequestBody @Valid List<WxReplyKeyword> lists) throws WxErrorException {
-        if (wxReplyService.updateKeywordBatch(lists))
+        if (wxReplyService.updateKeywordBatch(lists)) {
             return ResultUtil.success();
-        else
+        } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     //    3-7. 开启、关闭一个关键词回复开关
     @PostMapping("/singleRuleFlag")
     public CommonResult updateRuleFlag(@RequestParam String ruleCode, @RequestParam int useFlag) throws WxErrorException,CommonException {
-        if (wxReplyService.updateRuleFlag(ruleCode,useFlag)) return ResultUtil.success();
-        else return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        if (wxReplyService.updateRuleFlag(ruleCode,useFlag)) {
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
 
     }
-    //   ces
-    @GetMapping("/test")
-    public CommonResult getKeywordPage(@RequestParam String publicCode) throws WxErrorException {
-        return ResultUtil.success(wxReplyService.test(publicCode));
-    }
+
 }

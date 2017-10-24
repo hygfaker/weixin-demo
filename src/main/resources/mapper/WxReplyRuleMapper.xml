@@ -189,13 +189,13 @@
     AND 1=1
   </delete>
 
-  <update id="FDeleteByPrimaryKey" parameterType="java.lang.String">
+  <update id="fDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from  MP_YY_REP_RULE
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
     AND 1=1
   </update>
 
-  <delete id="FDeleteBatch" parameterType="java.util.Arrays">
+  <delete id="fDeleteBatch" parameterType="java.util.Arrays">
     delete from MP_YY_REP_RULE
     where RULE_CODE IN
     <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">

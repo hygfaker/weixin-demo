@@ -58,7 +58,7 @@ public class WxExceptionHandler {
             WxErrorException exception = (WxErrorException)e;
 
             String msg = WxErrorMsg.errorMsg(exception.getError().getErrorCode());
-            if (msg.equals("unknown")){
+            if ("unknown".equals(msg)){
                 msg = exception.getError().getErrorMsg();
             }
             return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);

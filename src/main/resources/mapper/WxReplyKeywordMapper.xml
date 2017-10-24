@@ -72,17 +72,17 @@
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
 
-  <delete id="FDeleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="fDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_REP_KEYWORD
     where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="FDeleteByRuleCode" parameterType="java.lang.String">
+  <delete id="fDeleteByRuleCode" parameterType="java.lang.String">
     delete from MP_YY_REP_KEYWORD
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="FDeleteByRuleCodeBatch" parameterType="java.lang.String">
+  <delete id="fDeleteByRuleCodeBatch" parameterType="java.lang.String">
     delete from  MP_YY_REP_KEYWORD
     where RULE_CODE IN
     <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">

@@ -1,5 +1,6 @@
 package com.minstone.wechat.api.imp;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.wechat.api.WxReplyService;
 import com.minstone.wechat.common.CommonException;
@@ -11,6 +12,7 @@ import com.minstone.wechat.domain.WxReply;
 import com.minstone.wechat.domain.WxReplyKeyword;
 import com.minstone.wechat.domain.WxReplyRule;
 import com.minstone.wechat.common.ResultEnum;
+import com.minstone.wechat.utils.ResultUtil;
 import com.minstone.wechat.utils.code.IdGen;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
@@ -98,6 +100,44 @@ public class WxReplyServiceImpl implements WxReplyService {
             }
         }
     }
+
+    /**
+     *  2.添加回复内容,添加的时候应该判断数据库是否有 public_code 和 reply_type 是否有重复
+     *  用于关注回复、非关键词回复
+     *
+     * @param publicCode 公众号主键
+     * @param content   回复的内容
+     * @param replyType 消息回复类型。0为关注时回复，1为非关键词消息默认回复，2为关键词回复。
+     * @return
+     * @throws WxErrorException
+     */
+        @Override
+        public String addReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
+            // 查询公众号是否存在
+            if (wxPublicDao.selectPublicCode(publicCode) == null){
+                logger.error("该公众号不存在");
+                throw new CommonException(ResultEnum.PARAM_ERROR,"该公众号不存在");
+            }else{
+                List<WxReply> selectList= wxReplyDao.selectByPulCodeAndReplyType(publicCode,replyType);
+                if (selectList.size() != 0){
+                    if (wxReplyDao.updateContent(publicCode,content,replyType) < 1){
+                        logger.error("更新公众号信息出错");
+                        throw new CommonException(ResultEnum.SERVER_ERROR,"更新公众号信息出错");
+                    }
+                    logger.info("更新公众号信息成功");
+                    return selectList.get(0).getReplyCode();
+                }else {
+                    WxReply wxReply = new WxReply(publicCode,content,replyType);
+                    if (wxReplyDao.insert(wxReply) < 1){
+                        logger.error("保存公众号信息出错");
+                        throw new CommonException(ResultEnum.SERVER_ERROR,"保存公众号信息出错");
+                    }
+                    logger.info("保存公众号信息出错");
+                    return wxReply.getReplyCode();
+                }
+            }
+        }
+
     /**
      *
      * 3.修改开关。
@@ -108,26 +148,41 @@ public class WxReplyServiceImpl implements WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    @Override
-    public boolean updateReplyFlag(String publicCode, Integer useFlag, Integer replyType) throws WxErrorException{
-        if (useFlag !=0 && useFlag != 1){
-            throw new CommonException(400,"【useFlag】参数只能为 0 或者 1");
-        }
-        WxReply selectResult = this.getReplyByPubCodeAndReplyType(publicCode,replyType);
-        if (selectResult == null){  // 回复信息不存在的时候
-            throw new CommonException(404,"该公众号不存在");
-        }else {
-            if (wxReplyDao.updateReplyFlag(publicCode,replyType,useFlag) < 1){
-                logger.error("开启/关闭回复开关时出错");
-                return false;
+        @Override
+        public boolean updateReplyFlag(String publicCode, Integer useFlag, Integer replyType) throws WxErrorException{
+            if (useFlag !=0 && useFlag != 1){
+                throw new CommonException(400,"【useFlag】参数只能为 0 或者 1");
+            }
+            WxReply selectResult = this.getReplyByPubCodeAndReplyType(publicCode,replyType);
+            if (selectResult == null){  // 回复信息不存在的时候
+                throw new CommonException(404,"该公众号不存在");
             }else {
-                logger.info("开启/关闭回复开关成功");
+                if (wxReplyDao.updateReplyFlag(publicCode,replyType,useFlag) < 1){
+                    logger.error("开启/关闭回复开关时出错");
+                    return false;
+                }else {
+                    logger.info("开启/关闭回复开关成功");
+                    return true;
+                }
+            }
+        }
+
+    /**
+     *  4-8.物理删除关键词
+     * @param keywordCode 关键词主键
+     * @return
+     * @throws WxErrorException
+     */
+        @Override
+        public boolean fDeleteKeyword(String keywordCode) throws WxErrorException,CommonException {
+            if (wxReplyKeywordDao.fDeleteByPrimaryKey(keywordCode) < 1){
+                logger.error("(物理)删除关键词出错");
+                return false;
+            }else{
+                logger.info("(物理)删除关键词成功：keywordCode = " + keywordCode);
                 return true;
             }
         }
-    }
-
-
 
     /**
      * 3-1.开启/关闭，关注时回复
@@ -142,7 +197,6 @@ public class WxReplyServiceImpl implements WxReplyService {
         return this.updateReplyFlag(publicCode,useFlag,0);
     }
 
-
     /**
      * 获取关键词规则下的所有关键词（包含删除）
      *
@@ -154,9 +208,11 @@ public class WxReplyServiceImpl implements WxReplyService {
     @Override
     public List<WxReplyKeyword> selectByRuleCode(String ruleCode) throws WxErrorException, CommonException {
         List<WxReplyKeyword> selectResult = wxReplyKeywordDao.selectByRuleCode(ruleCode);
-        if (selectResult.size() > 0)
+        if (selectResult.size() > 0) {
             return selectResult;
-        else throw new CommonException(404,"该关键词规则不存在");
+        } else {
+            throw new CommonException(404, "该关键词规则不存在");
+        }
     }
     /**
      * 获取单个关键词规则
@@ -168,9 +224,11 @@ public class WxReplyServiceImpl implements WxReplyService {
     @Override
     public WxReplyRule getReplyRule(String ruleCode) throws WxErrorException,CommonException {
         List<WxReplyRule> selectResult = wxReplyRuleDao.selectByPrimaryKey(ruleCode);
-        if (selectResult.size() > 0)
+        if (selectResult.size() > 0) {
             return selectResult.get(0);
-        else throw new CommonException(404,"该关键词规则不存在");
+        } else {
+            throw new CommonException(404, "该关键词规则不存在");
+        }
     }
     /**
      * 添加公众号的时候，初始化【消息回复】数据
@@ -180,6 +238,7 @@ public class WxReplyServiceImpl implements WxReplyService {
     public void initData() throws WxErrorException {
 
     }
+
     /**
      * 1.根据主键获取回复内容
      *
@@ -187,6 +246,7 @@ public class WxReplyServiceImpl implements WxReplyService {
      * @return
      * @throws WxErrorException
      */
+    @Deprecated
     @Override
     public WxReply getInfoByReplyCode(@RequestParam String replyCode) throws WxErrorException{
         return wxReplyDao.selectByPrimaryKey(replyCode);
@@ -225,26 +285,39 @@ public class WxReplyServiceImpl implements WxReplyService {
     public List<WxReply> getNormalInfo(String publicCode) throws WxErrorException {
         return this.getInfo(publicCode,1);
     }
+
     /**
      * 1-4.分页获取关键词回复内容列表
      *
      * @param publicCode  公众号主键
-     * @param currentPage
-     * @param pageSize    @return
+     * @param currentPage 当前页
+     * @param pageSize    每页显示数量
+     * @return
      * @throws WxErrorException
      */
     @Override
     public PageInfo<WxReplyRule> getKeywordPage(String publicCode, int currentPage, int pageSize) throws WxErrorException {
 
+        if (currentPage < 0 ){
+            logger.error("【currentPage】参数必须大于0");
+            throw new CommonException(ResultEnum.PARAM_ERROR,"【currentPage】参数必须大于0");
+        }
+        if (pageSize < 0 ){
+            logger.error("【pageSize】参数必须大于0");
+            throw new CommonException(ResultEnum.PARAM_ERROR,"【pageSize】参数必须大于0");
+        }
+
         // 查找公众号是否存在
         String selectResult = wxPublicDao.selectPublicCode(publicCode);
-        if (selectResult != null){
+        if (selectResult == null){
+            logger.error("该公众号不存在");
+            throw new CommonException(ResultEnum.PARAM_ERROR,"该公众号不存在");
+
+        }else {
+            PageHelper.startPage(currentPage,pageSize);
             List<WxReplyRule> list = wxReplyRuleDao.selectAll(publicCode);
             PageInfo<WxReplyRule> page = new PageInfo<>(list);
-
             return page;
-        }else {
-            return null;
         }
     }
     //    根据公众号主键和回复类型获取回复内容。获取列表，防止数据库数据混乱，多条数据相同
@@ -256,43 +329,9 @@ public class WxReplyServiceImpl implements WxReplyService {
             return null;
         }
     }
-    /**
-     *  2.添加回复内容,添加的时候应该判断数据库是否有 public_code 和 reply_type 是否有重复
-     *  用于关注回复、非关键词回复
-     *
-     * @param publicCode 公众号主键
-     * @param content   回复的内容
-     * @param replyType 消息回复类型。0为关注时回复，1为非关键词消息默认回复，2为关键词回复。
-     * @return
-     * @throws WxErrorException
-     */
-    @Override
-    public String addReplyContent(@RequestParam String publicCode , @RequestParam String content , @RequestParam Integer replyType) throws WxErrorException{
-        // 查询公众号是否存在
-        if (wxPublicDao.selectPublicCode(publicCode) == null){
-            logger.error("该公众号不存在");
-            throw new CommonException(404,"该公众号不存在");
-        }else{
-            List<WxReply> selectList= wxReplyDao.selectByPulCodeAndReplyType(publicCode,replyType);
-            if (selectList.size() != 0){  // 更新公众号信息
-                if (wxReplyDao.updateContent(publicCode,content,replyType) < 1){
-                    logger.error("更新公众号信息出错");
-                    throw new CommonException(ResultEnum.SERVER_ERROR,"更新公众号信息出错");
-                }
-                logger.info("更新公众号信息成功");
-                return selectList.get(0).getReplyCode();
-            }else {  // 添加公众号信息
-                WxReply wxReply = new WxReply(publicCode,content,replyType);
-                if (wxReplyDao.insert(wxReply) < 1){
-                    logger.error("保存公众号信息出错");
-                    throw new CommonException(ResultEnum.SERVER_ERROR,"保存公众号信息出错");
-                }
-                logger.info("保存公众号信息出错");
-                return wxReply.getReplyCode();
-            }
 
-        }
-    }
+
+
     /**
      * 2-1.添加、修改关注时回复内容
      *
@@ -328,7 +367,9 @@ public class WxReplyServiceImpl implements WxReplyService {
     public String addReplyRule(WxReplyRule replyRule) throws WxErrorException,CommonException {
 
         // 查询公众号是否存在
-        if (wxPublicDao.selectPublicCode(replyRule.getPublicCode()) == null) throw new CommonException(404,"该公众号不存在");
+        if (wxPublicDao.selectPublicCode(replyRule.getPublicCode()) == null) {
+            throw new CommonException(404, "该公众号不存在");
+        }
 
         List<WxReplyKeyword> keywords = replyRule.getKeywords();
         String ruleCode = IdGen.uuid();
@@ -347,9 +388,11 @@ public class WxReplyServiceImpl implements WxReplyService {
             replyRule.setDelFlag(0);
             insertRuleResult = wxReplyRuleDao.insertSelective(replyRule); // 保存关键词规则
         }
-        if (insertRuleResult > 0)
+        if (insertRuleResult > 0) {
             return ruleCode;
-        else throw new CommonException(500,"服务器异常");
+        } else {
+            throw new CommonException(500, "服务器异常");
+        }
 
     }
 
@@ -497,12 +540,12 @@ public class WxReplyServiceImpl implements WxReplyService {
      * @throws WxErrorException
      */
     @Override
-    public boolean FDeleteRule(String ruleCode) throws WxErrorException,CommonException {
-        if (wxReplyKeywordDao.FDeleteByRuleCode(ruleCode) < 1) {
+    public boolean fDeleteRule(String ruleCode) throws WxErrorException,CommonException {
+        if (wxReplyKeywordDao.fDeleteByRuleCode(ruleCode) < 1) {
 //            throw new CommonException(500,"服务器异常，删除关键词出错");
             logger.error("（物理）删除关键词出错");
             return false;
-        }else if (wxReplyRuleDao.FDeleteByPrimaryKey(ruleCode) < 1) { // 删除规则
+        }else if (wxReplyRuleDao.fDeleteByPrimaryKey(ruleCode) < 1) { // 删除规则
 //            throw new CommonException(500,"服务器异常，删除关键词规则出错");
             logger.error("（物理）删除关键词规则出错");
             return false;
@@ -536,22 +579,7 @@ public class WxReplyServiceImpl implements WxReplyService {
             return true;
         }
     }
-    /**
-     *  4-8.物理删除关键词
-     * @param keywordCode 关键词主键
-     * @return
-     * @throws WxErrorException
-     */
-    @Override
-    public boolean FDeleteKeyword(String keywordCode) throws WxErrorException,CommonException {
-        if (wxReplyKeywordDao.FDeleteByPrimaryKey(keywordCode) < 1){
-            logger.error("(物理)删除关键词出错");
-            return false;
-        }else{
-            logger.info("(物理)删除关键词成功：keywordCode = " + keywordCode);
-            return true;
-        }
-    }
+
     /**
      * 5-4.（逻辑）批量删除关键词规则
      *
@@ -579,11 +607,11 @@ public class WxReplyServiceImpl implements WxReplyService {
      * @return
      * @throws WxErrorException
      */
-    public boolean FDeleteRuleBatch(String[] ruleCodes) throws WxErrorException,CommonException {
-        if (wxReplyRuleDao.FDeleteBatch(ruleCodes) < 1){
+    public boolean fDeleteRuleBatch(String[] ruleCodes) throws WxErrorException,CommonException {
+        if (wxReplyRuleDao.fDeleteBatch(ruleCodes) < 1){
             logger.error("（物理）批量删除关键词规则出错");
             return false;
-        }else if (wxReplyKeywordDao.FDeleteByRuleCodeBatch(ruleCodes) < 1) {
+        }else if (wxReplyKeywordDao.fDeleteByRuleCodeBatch(ruleCodes) < 1) {
             logger.error("（物理）批量删除关键词规则出错");
             return false;
         }else{
@@ -592,10 +620,7 @@ public class WxReplyServiceImpl implements WxReplyService {
         }
     }
 
-    @Override
-    public List<WxReplyRule> test(String publicCode) throws WxErrorException {
-        return wxReplyRuleDao.selectTest(publicCode);
-    }
+
 
 }
 
