@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.minstone.wechat.dao.WxReplyRuleDao">
-  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxReplyRule">
+<mapper namespace="com.minstone.mp.wechat.dao.WxReplyRuleDao">
+  <resultMap id="BaseResultMap" type="com.minstone.mp.wechat.domain.WxReplyRule">
     <id column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode" />
     <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
     <result column="RULE_NAME" jdbcType="VARCHAR" property="ruleName" />
@@ -15,7 +15,7 @@
     <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
     <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
     <!-- keyword 表的 DEL_FLAG、RULECODE 使用别名 -->
-    <collection property="keywords" ofType="com.minstone.wechat.domain.WxReplyKeyword" autoMapping="true">
+    <collection property="keywords" ofType="com.minstone.mp.wechat.domain.WxReplyKeyword" autoMapping="true">
       <id property="keywordCode" column="KEYWORD_CODE" jdbcType="VARCHAR"/>
       <result property="ruleCode" column="RULECODE" jdbcType="VARCHAR"/>
       <result property="keyword" column="KEYWORD" jdbcType="VARCHAR"/>
@@ -24,7 +24,7 @@
     </collection>
   </resultMap>
 
-  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxReplyRule">
+  <insert id="insertSelective" parameterType="com.minstone.mp.wechat.domain.WxReplyRule">
     insert into MP_YY_REP_RULE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="ruleCode != null">
@@ -98,7 +98,7 @@
     </trim>
   </insert>
 
-  <insert id="insertBatch" parameterType="com.minstone.wechat.domain.WxReplyRule">
+  <insert id="insertBatch" parameterType="com.minstone.mp.wechat.domain.WxReplyRule">
     insert into MP_YY_REP_RULE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="ruleCode != null">
@@ -226,7 +226,7 @@
     AND r.DEL_FLAG = 0
   </select>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxReplyRule">
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mp.wechat.domain.WxReplyRule">
     update MP_YY_REP_RULE
     <set>
       <if test="publicCode != null">

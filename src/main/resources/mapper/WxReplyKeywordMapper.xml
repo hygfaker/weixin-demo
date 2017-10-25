@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.wechat.dao.WxReplyKeywordDao">
+<mapper namespace="com.minstone.mp.wechat.dao.WxReplyKeywordDao">
 
-  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxReplyKeyword">
+  <resultMap id="BaseResultMap" type="com.minstone.mp.wechat.domain.WxReplyKeyword">
     <id column="KEYWORD_CODE" jdbcType="VARCHAR" property="keywordCode" />
     <result column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode" />
     <result column="KEYWORD" jdbcType="VARCHAR" property="keyword" />
@@ -14,7 +14,7 @@
     KEYWORD_CODE, RULE_CODE, KEYWORD, MATCH_FLAG, DEL_FLAG
   </sql>
 
-  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
+  <insert id="insertSelective" parameterType="com.minstone.mp.wechat.domain.WxReplyKeyword">
     insert into MP_YY_REP_KEYWORD
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="keywordCode != null">
@@ -52,7 +52,7 @@
     </trim>
   </insert>
 
-  <insert id="insertBatch" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
+  <insert id="insertBatch" parameterType="com.minstone.mp.wechat.domain.WxReplyKeyword">
     insert into MP_YY_REP_KEYWORD (<include refid="Base_Column_List"/>)
     values
     <foreach collection="list" item="item" index="index" separator=",">
@@ -108,7 +108,7 @@
     1=1
   </select>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mp.wechat.domain.WxReplyKeyword">
     update MP_YY_REP_KEYWORD
     <set>
       <if test="keyword != null">
@@ -124,7 +124,7 @@
     where KEYWORD_CODE = #{keywordCode,jdbcType=VARCHAR}
   </update>
 
-  <update id="updateBatch" parameterType="com.minstone.wechat.domain.WxReplyKeyword">
+  <update id="updateBatch" parameterType="com.minstone.mp.wechat.domain.WxReplyKeyword">
     UPDATE MP_YY_REP_KEYWORD
     <trim prefix="set" suffixOverrides=",">
       <trim prefix = "KEYWORD = case" suffix="end,">

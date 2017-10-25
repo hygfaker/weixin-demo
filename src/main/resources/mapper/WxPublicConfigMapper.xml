@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.wechat.dao.WxPublicConfigMapper">
-  <resultMap id="BaseResultMap" type="com.minstone.wechat.domain.WxPublicConfig">
+<mapper namespace="com.minstone.mp.wechat.dao.WxPublicConfigMapper">
+  <resultMap id="BaseResultMap" type="com.minstone.mp.wechat.domain.WxPublicConfig">
     <id column="CONFIG_CODE" jdbcType="VARCHAR" property="configCode" />
     <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
     <result column="CUSMENU_FLAG" jdbcType="INTEGER" property="cusmenuFlag" />
@@ -21,13 +21,13 @@
     delete from MP_YY_PUB_CONFIG
     where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.minstone.wechat.domain.WxPublicConfig">
+  <insert id="insert" parameterType="com.minstone.mp.wechat.domain.WxPublicConfig">
     insert into MP_YY_PUB_CONFIG (CONFIG_CODE, PUBLIC_CODE, CUSMENU_FLAG, 
       TO_KEFU_FLAG, PUSH_FLAG)
     values (#{configCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{cusmenuFlag,jdbcType=INTEGER}, 
       #{toKefuFlag,jdbcType=INTEGER}, #{pushFlag,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.minstone.wechat.domain.WxPublicConfig">
+  <insert id="insertSelective" parameterType="com.minstone.mp.wechat.domain.WxPublicConfig">
     insert into MP_YY_PUB_CONFIG
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="configCode != null">
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.wechat.domain.WxPublicConfig">
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mp.wechat.domain.WxPublicConfig">
     update MP_YY_PUB_CONFIG
     <set>
       <if test="publicCode != null">
@@ -82,7 +82,7 @@
     </set>
     where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.minstone.wechat.domain.WxPublicConfig">
+  <update id="updateByPrimaryKey" parameterType="com.minstone.mp.wechat.domain.WxPublicConfig">
     update MP_YY_PUB_CONFIG
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       CUSMENU_FLAG = #{cusmenuFlag,jdbcType=INTEGER},
