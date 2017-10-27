@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.mp.wechat.dao.WxPublicDao">
+<mapper namespace="com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao">
 
-  <resultMap id="BaseResultMap" type="com.minstone.mp.wechat.domain.WxPublic">
+  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
       <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
       <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
       <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName" />
@@ -53,11 +53,17 @@
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update MP_YY_PUBLIC
+    set DEL_FLAG = 1
+    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <insert id="insert" parameterType="com.minstone.mp.wechat.domain.WxPublic">
+  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, 
       PUBLIC_NICKNAME, APP_ID, APP_SERCT, 
       TOKEN, AESKEY, URL, 
@@ -72,7 +78,7 @@
       #{imgCode,jdbcType=VARCHAR})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.minstone.mp.wechat.domain.WxPublic">
+  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     insert into MP_YY_PUBLIC
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="publicCode != null">
@@ -175,7 +181,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mp.wechat.domain.WxPublic">
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     update MP_YY_PUBLIC
     <set>
       <if test="openId != null">
@@ -226,7 +232,7 @@
     </set>
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.minstone.mp.wechat.domain.WxPublic">
+  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     update MP_YY_PUBLIC
     set OPEN_ID = #{openId,jdbcType=VARCHAR},
       PUBLIC_NAME = #{publicName,jdbcType=VARCHAR},

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.minstone.mp.wechat.dao.WxMessagePushMapper">
+<mapper namespace="com.minstone.mobile.mp.wechat.message.dao.WxMessagePushDao">
 
-  <resultMap id="BaseResultMap" type="com.minstone.mp.wechat.domain.WxMessagePush">
+  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
     <id column="PUSH_CODE" jdbcType="VARCHAR" property="pushCode" />
     <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
     <result column="PUSH_NAME" jdbcType="VARCHAR" property="pushName" />
@@ -35,7 +35,7 @@
     where PUSH_CODE = #{pushCode,jdbcType=VARCHAR}
   </delete>
 
-  <insert id="insert" parameterType="com.minstone.mp.wechat.domain.WxMessagePush">
+  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
     insert into MP_YY_MSG_PUSH (PUSH_CODE, PUBLIC_CODE, PUSH_NAME, 
       LATITUDE, LONGITUDE, RADIUS, 
       CONTENT, PUSH_FLAG, CREATOR, 
@@ -48,7 +48,7 @@
       #{delFlag,jdbcType=INTEGER})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.minstone.mp.wechat.domain.WxMessagePush">
+  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
     insert into MP_YY_MSG_PUSH
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="pushCode != null">
@@ -134,7 +134,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mp.wechat.domain.WxMessagePush">
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
     update MP_YY_MSG_PUSH
     <set>
       <if test="publicCode != null">
@@ -177,7 +177,7 @@
     where PUSH_CODE = #{pushCode,jdbcType=VARCHAR}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.minstone.mp.wechat.domain.WxMessagePush">
+  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
     update MP_YY_MSG_PUSH
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       PUSH_NAME = #{pushName,jdbcType=VARCHAR},

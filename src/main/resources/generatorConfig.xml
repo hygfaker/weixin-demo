@@ -23,7 +23,7 @@
         </jdbcConnection>
 
         <!-- 生成 Model 对象路径配置 -->
-        <javaModelGenerator targetPackage="com.minstone.mp.wechat.domain" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.minstone.mobile.mp.wechat.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -34,7 +34,7 @@
         </sqlMapGenerator>
 
         <!-- 生成 DAO 的类文件路径配置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.minstone.mp.wechat.dao" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.minstone.mobile.mp.wechat.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
