@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by huangyg on 2017/10/24.
  */
 @Service
-@Transactional
 public interface IWxMessagePushService {
 
     // TODO: 2017/10/24

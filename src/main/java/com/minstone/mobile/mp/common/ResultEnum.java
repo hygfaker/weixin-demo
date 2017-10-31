@@ -1,7 +1,9 @@
 package com.minstone.mobile.mp.common;
 
 /**
- * Created by huangyg on 2017/8/9.
+ * @author huangyg
+ * @description
+ * @since 2017/8/9.
  */
 public enum ResultEnum {
 
@@ -11,24 +13,22 @@ public enum ResultEnum {
     UNAUTHORIZED(401,"缺失鉴权信息"),
     FORBIDDEN(403,"操作不允许"),
     NOTFOUND_ERROR(404,"资源无法访问/不存在"),
-    SERVER_ERROR(500,"服务器异常"),
+    SERVER_ERROR(500,"服务器异常");
 
-//    DAO操作返回状态及描述
-    PUBLIC_NOTFOUND(-9999,"找不到该公众号");
 
     private int code;
-    private String msg;
+    private String message;
 
     ResultEnum(int code, String msg) {
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
     }
 
     public int getCode() {
         return code;
     }
     public String getMsg() {
-        return msg;
+        return message;
     }
 
 }

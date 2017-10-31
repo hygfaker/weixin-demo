@@ -26,21 +26,28 @@ public class WxPublic {
         this.setDelFlag((Integer) reqMap.get("delFlag"));
         this.setSystemCode((String) reqMap.get("systemCode"));
     }
-    @NotEmpty
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
+
     @NotNull
     private String openId;
-    @NotEmpty
+
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicName;
-    @NotNull(message = "publicNickname 不能为空")
+
+    @NotEmpty(message = "【publicNickname】参数缺失（且内容不为空）")
     private String publicNickname;
-    @NotEmpty
+
+    @NotEmpty(message = "【appId】参数缺失（且内容不为空）")
     private String appId;
-    @NotEmpty
+
+    @NotEmpty(message = "【appSerct】参数缺失（且内容不为空）")
     private String appSerct;
-    @NotEmpty
+
+    @NotEmpty(message = "【token】参数缺失（且内容不为空）")
     private String token;
-    @NotEmpty
+
+    @NotEmpty(message = "【aeskey】参数缺失（且内容不为空）")
     private String aeskey;
 
     private String url;
@@ -56,7 +63,8 @@ public class WxPublic {
     private Integer delFlag;
 
     private String systemCode;
-    @NotEmpty
+
+    @NotEmpty(message = "【publicNickname】参数缺失（且内容不为空）")
     private String imgCode;
 
     public String getPublicCode() {

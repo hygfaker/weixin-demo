@@ -21,6 +21,14 @@ public class CommonException extends RuntimeException {
         this.code = code;
         this.msg = String.format(msgFormat, args);
     }
+
+    public CommonException(DaoEnum daoEnum) {
+        super(daoEnum.getMessage());
+        this.msg = daoEnum.getMessage();
+    }
+
+
+
     public CommonException(ResultEnum resultEnum) {
         super(resultEnum.getMsg());
         this.code = resultEnum.getCode();
@@ -36,7 +44,7 @@ public class CommonException extends RuntimeException {
     public CommonException() {
     }
 
-    public String getMsg() {
+    public String getMessage() {
         return this.msg;
     }
 

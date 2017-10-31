@@ -201,6 +201,7 @@
     <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
+    AND 1=
   </delete>
 
   <!-- keyword 表的 DEL_FLAG、RULE_CODE 使用别名 -->

@@ -36,4 +36,5 @@ public class WxMpApplication {
         return pageHelper;
     }
 
+
 }

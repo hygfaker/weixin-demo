@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,12 +38,18 @@ import java.util.Map;
 @RequestMapping("public")
 public class WxPublicController{
 
-    //todo
+    // TODO: 2017/10/26
     // 添加公众号
-    // 获取某个公众号
-    // 获取所有公众号
-    // 编辑公众号
-    // 解除绑定公众号
+
+    // 逻辑删除公众号
+    // 物理删除公众号
+    // 批量逻辑删除公众号
+    // 批量物理删除公众号
+
+    // 修改公众号
+
+    // 获取公众号
+    // 获取公众号分页
 
     @Autowired
     private WxMpService service;
@@ -57,32 +65,34 @@ public class WxPublicController{
         return  ResultUtil.success(publicService.add(reqMap,publicHeadImg,publicQrcode));
     }
 
-    // 获取某个公众号并切换到当前公众号
-    @GetMapping("/get")
-    public CommonResult getPublicAccount(@RequestParam String publicCode) throws WxErrorException, IOException{
-
-        WxPublic wxPublic = publicService.get(publicCode);
-        if (wxPublic == null){
-            return ResultUtil.failure(ResultEnum.NOTFOUND_ERROR);
-        }else{
-            // 切换公众号
-            WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
-            wxConfigProvider.setAppId(wxPublic.getAppId());
-            wxConfigProvider.setSecret(wxPublic.getAppSerct());
-            wxConfigProvider.setToken(wxPublic.getToken());
-            wxConfigProvider.setAesKey(wxPublic.getAeskey());
-
-            service.setWxMpConfigStorage(wxConfigProvider);
-            return ResultUtil.success(wxPublic);
-        }
-
-    }
-
+    // 逻辑删除公众号
     @GetMapping("/delete")
-    public CommonResult delete(@RequestBody WxPublic wxPublic) throws WxErrorException, IOException{
+    public CommonResult delete(WxPublic wxPublic) throws WxErrorException, IOException{
         return ResultUtil.success(publicService.delete(wxPublic));
 
     }
+
+    // 物理删除公众号
+    @GetMapping("/forceDelete")
+    public CommonResult forceDelete(WxPublic wxPublic) throws WxErrorException, IOException{
+        return ResultUtil.success(publicService.forceDelete(wxPublic));
+
+    }
+
+    // 批量逻辑删除公众号
+    @GetMapping("/deleteBatch")
+    public CommonResult deleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException{
+        return ResultUtil.success(publicService.deleteBatch(wxPublics));
+
+    }
+
+    // 批量物理删除公众号
+    @GetMapping("/forceDeleteBatch")
+    public CommonResult forceDeleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException{
+        return ResultUtil.success(publicService.forceDeleteBatch(wxPublics));
+
+    }
+
 
     // 获取所有公众号
     @GetMapping("/getAll")
@@ -99,6 +109,19 @@ public class WxPublicController{
     }
 
 
+    @GetMapping("/get")
+    public CommonResult getPublicAccount(WxPublic wxPublic) throws WxErrorException, IOException{
+
+        WxPublic selectWxPublic = publicService.get(wxPublic);
+        // 切换公众号
+        WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
+        wxConfigProvider.setAppId(selectWxPublic.getAppId());
+        wxConfigProvider.setSecret(selectWxPublic.getAppSerct());
+        wxConfigProvider.setToken(selectWxPublic.getToken());
+        wxConfigProvider.setAesKey(selectWxPublic.getAeskey());
+        service.setWxMpConfigStorage(wxConfigProvider);
+        return ResultUtil.success(selectWxPublic);
+    }
 
     @GetMapping("/downloadIcon")
     public void downloadIcon(String imgCode, Integer imgType, HttpServletResponse response) throws WxErrorException, IOException {
@@ -119,7 +142,6 @@ public class WxPublicController{
         os.flush();
         os.close();
     }
-
     public void showIcon(String imgCode, Integer imgType) throws WxErrorException, IOException {
 
     }

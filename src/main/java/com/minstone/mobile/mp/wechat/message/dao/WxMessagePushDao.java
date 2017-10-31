@@ -4,8 +4,8 @@ import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
-@Component
 @Mapper
+@Component
 public interface WxMessagePushDao {
 
     int deleteByPrimaryKey(String pushCode);

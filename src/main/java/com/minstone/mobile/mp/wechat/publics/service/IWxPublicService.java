@@ -6,6 +6,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +28,8 @@ public interface IWxPublicService {
 
     // 获取公众号
     // 获取公众号分页
-    
+
+    // TODO: 2017/10/27
     /**
      * 添加公众号信息
      * @param reqMap 公众号信息
@@ -36,7 +38,6 @@ public interface IWxPublicService {
      * @return com.minstone.mobile.mp.common.CommonResult
      * @author huangyg
      */
-
     public WxPublic add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
     /**
@@ -46,35 +47,34 @@ public interface IWxPublicService {
      * @author huangyg
      *
      */
-    public int delete(WxPublic wxPublic) throws WxErrorException, IOException;
+    public boolean delete(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
      * 物理删除某个公众号
-     * @param publicCode 公众号主键
+     * @param wxPublic 公众号实体
      * @return int
      * @author huangyg
      *
      */
-    public int forceDelete(String publicCode) throws WxErrorException, IOException;
-
+    public boolean forceDelete(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
      * 逻辑删除某个公众号
-     * @批量param publicCode 公众号主键
+     * @批量param wxPublics 公众号实体数组
      * @return int
      * @author huangyg
      *
      */
-    public int deleteBatch(String[] publicCodes) throws WxErrorException, IOException;
+    public boolean deleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException;
 
     /**
      * 物理删除某个公众号
-     * @批量param publicCode 公众号主键
+     * @批量param publicCode 公众号实体数组
      * @return int
      * @author huangyg
      *
      */
-    public int forceDeleteBatch(String[] publicCodes) throws WxErrorException, IOException;
+    public boolean forceDeleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException;
 
     /**
      * 更新公众号信息
@@ -89,11 +89,11 @@ public interface IWxPublicService {
 
     /**
      * 获取某个公众号信息
-     * @param publicCode 公众号主键
+     * @param wxPublic 公众号实体
      *
      * @author huangyg
      */
-    public WxPublic get(String publicCode) throws WxErrorException, IOException;
+    public WxPublic get(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
      * 分页获取公众号信息

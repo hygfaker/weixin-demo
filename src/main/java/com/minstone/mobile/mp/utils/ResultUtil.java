@@ -131,22 +131,22 @@ public final class ResultUtil {
 
     }
 
-    /**
-     * DAO 操作统一在这里处理：对返回的数据做结果判断
-     * @param result dao操作返回结果
-     * @return
-     */
-    public static CommonResult returnResult(Integer result){
-        if (result > 0){
-            return success();
-        } else if (result == 0 || result == -1){     // 0表示 update 时候失败 ， -1表示 select 的时候没找到资源
-            return failure(ResultEnum.NOTFOUND_ERROR);
-        } else if (result == ResultEnum.PUBLIC_NOTFOUND.getCode()){
-            return failure(ResultEnum.NOTFOUND_ERROR);
-        } else{
-            return failure(ResultEnum.SERVER_ERROR);
-        }
-    }
+//    /**
+//     * DAO 操作统一在这里处理：对返回的数据做结果判断
+//     * @param result dao操作返回结果
+//     * @return
+//     */
+//    public static CommonResult returnResult(Integer result){
+//        if (result > 0){
+//            return success();
+//        } else if (result == 0 || result == -1){     // 0表示 update 时候失败 ， -1表示 select 的时候没找到资源
+//            return failure(ResultEnum.NOTFOUND_ERROR);
+//        } else if (result == ResultEnum.PUBLIC_NOTFOUND.getCode()){
+//            return failure(ResultEnum.NOTFOUND_ERROR);
+//        } else{
+//            return failure(ResultEnum.SERVER_ERROR);
+//        }
+//    }
 
 
 

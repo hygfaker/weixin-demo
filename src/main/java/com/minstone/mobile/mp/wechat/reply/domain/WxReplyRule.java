@@ -19,10 +19,13 @@ public class WxReplyRule {
     }
 
     private String ruleCode;
+
     @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
+
     @NotEmpty(message = "【ruleName】参数缺失（且内容不为空）")
     private String ruleName;
+
     @NotNull(message = "【useFlag】参数缺失（且内容不为空）")
     @Min(value = 0, message = "useFlag 的值只能为0或者为1")
     @Max(value = 1, message = "useFlag 的值只能为0或者为1")

@@ -9,6 +9,8 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,7 +44,7 @@ public class WxExceptionHandler {
         }
         if (e instanceof CommonException){
             CommonException exception = (CommonException)e;
-            String msg = exception.getMsg();
+            String msg = exception.getMessage();
             int code = exception.getCode();
             return ResultUtil.failure(code,msg);
         }
@@ -70,12 +72,16 @@ public class WxExceptionHandler {
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
 
-        }else if (e instanceof MissingServletRequestPartException){  // 控制器提交参数缺失
+        }else if (e instanceof MissingServletRequestPartException){  // Post 请求控制器提交参数缺失(@Valid 校验)
 
             MissingServletRequestPartException exception= (MissingServletRequestPartException)e;
             return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getMessage());
-        }
-        else{
+
+        }else if (e instanceof BindException){  // get 请求控制器提交参数缺失(@Valid 校验)
+            BindException exception= (BindException)e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getAllErrors().get(0).getDefaultMessage());
+
+        }else{
             logger.error("【系统异常】= {}",e);
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }

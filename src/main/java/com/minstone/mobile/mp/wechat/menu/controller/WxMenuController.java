@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.wechat.message.controller;
+package com.minstone.mobile.mp.wechat.menu.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.utils.ResultUtil;

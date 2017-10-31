@@ -41,7 +41,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @PostMapping("/add")
-    public CommonResult add(@RequestBody WxMessagePush wxMessagePush) throws WxErrorException {
+    public CommonResult add(WxMessagePush wxMessagePush) throws WxErrorException {
         return ResultUtil.success(wxMessagePushService.add(wxMessagePush));
     }
 
@@ -52,7 +52,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @GetMapping("/delete")
-    public CommonResult delete(@RequestBody WxMessagePush wxMessagePush){
+    public CommonResult delete(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -62,8 +62,8 @@ public class WxMessagePushController {
      * @return CommonResult
      * @author huangyg
      */
-    @GetMapping("/fDelete")
-    public CommonResult fDelete(@RequestBody WxMessagePush wxMessagePush){
+    @GetMapping("/forceDelete")
+    public CommonResult forceDelete(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -74,7 +74,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @GetMapping("/deleteBatch")
-    public CommonResult deleteBatch(@RequestBody WxMessagePush wxMessagePush){
+    public CommonResult deleteBatch(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -84,8 +84,8 @@ public class WxMessagePushController {
      * @return CommonResult
      * @author huangyg
      */
-    @GetMapping("/fDeleteBatch")
-    public CommonResult fDeleteBatch(@RequestBody WxMessagePush wxMessagePush){
+    @GetMapping("/forceDeleteBatch")
+    public CommonResult forceDeleteBatch(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -96,7 +96,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @PostMapping("/update")
-    public CommonResult update(@RequestBody WxMessagePush wxMessagePush){
+    public CommonResult update(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -107,7 +107,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @PostMapping("modifyPushFlag")
-    public CommonResult modifyPushFlag(@RequestBody WxMessagePush wxMessagePush){
+    public CommonResult modifyPushFlag(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 
@@ -118,7 +118,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @PostMapping("getPage")
-    public CommonResult getPage(@RequestBody WxMessagePush wxMessagePush){
+    public CommonResult getPage(WxMessagePush wxMessagePush){
         return ResultUtil.success();
     }
 }

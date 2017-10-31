@@ -34,9 +34,29 @@
     where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
   </delete>
 
+  <delete id="deleteBatch" parameterType="java.lang.String">
+    update MP_YY_PUB_IMG
+    set DEL_FLAG = 1
+    where IMG_CODE IN
+    <foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+    AND 1=1
+  </delete>
+
   <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_PUB_IMG
     where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
+  </delete>
+
+
+  <delete id="forceDeleteBatch" parameterType="java.lang.String">
+    delete from MP_YY_PUB_IMG
+    where IMG_CODE = IN
+    <foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+    AND 1=1
   </delete>
 
   <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicImg">
