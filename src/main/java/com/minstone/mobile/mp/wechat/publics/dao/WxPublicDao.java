@@ -17,9 +17,9 @@ public interface WxPublicDao {
 
     int forceDeleteByPrimaryKey(String publicCode);
 
-    int deleteBatch(String[] array);
+    int deleteBatch(String[] list);
 
-    int forceDeleteBatch(String[] array);
+    int forceDeleteBatch(String[] list);
 
     int insert(WxPublic record);
 

@@ -6,6 +6,7 @@ import com.minstone.mobile.mp.wechat.message.controller.WxMessagePushController;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.utils.code.IdGen;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessagePushDao;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class WxMessagePushServiceImpl implements IWxMessagePushService {
-    private static Logger logger = LoggerFactory.getLogger(WxMessagePushController.class);
+    private static Logger logger = LoggerFactory.getLogger(IWxMessagePushService.class);
 
     @Autowired
     private WxMessagePushDao wxMessagePushDao;
 
     @Override
-    public WxMessagePush add(WxMessagePush wxMessagePush) {
+    public WxMessagePush add(WxMessagePush wxMessagePush)  throws WxErrorException {
         // 构造 wxMessagePush 实体消息
         String pushCode = IdGen.uuid();
         wxMessagePush.setPushCode(pushCode);

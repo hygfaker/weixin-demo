@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.service;
 
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public interface IWxMessagePushService {
 
     // 分页查看定点推送
 
-    public WxMessagePush add(WxMessagePush wxMessagePush);
+    public WxMessagePush add(WxMessagePush wxMessagePush) throws WxErrorException;
 
 
 //    public int delete(WxMessagePush wxMessagePush);

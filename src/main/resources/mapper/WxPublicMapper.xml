@@ -58,8 +58,7 @@
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-
-  <delete id="deleteBatch" parameterType="java.lang.Arrays">
+  <delete id="deleteBatch" parameterType="java.util.Arrays">
     update MP_YY_PUBLIC
     set DEL_FLAG = 1
     where PUBLIC_CODE IN
@@ -69,13 +68,12 @@
     AND 1=1
   </delete>
 
-
   <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="forceDeleteBatch" parameterType="java.lang.Arrays">
+  <delete id="forceDeleteBatch" parameterType="java.util.Arrays">
     delete from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
     <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
@@ -83,7 +81,6 @@
     </foreach>
     AND 1=1
   </delete>
-
 
 
   <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
