@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+import javax.validation.ValidationException;
+
 /**
  * Created by huangyg on 2017/8/15.
- *
+ * <p>
  * 1. 捕获部分数据库 dao 操作的异常(待办：看下与 CommonException 的区别)
  * 2. 捕获调用接口时参数必传参数未传的异常
  * 3. 捕获第三方微信框架的异常
@@ -35,54 +37,54 @@ public class WxExceptionHandler {
     // 设置捕获异常的类
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public CommonResult handle(Exception e){
+    public CommonResult handle(Exception e) {
 
-        if (e instanceof MethodArgumentNotValidException){  // 参数校验异常
-            MethodArgumentNotValidException exception = (MethodArgumentNotValidException)e;
+        if (e instanceof MethodArgumentNotValidException) {  // 参数校验异常
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;
             String msg = exception.getBindingResult().getFieldError().getDefaultMessage();
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
-        }
-        if (e instanceof CommonException){
-            CommonException exception = (CommonException)e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, msg);
+        } else if (e instanceof CommonException) {
+            CommonException exception = (CommonException) e;
             String msg = exception.getMessage();
             int code = exception.getCode();
-            return ResultUtil.failure(code,msg);
-        }
-        if (e instanceof DataIntegrityViolationException){ // 数据库异常
-            DataIntegrityViolationException exception = (DataIntegrityViolationException)e;
+            return ResultUtil.failure(code, msg);
+        } else if (e instanceof DataIntegrityViolationException) { // 数据库异常
+            DataIntegrityViolationException exception = (DataIntegrityViolationException) e;
 
             String msg = exception.getCause().getMessage();
 
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
-        }
-        if (e instanceof WxErrorException){ // 微信框架的异常
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR, msg);
+        } else if (e instanceof WxErrorException) { // 微信框架的异常
 
-            WxErrorException exception = (WxErrorException)e;
+            WxErrorException exception = (WxErrorException) e;
 
             String msg = WxErrorMsg.errorMsg(exception.getError().getErrorCode());
-            if ("unknown".equals(msg)){
+            if ("unknown".equals(msg)) {
                 msg = exception.getError().getErrorMsg();
             }
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR,msg);
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR, msg);
 
-        }else if (e instanceof MissingServletRequestParameterException){ // 控制器提交参数缺失
+        } else if (e instanceof MissingServletRequestParameterException) { // 控制器提交参数缺失
 
-            MissingServletRequestParameterException exception= (MissingServletRequestParameterException)e;
+            MissingServletRequestParameterException exception = (MissingServletRequestParameterException) e;
             String msg = "【" + exception.getParameterType() + "】" + "类型的"
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,msg);
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, msg);
 
-        }else if (e instanceof MissingServletRequestPartException){  // Post 请求控制器提交参数缺失(@Valid 校验)
+        } else if (e instanceof MissingServletRequestPartException) {  // Post 请求控制器提交参数缺失(@Valid 校验)
 
-            MissingServletRequestPartException exception= (MissingServletRequestPartException)e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getMessage());
+            MissingServletRequestPartException exception = (MissingServletRequestPartException) e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
 
-        }else if (e instanceof BindException){  // get 请求控制器提交参数缺失(@Valid 校验)
-            BindException exception= (BindException)e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR,exception.getAllErrors().get(0).getDefaultMessage());
+        } else if (e instanceof BindException) {  // get 请求控制器提交参数缺失(@Valid 校验)
+            BindException exception = (BindException) e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getAllErrors().get(0).getDefaultMessage());
 
-        }else{
-            logger.error("【系统异常】= {}",e);
+        } else if (e instanceof ValidationException) { // ValidatorUtil 工具类校验参数异常
+            ValidationException exception = (ValidationException) e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
+        } else {
+            logger.error("【系统异常】= {}", e);
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }
     }

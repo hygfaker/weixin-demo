@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper
 public interface WxPublicImgDao {
-    int deleteByPrimaryKey(String imgCode);
-
-    int forceDeleteByPrimaryKey(String imgCode);
-
-    int deleteBatch(String[] array);
-
-    int forceDeleteBatch(String[] array);
+//    int deleteByPrimaryKey(String imgCode);
+//
+//    int forceDeleteByPrimaryKey(String imgCode);
+//
+//    int deleteBatch(String[] array);
+//
+//    int forceDeleteBatch(String[] array);
 
     int insert(WxPublicImg record);
 

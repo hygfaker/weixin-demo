@@ -27,12 +27,7 @@ public final class ResultUtil {
      * @return
      */
     public static CommonResult success(){
-        CommonResult result = new CommonResult();
-        result.setStatus(ResultEnum.SUCCESS.getCode());
-        result.setDesc(ResultEnum.SUCCESS.getMsg());
-        result.setTime(DateUtil.getStringDate());
-        logger.info(result.toString());
-        return result;
+        return success(new int[0]);
     }
 
     /**

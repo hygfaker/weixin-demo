@@ -4,8 +4,10 @@ import com.minstone.mobile.mp.utils.code.IdGen;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Map;
 public class WxPublic {
+
     public WxPublic() {
         super();
     }
@@ -26,6 +28,18 @@ public class WxPublic {
         this.setDelFlag((Integer) reqMap.get("delFlag"));
         this.setSystemCode((String) reqMap.get("systemCode"));
     }
+
+    public String[] getPublicCodes() {
+        return publicCodes;
+    }
+
+    public void setPublicCodes(String[] publicCodes) {
+        this.publicCodes = publicCodes;
+    }
+
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
+    private String[] publicCodes;
+
     @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
 
@@ -195,4 +209,26 @@ public class WxPublic {
         this.imgCode = imgCode == null ? null : imgCode.trim();
     }
 
+    @Override
+    public String toString() {
+        return "WxPublic{" +
+                "publicCodes=" + Arrays.toString(publicCodes) +
+                ", publicCode='" + publicCode + '\'' +
+                ", openId='" + openId + '\'' +
+                ", publicName='" + publicName + '\'' +
+                ", publicNickname='" + publicNickname + '\'' +
+                ", appId='" + appId + '\'' +
+                ", appSerct='" + appSerct + '\'' +
+                ", token='" + token + '\'' +
+                ", aeskey='" + aeskey + '\'' +
+                ", url='" + url + '\'' +
+                ", creator='" + creator + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", modifyDate='" + modifyDate + '\'' +
+                ", modifyer='" + modifyer + '\'' +
+                ", delFlag=" + delFlag +
+                ", systemCode='" + systemCode + '\'' +
+                ", imgCode='" + imgCode + '\'' +
+                '}';
+    }
 }

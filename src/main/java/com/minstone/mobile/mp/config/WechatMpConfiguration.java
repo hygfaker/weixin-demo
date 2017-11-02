@@ -1,5 +1,6 @@
 package com.minstone.mobile.mp.config;
 
+import com.github.pagehelper.PageHelper;
 import com.minstone.mobile.mp.common.handler.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
@@ -13,6 +14,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import java.util.Properties;
 
 /**
  * wechat mp configuration
@@ -44,6 +48,25 @@ public class WechatMpConfiguration {
     @Autowired
     private SubscribeHandler subscribeHandler;
 
+    //配置mybatis的分页插件pageHelper
+    @Bean
+    public PageHelper pageHelper(){
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("offsetAsPageNum","true");
+        properties.setProperty("rowBoundsWithCount","true");
+        properties.setProperty("reasonable","true");
+        properties.setProperty("dialect","mysql");    //配置mysql数据库的方言
+        properties.setProperty("supprotMethodsArguments","true");
+        pageHelper.setProperties(properties);
+        return pageHelper;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean localValidatorFactoryBean(){
+        return new LocalValidatorFactoryBean();
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public WxMpConfigStorage configStorage() {
@@ -54,6 +77,7 @@ public class WechatMpConfiguration {
         configStorage.setAesKey(properties.getAesKey());
         return configStorage;
     }
+
 
     @Bean
     @ConditionalOnMissingBean

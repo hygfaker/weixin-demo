@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.common;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,24 @@ public class CommonAspect {
         logger.info("ip地址为：{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());
 
         logger.info("传递的参数：{}",request.getQueryString());
+
+        Class[] parameterTypes = ( (MethodSignature)joinPoint.getSignature() ).getMethod().getParameterTypes() ;
+
+
+        switch( request.getMethod() ){
+            case "GET" :{
+                logger.info("传递的参数：{}",request.getServletPath() ) ;
+                break ;
+            }
+            case "POST" :{
+                Object reqDto = joinPoint.getArgs()[0] ;
+                if( reqDto != null ){
+                    logger.info("传递的参数：{}",reqDto.toString()) ;
+                }
+                break ;
+            }
+            default : break ;
+        }
 
         logger.info("================================================================");
 

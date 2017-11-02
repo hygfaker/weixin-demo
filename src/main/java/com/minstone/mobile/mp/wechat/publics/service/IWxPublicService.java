@@ -38,8 +38,9 @@ public interface IWxPublicService {
      * @return com.minstone.mobile.mp.common.CommonResult
      * @author huangyg
      */
-    public WxPublic add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+//    public void add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
+    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
     /**
      * 逻辑删除某个公众号
      * @param wxPublic 公众号实体
@@ -60,21 +61,21 @@ public interface IWxPublicService {
 
     /**
      * 逻辑删除某个公众号
-     * @批量param wxPublics 公众号实体数组
+     * @param wxPublic 公众号实体
      * @return int
      * @author huangyg
      *
      */
-    public boolean deleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException;
+    public boolean deleteBatch(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
      * 物理删除某个公众号
-     * @批量param publicCode 公众号实体数组
+     * @param wxPublic 公众号实体
      * @return int
      * @author huangyg
      *
      */
-    public boolean forceDeleteBatch(List<WxPublic> wxPublics) throws WxErrorException, IOException;
+    public boolean forceDeleteBatch(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
      * 更新公众号信息
@@ -85,7 +86,7 @@ public interface IWxPublicService {
      * @return int
      * @author huangyg
      */
-    public int update(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+//    public WxPublic update(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
     /**
      * 获取某个公众号信息
