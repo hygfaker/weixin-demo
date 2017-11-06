@@ -32,8 +32,6 @@ public class CommonException extends RuntimeException {
         logger.error(this.msg);
     }
 
-
-
     public CommonException(ResultEnum resultEnum) {
         super(resultEnum.getMsg());
         this.code = resultEnum.getCode();

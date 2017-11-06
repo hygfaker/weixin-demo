@@ -206,7 +206,6 @@ public class WxReplyController {
         }
     }
 
-
     //    3-6-2. 批量修改关键词
     @Deprecated
     @PostMapping("/updateKeywordPatch")
@@ -228,5 +227,4 @@ public class WxReplyController {
         }
 
     }
-
 }

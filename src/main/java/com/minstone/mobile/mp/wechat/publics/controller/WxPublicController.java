@@ -112,11 +112,15 @@ public class WxPublicController {
     // 编辑公众号
     @PostMapping("/update")
     public CommonResult update(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
-        return ResultUtil.success(wxPublicService.update(wxPublic,publicHeadImg,publicQrcode));
+        if (wxPublicService.update(wxPublic,publicHeadImg,publicQrcode)){
+            return ResultUtil.success();
+        }else {
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     @GetMapping("/get")
-    public CommonResult getPublicAccount(WxPublic wxPublic) throws WxErrorException, IOException {
+    public CommonResult get(WxPublic wxPublic) throws WxErrorException, IOException {
 
         WxPublic selectWxPublic = wxPublicService.get(wxPublic);
         // 切换公众号
@@ -127,8 +131,8 @@ public class WxPublicController {
         wxConfigProvider.setAesKey(selectWxPublic.getAeskey());
         service.setWxMpConfigStorage(wxConfigProvider);
         return ResultUtil.success(selectWxPublic);
-
     }
+
     // 分页获取公众号列表
     @GetMapping("/getPage")
     public CommonResult getPage(WxPublic wxPublic,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException, IOException {
