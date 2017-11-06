@@ -32,7 +32,7 @@ public interface IWxPublicService {
     // TODO: 2017/10/27
     /**
      * 添加公众号信息
-     * @param reqMap 公众号信息
+     * @param wxPublic 公众号信息
      * @param publicHeadImg 公众号头像
      * @param publicQrcode 公众号二维码
      * @return com.minstone.mobile.mp.common.CommonResult
@@ -79,14 +79,13 @@ public interface IWxPublicService {
 
     /**
      * 更新公众号信息
-     * @param publicCode 公众号主键
-     * @param reqMap 公众号信息
+     * @param wxPublic 公众号实体
      * @param publicHeadImg 公众号头像
      * @param publicQrcode 公众号二维码
      * @return int
      * @author huangyg
      */
-//    public WxPublic update(String publicCode, Map<String,Object>reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+    public boolean update(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
     /**
      * 获取某个公众号信息
@@ -102,5 +101,9 @@ public interface IWxPublicService {
      * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.domain.WxPublic> 分页内容
      * @author huangyg
      */
-    public PageInfo<WxPublic> getPage() throws WxErrorException, IOException;
+    public PageInfo<WxPublic> getPage(WxPublic wxPublic,int currentPage,int pageSize) throws WxErrorException, IOException;
+
+
+    public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;
+
 }

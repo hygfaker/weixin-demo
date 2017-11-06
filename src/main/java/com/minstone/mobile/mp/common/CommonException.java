@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CommonException extends RuntimeException {
+
+    public static Logger logger = LoggerFactory.getLogger(CommonException.class);
+
     private static final long serialVersionUID = -8072930252478967506L;
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonException.class);
     public static final CommonException DB_INSERT_RESULT_0 = new CommonException(90040001, "数据库操作,insert返回0", new Object[0]);
@@ -20,11 +23,13 @@ public class CommonException extends RuntimeException {
         super(String.format(msgFormat, args));
         this.code = code;
         this.msg = String.format(msgFormat, args);
+        logger.error(this.msg);
     }
 
     public CommonException(DaoEnum daoEnum) {
         super(daoEnum.getMessage());
         this.msg = daoEnum.getMessage();
+        logger.error(this.msg);
     }
 
 
@@ -33,17 +38,20 @@ public class CommonException extends RuntimeException {
         super(resultEnum.getMsg());
         this.code = resultEnum.getCode();
         this.msg = resultEnum.getMsg();
+        logger.error(this.msg);
     }
 
     public CommonException(ResultEnum resultEnum,String msg) {
         super(msg);
         this.code = resultEnum.getCode();
         this.msg = msg;
+        logger.error(this.msg);
     }
 
     public CommonException() {
     }
 
+    @Override
     public String getMessage() {
         return this.msg;
     }

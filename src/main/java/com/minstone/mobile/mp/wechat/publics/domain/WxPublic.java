@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 public class WxPublic {
 
@@ -29,15 +30,7 @@ public class WxPublic {
         this.setSystemCode((String) reqMap.get("systemCode"));
     }
 
-    public String[] getPublicCodes() {
-        return publicCodes;
-    }
-
-    public void setPublicCodes(String[] publicCodes) {
-        this.publicCodes = publicCodes;
-    }
-
-    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
+    @NotEmpty(message = "【publicCodes】参数缺失（且内容不为空）")
     private String[] publicCodes;
 
     @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
@@ -209,10 +202,18 @@ public class WxPublic {
         this.imgCode = imgCode == null ? null : imgCode.trim();
     }
 
+    public String[] getPublicCodes() {
+        return publicCodes;
+    }
+
+    public void setPublicCodes(String[] publicCodes) {
+        this.publicCodes = publicCodes;
+    }
+
     @Override
     public String toString() {
         return "WxPublic{" +
-                "publicCodes=" + Arrays.toString(publicCodes) +
+                "publicCodes=" + publicCodes +
                 ", publicCode='" + publicCode + '\'' +
                 ", openId='" + openId + '\'' +
                 ", publicName='" + publicName + '\'' +

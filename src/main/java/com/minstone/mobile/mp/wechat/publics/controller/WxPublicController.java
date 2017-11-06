@@ -1,5 +1,6 @@
 package com.minstone.mobile.mp.wechat.publics.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.ResultUtil;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -48,26 +50,27 @@ public class WxPublicController {
     // 修改公众号
 
     // 获取公众号
-    // 获取公众号分页
+    // 分页获取公众号列表
+
 
     @Autowired
     private WxMpService service;
 
     @Autowired
-    private IWxPublicServiceImpl publicService;
+    private IWxPublicServiceImpl wxPublicService;
 
     private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
 
     // 添加公众号
     @PostMapping("/add")
     public CommonResult add(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
-        return ResultUtil.success(publicService.add(wxPublic, publicHeadImg, publicQrcode));
+        return ResultUtil.success(wxPublicService.add(wxPublic, publicHeadImg, publicQrcode));
     }
 
     // 逻辑删除公众号
     @GetMapping("/delete")
     public CommonResult delete(WxPublic wxPublic) throws WxErrorException, IOException {
-        if (publicService.delete(wxPublic)) {
+        if (wxPublicService.delete(wxPublic)) {
             return ResultUtil.success();
         } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
@@ -77,7 +80,8 @@ public class WxPublicController {
     // 物理删除公众号
     @GetMapping("/forceDelete")
     public CommonResult forceDelete(WxPublic wxPublic) throws WxErrorException, IOException {
-        if (publicService.forceDelete(wxPublic)) {
+
+        if (wxPublicService.forceDelete(wxPublic)) {
             return ResultUtil.success();
         } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
@@ -87,7 +91,8 @@ public class WxPublicController {
     // 批量逻辑删除公众号
     @GetMapping("/deleteBatch")
     public CommonResult deleteBatch(WxPublic wxPublic) throws WxErrorException, IOException {
-        if (publicService.deleteBatch(wxPublic)) {
+        // TODO: 2017/11/3 判断公众号是否存在 
+        if (wxPublicService.deleteBatch(wxPublic)) {
             return ResultUtil.success();
         } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
@@ -97,18 +102,23 @@ public class WxPublicController {
     // 批量物理删除公众号
     @GetMapping("/forceDeleteBatch")
     public CommonResult forceDeleteBatch(WxPublic wxPublic) throws WxErrorException, IOException {
-        if (publicService.forceDeleteBatch(wxPublic)) {
+        if (wxPublicService.forceDeleteBatch(wxPublic)) {
             return ResultUtil.success();
         } else {
             return ResultUtil.failure(ResultEnum.SERVER_ERROR);
         }
     }
 
+    // 编辑公众号
+    @PostMapping("/update")
+    public CommonResult update(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
+        return ResultUtil.success(wxPublicService.update(wxPublic,publicHeadImg,publicQrcode));
+    }
 
     @GetMapping("/get")
     public CommonResult getPublicAccount(WxPublic wxPublic) throws WxErrorException, IOException {
 
-        WxPublic selectWxPublic = publicService.get(wxPublic);
+        WxPublic selectWxPublic = wxPublicService.get(wxPublic);
         // 切换公众号
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(selectWxPublic.getAppId());
@@ -117,22 +127,23 @@ public class WxPublicController {
         wxConfigProvider.setAesKey(selectWxPublic.getAeskey());
         service.setWxMpConfigStorage(wxConfigProvider);
         return ResultUtil.success(selectWxPublic);
+
     }
-    // 获取所有公众号
+    // 分页获取公众号列表
     @GetMapping("/getPage")
-    public CommonResult getPage(WxPublic wxPublic) throws WxErrorException, IOException {
-        return ResultUtil.success();
+    public CommonResult getPage(WxPublic wxPublic,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException, IOException {
+        PageInfo page = wxPublicService.getPage(wxPublic,currentPage,pageSize);
+        return ResultUtil.pageFormat(page);
     }
 
-    // 编辑公众号
-    @PostMapping("/update")
-    public CommonResult updatePublicAccount(@RequestParam String publicCode, @RequestParam Map<String, Object> reqMap, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
-        return ResultUtil.success();
-
-//        return publicService.updatePublicAccount(publicCode,reqMap,publicHeadImg,publicQrcode);
+    // 测试
+    @GetMapping("/test")
+    public CommonResult test(WxPublic wxPublic) throws WxErrorException,IOException{
+        List<String> result = wxPublicService.test(wxPublic);
+        return ResultUtil.success(result);
     }
 
-    @GetMapping("/downloadIcon")
+    // 下载公众号图标
     public void downloadIcon(String imgCode, Integer imgType, HttpServletResponse response) throws WxErrorException, IOException {
 
         if (imgType != 0 && imgType != 1) {
@@ -140,7 +151,7 @@ public class WxPublicController {
             return;
         }
 
-        byte[] bs = publicService.icon(imgCode, imgType);
+        byte[] bs = wxPublicService.icon(imgCode, imgType);
         String fileName = "test.png";
         response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
         response.setContentLength(bs.length);
@@ -152,7 +163,4 @@ public class WxPublicController {
         os.close();
     }
 
-    public void showIcon(String imgCode, Integer imgType) throws WxErrorException, IOException {
-
-    }
 }

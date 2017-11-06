@@ -3,31 +3,31 @@
 <mapper namespace="com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao">
 
   <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-      <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
-      <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
-      <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName" />
-      <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname" />
-      <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
-      <result column="APP_SERCT" jdbcType="VARCHAR" property="appSerct" />
-      <result column="TOKEN" jdbcType="VARCHAR" property="token" />
-      <result column="AESKEY" jdbcType="VARCHAR" property="aeskey" />
-      <result column="URL" jdbcType="VARCHAR" property="url" />
-      <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
-      <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate" />
-      <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
-      <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
-      <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
-      <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
-      <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
-      <!--<association property="publicImg" javaTyWxPublicImgcImg">-->
-          <!--<id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>-->
-          <!--<result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />-->
-          <!--<result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />-->
-      <!--</association>-->
+    <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
+    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+    <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName" />
+    <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="APP_SERCT" jdbcType="VARCHAR" property="appSerct" />
+    <result column="TOKEN" jdbcType="VARCHAR" property="token" />
+    <result column="AESKEY" jdbcType="VARCHAR" property="aeskey" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
+    <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate" />
+    <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
+    <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
+    <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
+    <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
+    <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
+    <!--<association property="publicImg" javaTyWxPublicImgcImg">-->
+    <!--<id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>-->
+    <!--<result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />-->
+    <!--<result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />-->
+    <!--</association>-->
   </resultMap>
 
   <sql id="Base_Column_List">
-    PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY, 
+    PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY,
     URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE, IMG_CODE
   </sql>
 
@@ -35,21 +35,37 @@
     select IMG_CODE from MP_YY_PUBLIC where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select * from MP_YY_PUBLIC where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+  <select id="selectByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic" resultMap="BaseResultMap">
+    select * from MP_YY_PUBLIC where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR} AND DEL_FLAG = 0
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-     select * from MP_YY_PUBLIC
+    select * from MP_YY_PUBLIC WHERE DEL_FLAG = 0
   </select>
 
+  <select id="test" resultType="java.lang.String">
+    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
+    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    AND 1=1
+  </select>
+
+  <!--  <select id="test" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic" resultType="java.util.Arrays">
+    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
+    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    AND 1=1
+  </select>-->
+
   <select id="selectPublicCode" resultType="java.lang.String">
-    SELECT
-    PUBLIC_CODE
-    FROM MP_YY_PUBLIC
-    WHERE PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-    AND
-    1=1
+    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    AND 1=1
+  </select>
+
+  <select id="selectPublicCodes" resultType="java.lang.String">
+    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC where PUBLIC_CODE IN
+    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    AND 1=1
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -58,7 +74,7 @@
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="deleteBatch" parameterType="java.util.Arrays">
+  <delete id="deleteBatch">
     update MP_YY_PUBLIC
     set DEL_FLAG = 1
     where PUBLIC_CODE IN
@@ -73,9 +89,9 @@
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="forceDeleteBatch" parameterType="java.util.Arrays">
+  <delete id="forceDeleteBatch">
     delete from MP_YY_PUBLIC
-    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    where PUBLIC_CODE IN
     <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
       #{item}
     </foreach>
@@ -84,18 +100,18 @@
 
 
   <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-    insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, 
-      PUBLIC_NICKNAME, APP_ID, APP_SERCT, 
-      TOKEN, AESKEY, URL, 
-      CREATOR, CREATE_DATE, MODIFY_DATE, 
-      MODIFYER, DEL_FLAG, SYSTEM_CODE, 
-      IMG_CODE)
-    values (#{publicCode,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{publicName,jdbcType=VARCHAR}, 
-      #{publicNickname,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSerct,jdbcType=VARCHAR}, 
-      #{token,jdbcType=VARCHAR}, #{aeskey,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR}, 
-      #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{systemCode,jdbcType=VARCHAR}, 
-      #{imgCode,jdbcType=VARCHAR})
+    insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME,
+    PUBLIC_NICKNAME, APP_ID, APP_SERCT,
+    TOKEN, AESKEY, URL,
+    CREATOR, CREATE_DATE, MODIFY_DATE,
+    MODIFYER, DEL_FLAG, SYSTEM_CODE,
+    IMG_CODE)
+    values (#{publicCode,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{publicName,jdbcType=VARCHAR},
+    #{publicNickname,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSerct,jdbcType=VARCHAR},
+    #{token,jdbcType=VARCHAR}, #{aeskey,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+    #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR},
+    #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{systemCode,jdbcType=VARCHAR},
+    #{imgCode,jdbcType=VARCHAR})
   </insert>
 
   <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
@@ -250,25 +266,6 @@
         IMG_CODE = #{imgCode,jdbcType=VARCHAR},
       </if>
     </set>
-    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-    update MP_YY_PUBLIC
-    set OPEN_ID = #{openId,jdbcType=VARCHAR},
-      PUBLIC_NAME = #{publicName,jdbcType=VARCHAR},
-      PUBLIC_NICKNAME = #{publicNickname,jdbcType=VARCHAR},
-      APP_ID = #{appId,jdbcType=VARCHAR},
-      APP_SERCT = #{appSerct,jdbcType=VARCHAR},
-      TOKEN = #{token,jdbcType=VARCHAR},
-      AESKEY = #{aeskey,jdbcType=VARCHAR},
-      URL = #{url,jdbcType=VARCHAR},
-      CREATOR = #{creator,jdbcType=VARCHAR},
-      CREATE_DATE = #{createDate,jdbcType=VARCHAR},
-      MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
-      MODIFYER = #{modifyer,jdbcType=VARCHAR},
-      DEL_FLAG = #{delFlag,jdbcType=INTEGER},
-      SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
-      IMG_CODE = #{imgCode,jdbcType=VARCHAR}
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
 </mapper>

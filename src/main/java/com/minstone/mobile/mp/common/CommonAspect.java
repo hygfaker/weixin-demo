@@ -22,7 +22,7 @@ public class CommonAspect {
     private String echostr;
 
 //    @Pointcut("execution(public * com.minstone.mobile.mp.common.contoller..*(..))")
-    @Pointcut("execution(public * com.minstone.mobile.mp.wechat..*.*(..))")
+    @Pointcut("execution(public * com.minstone.mobile.mp.wechat..*.controller..*(..))")
 
     public void pointCut(){}
 

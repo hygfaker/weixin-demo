@@ -50,9 +50,7 @@ public class WxExceptionHandler {
             return ResultUtil.failure(code, msg);
         } else if (e instanceof DataIntegrityViolationException) { // 数据库异常
             DataIntegrityViolationException exception = (DataIntegrityViolationException) e;
-
             String msg = exception.getCause().getMessage();
-
             return ResultUtil.failure(ResultEnum.SERVER_ERROR, msg);
         } else if (e instanceof WxErrorException) { // 微信框架的异常
 

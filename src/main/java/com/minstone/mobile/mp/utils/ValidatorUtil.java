@@ -16,7 +16,7 @@ import java.util.Set;
 public class ValidatorUtil {
 
 
-    public static <T> void entityValidator(T t,Validator validator, String... validFileds) throws ConstraintViolationException {
+    public static <T> void param(T t,Validator validator, String... validFileds) throws ConstraintViolationException {
         for (String filed : validFileds) {
             Set<ConstraintViolation<T>> constraintViolations = validator.validateProperty(t, filed);
             Iterator<ConstraintViolation<T>> iterator = constraintViolations.iterator();

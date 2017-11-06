@@ -104,13 +104,6 @@
     where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicImg">
-    update MP_YY_PUB_IMG
-    set HEADIMG = #{headimg,jdbcType=LONGVARBINARY},
-      QRCODE = #{qrcode,jdbcType=LONGVARBINARY}
-    where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
-  </update>
-
   <select id="selectHeadimgByImgCode" parameterType="java.lang.String" resultType="java.lang.Byte">
     select HEADIMG from MP_YY_PUB_IMG where IMG_CODE = #{imgCode,jdbcType=VARCHAR}
   </select>

@@ -23,8 +23,6 @@ public interface WxPublicImgDao {
 
     int updateByPrimaryKeySelective(WxPublicImg record);
 
-    int updateByPrimaryKey(WxPublicImg record);
-
     byte[] selectHeadimgByImgCode(String imgCode);
 
     byte[] selectQrcodeByImgCode(String imgCode);

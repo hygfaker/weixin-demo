@@ -9,7 +9,12 @@ public enum DaoEnum {
 
 
     PUBLIC_NOTFOUND("找不到该公众号信息"),
+    SAVE_PUBLIC_ERROR("保存公众号信息失败"),
     FORCE_DELETE_IMG("强制删除公众号图片信息出错"),
+    UPDATE_IMG_ERROR("更新图片失败"),
+    PARAME_LIMITE_POSITIVE("该参数必须大于0"),
+    BATCH_DELETE_ERROR("批量删除有误，请确保参数传递正确"),
+    PARAME_ERROR("参数有误"),
     PUBLIC_IMG_NOTFOUND("找不到该公众号图片信息");
 
 
