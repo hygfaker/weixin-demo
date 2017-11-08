@@ -2,210 +2,211 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.minstone.mobile.mp.wechat.reply.dao.WxReplyRuleDao">
-  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
-    <id column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode" />
-    <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
-    <result column="RULE_NAME" jdbcType="VARCHAR" property="ruleName" />
-    <result column="USE_FLAG" jdbcType="INTEGER" property="useFlag" />
-    <result column="KEFU_REPLY_FLAG" jdbcType="INTEGER" property="kefuReplyFlag" />
-    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
-    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
-    <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate" />
-    <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
-    <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
-    <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
-    <!-- keyword 表的 DEL_FLAG、RULECODE 使用别名 -->
-    <collection property="keywords" ofType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword" autoMapping="true">
-      <id property="keywordCode" column="KEYWORD_CODE" jdbcType="VARCHAR"/>
-      <result property="ruleCode" column="RULECODE" jdbcType="VARCHAR"/>
-      <result property="keyword" column="KEYWORD" jdbcType="VARCHAR"/>
-      <result property="matchFlag" column="MATCH_FLAG" jdbcType="INTEGER"/>
-      <result property="delFlag" column="DELFLAG" jdbcType="INTEGER"/>
-    </collection>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
+        <id column="RULE_CODE" jdbcType="VARCHAR" property="ruleCode"/>
+        <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode"/>
+        <result column="RULE_NAME" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="USE_FLAG" jdbcType="INTEGER" property="useFlag"/>
+        <result column="KEFU_REPLY_FLAG" jdbcType="INTEGER" property="kefuReplyFlag"/>
+        <result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+        <result column="CREATOR" jdbcType="VARCHAR" property="creator"/>
+        <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate"/>
+        <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate"/>
+        <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer"/>
+        <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag"/>
+        <!-- keyword 表的 DEL_FLAG、RULECODE 使用别名 -->
+        <collection property="keywords" ofType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword"
+                    autoMapping="true">
+            <id property="keywordCode" column="KEYWORD_CODE" jdbcType="VARCHAR"/>
+            <result property="ruleCode" column="RULECODE" jdbcType="VARCHAR"/>
+            <result property="keyword" column="KEYWORD" jdbcType="VARCHAR"/>
+            <result property="matchFlag" column="MATCH_FLAG" jdbcType="INTEGER"/>
+            <result property="delFlag" column="DELFLAG" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
 
-  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
-    insert into MP_YY_REP_RULE
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="ruleCode != null">
-        RULE_CODE,
-      </if>
-      <if test="publicCode != null">
-        PUBLIC_CODE,
-      </if>
-      <if test="ruleName != null">
-        RULE_NAME,
-      </if>
-      <if test="useFlag != null">
-        USE_FLAG,
-      </if>
-      <if test="kefuReplyFlag != null">
-        KEFU_REPLY_FLAG,
-      </if>
-      <if test="content != null">
-        CONTENT,
-      </if>
-      <if test="creator != null">
-        CREATOR,
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE,
-      </if>
-      <if test="modifyDate != null">
-        MODIFY_DATE,
-      </if>
-      <if test="modifyer != null">
-        MODIFYER,
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="ruleCode != null">
-        #{ruleCode,jdbcType=VARCHAR},
-      </if>
-      <if test="publicCode != null">
-        #{publicCode,jdbcType=VARCHAR},
-      </if>
-      <if test="ruleName != null">
-        #{ruleName,jdbcType=VARCHAR},
-      </if>
-      <if test="useFlag != null">
-        #{useFlag,jdbcType=INTEGER},
-      </if>
-      <if test="kefuReplyFlag != null">
-        #{kefuReplyFlag,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyDate != null">
-        #{modifyDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyer != null">
-        #{modifyer,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        #{delFlag,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
+        insert into MP_YY_REP_RULE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleCode != null">
+                RULE_CODE,
+            </if>
+            <if test="publicCode != null">
+                PUBLIC_CODE,
+            </if>
+            <if test="ruleName != null">
+                RULE_NAME,
+            </if>
+            <if test="useFlag != null">
+                USE_FLAG,
+            </if>
+            <if test="kefuReplyFlag != null">
+                KEFU_REPLY_FLAG,
+            </if>
+            <if test="content != null">
+                CONTENT,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleCode != null">
+                #{ruleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="publicCode != null">
+                #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleName != null">
+                #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="useFlag != null">
+                #{useFlag,jdbcType=INTEGER},
+            </if>
+            <if test="kefuReplyFlag != null">
+                #{kefuReplyFlag,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <insert id="insertBatch" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
-    insert into MP_YY_REP_RULE
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="ruleCode != null">
-        RULE_CODE,
-      </if>
-      <if test="publicCode != null">
-        PUBLIC_CODE,
-      </if>
-      <if test="ruleName != null">
-        RULE_NAME,
-      </if>
-      <if test="useFlag != null">
-        USE_FLAG,
-      </if>
-      <if test="kefuReplyFlag != null">
-        KEFU_REPLY_FLAG,
-      </if>
-      <if test="content != null">
-        CONTENT,
-      </if>
-      <if test="creator != null">
-        CREATOR,
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE,
-      </if>
-      <if test="modifyDate != null">
-        MODIFY_DATE,
-      </if>
-      <if test="modifyer != null">
-        MODIFYER,
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="ruleCode != null">
-        #{ruleCode,jdbcType=VARCHAR},
-      </if>
-      <if test="publicCode != null">
-        #{publicCode,jdbcType=VARCHAR},
-      </if>
-      <if test="ruleName != null">
-        #{ruleName,jdbcType=VARCHAR},
-      </if>
-      <if test="useFlag != null">
-        #{useFlag,jdbcType=INTEGER},
-      </if>
-      <if test="kefuReplyFlag != null">
-        #{kefuReplyFlag,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyDate != null">
-        #{modifyDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyer != null">
-        #{modifyer,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        #{delFlag,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertBatch" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
+        insert into MP_YY_REP_RULE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleCode != null">
+                RULE_CODE,
+            </if>
+            <if test="publicCode != null">
+                PUBLIC_CODE,
+            </if>
+            <if test="ruleName != null">
+                RULE_NAME,
+            </if>
+            <if test="useFlag != null">
+                USE_FLAG,
+            </if>
+            <if test="kefuReplyFlag != null">
+                KEFU_REPLY_FLAG,
+            </if>
+            <if test="content != null">
+                CONTENT,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleCode != null">
+                #{ruleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="publicCode != null">
+                #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleName != null">
+                #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="useFlag != null">
+                #{useFlag,jdbcType=INTEGER},
+            </if>
+            <if test="kefuReplyFlag != null">
+                #{kefuReplyFlag,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey">
     update MP_YY_REP_RULE
     SET  DEL_FLAG = 1
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
     AND 1=1
   </delete>
 
-  <delete id="deleteBatch" parameterType="java.util.Arrays">
-    update MP_YY_REP_RULE
-    set DEL_FLAG = 1
-    where RULE_CODE IN
-    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
-      #{item}
-    </foreach>
-    AND 1=1
-  </delete>
+    <delete id="deleteBatch" parameterType="java.util.Arrays">
+        update MP_YY_REP_RULE
+        set DEL_FLAG = 1
+        where RULE_CODE IN
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND 1=1
+    </delete>
 
-  <update id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
+    <update id="forceDeleteByPrimaryKey">
     delete from  MP_YY_REP_RULE
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
     AND 1=1
   </update>
 
-  <delete id="forceDeleteBatch" parameterType="java.util.Arrays">
-    delete from MP_YY_REP_RULE
-    where RULE_CODE IN
-    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
-      #{item}
-    </foreach>
-    AND 1=
-  </delete>
+    <delete id="forceDeleteBatch" parameterType="java.util.Arrays">
+        delete from MP_YY_REP_RULE
+        where RULE_CODE IN
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND 1=1
+    </delete>
 
-  <!-- keyword 表的 DEL_FLAG、RULE_CODE 使用别名 -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!-- keyword 表的 DEL_FLAG、RULE_CODE 使用别名 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
     FROM MP_YY_REP_RULE r
     LEFT JOIN
@@ -216,7 +217,7 @@
     AND r.DEL_FLAG = 0
   </select>
 
-  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
       SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
     FROM MP_YY_REP_RULE r
     LEFT JOIN
@@ -227,47 +228,73 @@
     AND r.DEL_FLAG = 0
   </select>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
-    update MP_YY_REP_RULE
-    <set>
-      <if test="publicCode != null">
-        PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
-      </if>
-      <if test="ruleName != null">
-        RULE_NAME = #{ruleName,jdbcType=VARCHAR},
-      </if>
-      <if test="useFlag != null">
-        USE_FLAG = #{useFlag,jdbcType=INTEGER},
-      </if>
-      <if test="kefuReplyFlag != null">
-        KEFU_REPLY_FLAG = #{kefuReplyFlag,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        CONTENT = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        CREATOR = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE = #{createDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyDate != null">
-        MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyer != null">
-        MODIFYER = #{modifyer,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG = #{delFlag,jdbcType=INTEGER},
-      </if>
-    </set>
-    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-  </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
+        update MP_YY_REP_RULE
+        <set>
+            <if test="publicCode != null">
+                PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleName != null">
+                RULE_NAME = #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="useFlag != null">
+                USE_FLAG = #{useFlag,jdbcType=INTEGER},
+            </if>
+            <if test="kefuReplyFlag != null">
+                KEFU_REPLY_FLAG = #{kefuReplyFlag,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                CONTENT = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+            </if>
+        </set>
+        where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+    </update>
 
-  <update id="updateRuleFlag">
+    <update id="updateRuleFlag">
     update MP_YY_REP_RULE
     set USE_FLAG = #{useFlag,jdbcType=INTEGER}
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
+
+
+    <select id="selectTest" resultMap="BaseResultMap">
+    SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+    FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
+    WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+     AND (k.KEYWORD = #{keyword,jdbcType=VARCHAR})
+    AND k.DEL_FLAG = 0
+    AND r.RULE_CODE = k.RULE_CODE
+    AND r.DEL_FLAG = 0
+    AND r.USE_FLAG = 1
+  </select>
+
+    <select id="selectMatchContent" resultMap="BaseResultMap">
+        SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+        FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
+        WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        <if test=""></if>
+        AND (k.KEYWORD = #{keyword,jdbcType=VARCHAR})
+        AND k.DEL_FLAG = 0
+        AND r.RULE_CODE = k.RULE_CODE
+        AND r.DEL_FLAG = 0
+        AND r.USE_FLAG = 1
+    </select>
+
+
 
 </mapper>

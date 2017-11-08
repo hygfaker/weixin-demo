@@ -29,25 +29,25 @@ public interface WxReplyRuleDao {
      * @param ruleCode 关键词规则回复主键
      * @return
      */
-    int forceDeleteByPrimaryKey(String ruleCode);
-    /**
-     * 批量物理删除关键词规则回复
-     * @param list 关键词规则 FD回复主键们
-     * @return
-     */
-    int forceDeleteBatch(String[] list);
-    /**
+    int forceDeleteByPrimaryKey(WxReplyRule record);
+     /**
      * 逻辑删除关键词规则回复
      * @param ruleCode 关键词规则回复主键
      * @return
      */
-    int deleteByPrimaryKey(String ruleCode);
+    int deleteByPrimaryKey(WxReplyRule record);
     /**
      * 批量逻辑删除关键词规则回复
      * @param list 关键词规则回复主键们
      * @return
      */
     int deleteBatch(String[] list);
+    /**
+     * 批量物理删除关键词规则回复
+     * @param list 关键词规则 FD回复主键们
+     * @return
+     */
+    int forceDeleteBatch(String[] list);
     /**
      * 更新关键词规则回复
      * @param record 待更新关键词规则回复主体
@@ -67,23 +67,31 @@ public interface WxReplyRuleDao {
      * @param useFlag 开关标志，0表示关，1表示开
      * @return
      */
-    int updateRuleFlag(@Param("ruleCode") String ruleCode,@Param("useFlag") int useFlag);
+    int updateRuleFlag(WxReplyRule record);
     /**
      * 查找公众号下的关键词规则列表
      * @param publicCode 公众号主键
      * @return
      */
-    List<WxReplyRule> selectAll(String publicCode);
+    List<WxReplyRule> selectAll(WxReplyRule record);
     /**
      * 根据主键查找关键词规则列表
      * @param ruleCode 关键词规则主键
      * @return
      */
-    List<WxReplyRule> selectByPrimaryKey(String ruleCode);
+    List<WxReplyRule> selectByPrimaryKey(WxReplyRule record);
+
     /**
      * 查找公众号下的关键词规则列表（测试）
      * @param publicCode 公众号主键
      * @return
      */
-    List<WxReplyRule> selectTest(String publicCode);
+    List<WxReplyRule> selectMatchContent(WxReplyRule rule);
+
+    /**
+     * 查找公众号下的关键词规则列表（测试）
+     * @param publicCode 公众号主键
+     * @return
+     */
+    List<WxReplyRule> selectTest(WxReplyRule rule);
 }

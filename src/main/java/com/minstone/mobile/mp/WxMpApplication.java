@@ -19,7 +19,7 @@ public class WxMpApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WxMpApplication.class, args);
-        logger.info("============ 微信运营管理启动成功 ============");
+        logger.info("========================= 微信运营管理启动成功 =========================");
     }
 
 }

@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public interface IWxMessagePushService {
 
-    // TODO: 2017/10/24
+    // ----------------- 提供的服务 -----------------//
     // 添加定点推送
+
+    // TODO: 2017/11/8
     // 批量添加定点推送
 
     // 删除定点推送（逻辑）
@@ -28,15 +30,15 @@ public interface IWxMessagePushService {
     public WxMessagePush add(WxMessagePush wxMessagePush) throws WxErrorException;
 
 
-//    public int delete(WxMessagePush wxMessagePush);
+    public boolean delete(WxMessagePush wxMessagePush);
+
+    public boolean fDelete(WxMessagePush wxMessagePush);
+
+    public boolean deleteBatch(WxMessagePush wxMessagePush);
+
+    public boolean fDeleteBatch(WxMessagePush wxMessagePush);
 //
-//    public int fDelete(WxMessagePush wxMessagePush);
-//
-//    public int deleteBatch(WxMessagePush wxMessagePush);
-//
-//    public int fDeleteBatch(WxMessagePush wxMessagePush);
-//
-//    public int update(WxMessagePush wxMessagePush);
+    public boolean update(WxMessagePush wxMessagePush);
 //
 //    public int modifyPushFlag(WxMessagePush wxMessagePush);
 //

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @Mapper
-public interface WxPublicDao {
+public interface WxPublicDao<T> {
 
 
     int deleteByPrimaryKey(String publicCode);
@@ -36,7 +36,7 @@ public interface WxPublicDao {
     List<WxPublic> selectAll();
 
     // 查询参数为单个的时候可以使用实体
-    List<String> selectPublicCode(WxPublic wxPublic);
+    List<String> selectPublicCode(T record);
 
     // 查询参数为数组的时候，不能用实体，mapper 里面读取不到属性
     List<String> selectPublicCodes(String[] publicCodes);

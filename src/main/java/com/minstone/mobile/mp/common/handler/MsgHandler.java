@@ -5,12 +5,14 @@ import com.minstone.mobile.mp.common.builder.ImageBuilder;
 import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.builder.VoiceBuilder;
 import com.minstone.mobile.mp.utils.JsonUtil;
+import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -21,10 +23,14 @@ import java.util.Map;
 @Component
 public class MsgHandler extends AbstractHandler {
 
+    @Autowired
+    private WxReplyServiceImpl wxReplyService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
                                     WxSessionManager sessionManager) throws WxErrorException {
+
+
 
         if (!wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) {
             //TODO 可以选择将消息保存到本地
@@ -40,6 +46,12 @@ public class MsgHandler extends AbstractHandler {
                     .toUser(wxMessage.getFromUser()).build();
         }
         */
+
+        // 根据用户发送的消息类型进行判断 msgType = text、image、amr（语音）、名片也是 text、location（地理位置）、video
+        if (wxMessage.getMsgType() == "text"){
+            // TODO: 2017/11/8 构建自动回复
+
+        }
         // 关键字自动回复
         if (wxMessage.getContent().endsWith("文字")){
             return new TextBuilder().build("我是个人测试公众号", wxMessage, weixinService);
@@ -60,6 +72,7 @@ public class MsgHandler extends AbstractHandler {
         //TODO 组装回复消息
         String content = "收到信息内容：" + JsonUtil.toJson(wxMessage);
 
-        return new ImageBuilder().build("ugtdCRNQEzwsBBNmNFTjSjeMy4ajXbq4I1zVoXkgYsU",wxMessage,weixinService);
+//        return new ImageBuilder().build("ugtdCRNQEzwsBBNmNFTjSjeMy4ajXbq4I1zVoXkgYsU",wxMessage,weixinService);
+        return null;
     }
 }

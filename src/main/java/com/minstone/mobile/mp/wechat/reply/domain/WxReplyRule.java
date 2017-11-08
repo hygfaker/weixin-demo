@@ -18,6 +18,22 @@ public class WxReplyRule {
         super();
     }
 
+
+
+    public String[] getRuleCodes() {
+        return ruleCodes;
+    }
+
+    public void setRuleCodes(String[] ruleCodes) {
+        this.ruleCodes = ruleCodes;
+    }
+
+    /**
+     * 关键词规则列表集
+     */
+    private String[] ruleCodes;
+
+//    @NotEmpty(message = "【ruleCode】参数缺失（且内容不为空）")
     private String ruleCode;
 
     @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
@@ -53,6 +69,32 @@ public class WxReplyRule {
     @NotEmpty(message = "【keywords】参数内容不能为空")
     @NotNull(message = "【keywords】 参数缺失")
     private List<WxReplyKeyword> keywords;
+
+    /**
+     * 关键词，最为参数使用
+     */
+    private String keyword;
+
+    /**
+     * 匹配模式
+     */
+    private Integer matchFlag;
+
+    public Integer getMatchFlag() {
+        return matchFlag;
+    }
+
+    public void setMatchFlag(Integer matchFlag) {
+        this.matchFlag = matchFlag;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getRuleCode() {
         return ruleCode;

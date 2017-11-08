@@ -33,35 +33,24 @@ public class CommonAspect {
 
         logger.info("============================ WeiXin ============================");
 
-        logger.info("执行的方法：{}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
-        logger.info("调用的API：{}",request.getRequestURI());
-
-        logger.info("请求方法：{}",request.getMethod());
-
-        logger.info("ip地址为：{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());
-
-        logger.info("传递的参数：{}",request.getQueryString());
-
+        logger.info("URL           :{}   {}",request.getMethod(),request.getRequestURI());
+        logger.info("Method        :{}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        logger.info("Address       :{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());
         Class[] parameterTypes = ( (MethodSignature)joinPoint.getSignature() ).getMethod().getParameterTypes() ;
-
-
         switch( request.getMethod() ){
             case "GET" :{
-                logger.info("传递的参数：{}",request.getServletPath() ) ;
+                logger.info("Parameter     :{}",request.getQueryString() ) ;
                 break ;
             }
             case "POST" :{
                 Object reqDto = joinPoint.getArgs()[0] ;
                 if( reqDto != null ){
-                    logger.info("传递的参数：{}",reqDto.toString()) ;
+                    logger.info("Parameter     :{}",reqDto.toString()) ;
                 }
                 break ;
             }
             default : break ;
         }
-
-        logger.info("================================================================");
-
     }
 }

@@ -14,6 +14,11 @@ public class WxReplyKeyword {
 
     private String ruleCode;
 
+    /**
+     * 参数使用，公众号
+     */
+    private String publicCode;
+
     @NotEmpty(message = "【keyword】参数缺失")
     private String keyword;
 
@@ -21,6 +26,14 @@ public class WxReplyKeyword {
     private Integer matchFlag;
 
     private Integer delFlag;
+
+    public String getPublicCode() {
+        return publicCode;
+    }
+
+    public void setPublicCode(String publicCode) {
+        this.publicCode = publicCode;
+    }
 
     public String getKeywordCode() {
         return keywordCode;

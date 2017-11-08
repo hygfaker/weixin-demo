@@ -15,24 +15,24 @@ public interface WxReplyDao {
 
     int insertSelective(WxReply record);
 
-    int deleteByPrimaryKey(String replyCode);
+    int deleteByPrimaryKey(WxReply record);
 
 
 //    String selectPublicCode(@Param("publicCode") String publicCode,@Param("replyType") Integer replyType);
 
-    WxReply selectByPrimaryKey(String replyCode);
+    WxReply selectByPrimaryKey(WxReply record);
 
-    List<WxReply> selectByPulCodeAndReplyType(@Param("publicCode") String publicCode , @Param("replyType") Integer replyType);
+    List<WxReply> selectByPublicCodeAndReplyType(WxReply record);
 
-    List<WxReply> selectByPulCode(@Param("publicCode") String publicCode);
+    List<WxReply> selectByPulCode(WxReply record);
 
-    int updateContentByKey(@Param("replyCode") String replyCode, @Param("content") String content);
+    int updateContentByKey(WxReply record);
 
-    int updateContent(@Param("publicCode") String publicCode , @Param("content") String content , @Param("replyType") Integer replyType);
+    int updateContent(WxReply record);
 
-    int updateReplyFlagByKey(@Param("replyCode") String replyCode, @Param("replyFlag") Integer replyFlag);
+    int updateReplyFlagByKey(WxReply record);
 
-    int updateReplyFlag(@Param("publicCode") String publicCode, @Param("replyType") Integer replyType, @Param("replyFlag") Integer replyFlag );
+    int updateReplyFlag(WxReply record);
 
     int updateByPrimaryKeySelective(WxReply record);
 

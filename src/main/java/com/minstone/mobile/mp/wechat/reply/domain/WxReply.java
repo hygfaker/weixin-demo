@@ -1,7 +1,16 @@
 package com.minstone.mobile.mp.wechat.reply.domain;
 
 import com.minstone.mobile.mp.utils.code.IdGen;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+/**
+ * 消息回复
+ */
 public class WxReply {
 
     public WxReply() {super();}
@@ -15,12 +24,20 @@ public class WxReply {
 
     private String replyCode;
 
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
 
+    @NotNull(message = "【replyType】参数缺失（且内容不为空）")
+    @Min(value = 0, message = "replyType 的值为0表示关注时回复，1表示非关键词回复，2表示关键词回复")
+    @Max(value = 2, message = "replyType 的值为0表示关注时回复，1表示非关键词回复，2表示关键词回复")
     private Integer replyType;
 
+    @NotEmpty(message = "【content】参数缺失（且内容不为空）")
     private String content;
 
+    @NotNull(message = "【replyFlag】参数缺失（且内容不为空）")
+    @Min(value = 0, message = "replyFlag 的值只能为0或者为1")
+    @Max(value = 1, message = "replyFlag 的值只能为0或者为1")
     private Integer replyFlag;
 
     public String getReplyCode() {

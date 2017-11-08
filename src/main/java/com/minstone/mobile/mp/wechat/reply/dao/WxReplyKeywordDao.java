@@ -1,6 +1,8 @@
 package com.minstone.mobile.mp.wechat.reply.dao;
 
+import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
+import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -25,18 +27,39 @@ public interface WxReplyKeywordDao {
     int insertBatch(List<WxReplyKeyword> keywords);
 
     /**
-     * 物理删除关键词规则下的所有关键词信息
-     * @param ruleCode 关键词规则主键
+     * 逻辑删除关键词信息
+     * @param keywordCode 关键词主键
      * @return
      */
-    int forceDeleteByRuleCode(String ruleCode);
+    int deleteByPrimaryKey(WxReplyKeyword keyword);
 
     /**
      * 物理删除关键词信息
      * @param keywordCode 关键词主键
      * @return
      */
-    int forceDeleteByPrimaryKey(String keywordCode);
+    int forceDeleteByPrimaryKey(WxReplyKeyword keyword);
+
+    /**
+     * 逻辑删除关键词回复下的所有关键词信息
+     * @param ruleCode 关键词规则主键
+     * @return
+     */
+    int deleteByRuleCode(WxReplyKeyword keyword);
+
+    /**
+     * 物理删除关键词规则下的所有关键词信息
+     * @param ruleCode 关键词规则主键
+     * @return
+     */
+    int forceDeleteByRuleCode(WxReplyKeyword keyword);
+
+    /**
+     * 逻辑删除关键词信息
+     * @param array 关键词主键们
+     * @return
+     */
+    int deleteByPrimaryKeyBatch(String[] array);
 
     /**
      *  批量物理删除关键词信息
@@ -44,29 +67,6 @@ public interface WxReplyKeywordDao {
      * @return
      */
     int forceDeleteByPrimaryKeyBatch(String[] array);
-
-    /**
-     * 逻辑删除关键词回复下的所有关键词信息
-     * @param ruleCode 关键词规则主键
-     * @return
-     */
-    int deleteByRuleCode(String ruleCode);
-
-    /**
-     * 逻辑删除关键词信息
-     * @param keywordCode 关键词主键
-     * @return
-     */
-    int deleteByPrimaryKey(String keywordCode);
-
-//    todo
-    int forceDeleteByRuleCodeBatch(String[] array);
-    /**
-     * 逻辑删除关键词信息
-     * @param array 关键词主键们
-     * @return
-     */
-    int deleteByPrimaryKeyBatch(String[] array);
 
     /**
      * 更新关键词信息
@@ -87,13 +87,29 @@ public interface WxReplyKeywordDao {
      * @param keywordCode 关键词主键
      * @return
      */
-    List<WxReplyKeyword> selectByPrimaryKey(String keywordCode);
+    List<WxReplyKeyword> selectByPrimaryKey(WxReplyKeyword keyword);
 
     /**
      * 获取关键词规则下的关键词信息
      * @param ruleCode 公众号主键
      * @return
      */
-    List<WxReplyKeyword> selectByRuleCode(String ruleCode);
+    List<WxReplyKeyword> selectByRuleCode(WxReplyRule rule);
+
+    /**
+     * 根据公众号获取所有关键词
+     * @param rule
+     * @return
+     */
+    List<WxReplyKeyword> selectKeywords(WxReplyRule rule);
+
+    /**
+     * 根据公众号获取所有关键词
+     * @param rule
+     * @return
+     */
+    List<String> checkKeywords(WxReplyRule rule);
+
+    List<WxReplyKeyword> selectTest(WxReplyKeyword keyword);
 
 }

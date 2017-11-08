@@ -42,4 +42,29 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
             return wxMessagePush;
         }
     }
+
+    @Override
+    public boolean delete(WxMessagePush wxMessagePush) {
+        return false;
+    }
+
+    @Override
+    public boolean fDelete(WxMessagePush wxMessagePush) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteBatch(WxMessagePush wxMessagePush) {
+        return false;
+    }
+
+    @Override
+    public boolean fDeleteBatch(WxMessagePush wxMessagePush) {
+        return false;
+    }
+
+    @Override
+    public boolean update(WxMessagePush wxMessagePush) {
+        return false;
+    }
 }

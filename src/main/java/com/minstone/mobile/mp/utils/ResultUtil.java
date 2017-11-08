@@ -44,7 +44,7 @@ public final class ResultUtil {
         result.setData(data);
         result.setPager(pager);
         logger.info("返回结果：" + result.toString());
-        logger.info("================================================================");
+        logger.info("============================ end ====================================");
         return result;
     }
 
@@ -60,7 +60,7 @@ public final class ResultUtil {
         result.setTime(DateUtil.getStringDate());
         result.setData(object);
         logger.info("返回结果：" + result.toString());
-        logger.info("================================================================");
+        logger.info("============================ end ====================================");
 
         return result;
     }
@@ -75,8 +75,8 @@ public final class ResultUtil {
         result.setStatus(resultEnums.getCode());
         result.setTime(DateUtil.getStringDate());
         result.setDesc(resultEnums.getMsg());
-        logger.info(result.toString());
-        logger.info("================================================================");
+        logger.info("返回结果：" + result.toString());
+        logger.info("============================ end ====================================");
 
         return result;
     }
@@ -105,7 +105,7 @@ public final class ResultUtil {
         result.setTime(DateUtil.getStringDate());
         result.setDesc(msg);
         logger.info("返回结果：" + result.toString());
-        logger.info("================================================================");
+        logger.info("============================ end ====================================");
         return result;
     }
 /*

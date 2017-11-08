@@ -57,6 +57,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
      */
     @Override
     public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException {
+        // TODO: 2017/11/7 对 wxpublic 实体进行参数校验
         // 生成图片的主键
         String imgCode = IdGen.uuid();
         WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
@@ -72,10 +73,10 @@ public class IWxPublicServiceImpl implements IWxPublicService {
             if (wxPublicDao.insert(wxPublic) > 0) {
                 return wxPublic;
             } else {
-                throw new CommonException(DaoEnum.SAVE_PUBLIC_ERROR);
+                throw new CommonException(ResultEnum.SAVE_PUBLIC_ERROR);
             }
         } else {
-            throw new CommonException(DaoEnum.UPDATE_IMG_ERROR);
+            throw new CommonException(ResultEnum.UPDATE_IMG_ERROR);
         }
     }
 
@@ -95,7 +96,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
         if (checkPublicCodes.size() > 0) {
             return wxPublicDao.deleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
-            throw new CommonException(DaoEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -115,7 +116,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
         if (resultList.size() == 0){
             return wxPublicDao.deleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
         }else {
-            throw new CommonException(ResultEnum.NOTFOUND_ERROR,DaoEnum.PUBLIC_NOTFOUND.getMessage() + resultList.toString());
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -136,8 +137,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
         if (checkPublicCode != null) {
             return wxPublicDao.forceDeleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
-            logger.error(DaoEnum.PUBLIC_NOTFOUND.getMessage());
-            throw new CommonException(DaoEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -158,7 +158,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
         if (resultList.size() == 0){
             return wxPublicDao.forceDeleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
         }else {
-            throw new CommonException(ResultEnum.NOTFOUND_ERROR,DaoEnum.PUBLIC_NOTFOUND.getMessage() + resultList.toString());
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -185,13 +185,13 @@ public class IWxPublicServiceImpl implements IWxPublicService {
                     // 更新公众号信息
                     return wxPublicDao.updateByPrimaryKeySelective(wxPublic) > 0 ? true : false;
                 } else {
-                    throw new CommonException(DaoEnum.UPDATE_IMG_ERROR);
+                    throw new CommonException(ResultEnum.UPDATE_IMG_ERROR);
                 }
             } else {
-                throw new CommonException(DaoEnum.PUBLIC_IMG_NOTFOUND);
+                throw new CommonException(ResultEnum.PUBLIC_IMG_NOTFOUND);
             }
         }else{
-            throw new CommonException(DaoEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -221,7 +221,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
         if (selectResult != null) {
             return selectResult;
         } else {
-            throw new CommonException(ResultEnum.PARAM_ERROR,DaoEnum.PUBLIC_NOTFOUND.getMessage());
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -240,12 +240,10 @@ public class IWxPublicServiceImpl implements IWxPublicService {
 
         ValidatorUtil.param(wxPublic,validator,"publicCode");
         if (currentPage < 0) {
-            logger.error(DaoEnum.PARAME_LIMITE_POSITIVE.getMessage());
-            throw new CommonException((DaoEnum.PARAME_LIMITE_POSITIVE));
+            throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
         }
         if (pageSize < 0) {
-            logger.error(DaoEnum.PARAME_LIMITE_POSITIVE.getMessage());
-            throw new CommonException((DaoEnum.PARAME_LIMITE_POSITIVE));
+            throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
         }
         // 检查公众号是否存在
         List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic);
@@ -256,8 +254,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
             return page;
 
         } else {
-            logger.error(DaoEnum.PUBLIC_NOTFOUND.getMessage());
-            throw new CommonException(DaoEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
 
         }
     }

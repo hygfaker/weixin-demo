@@ -14,14 +14,14 @@
     REPLY_CODE, PUBLIC_CODE, REPLY_TYPE, CONTENT, REPLY_FLAG
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from MP_YY_REPLY
     where REPLY_CODE = #{replyCode,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByPulCodeAndReplyType" resultMap="BaseResultMap">
+  <select id="selectByPublicCodeAndReplyType" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM MP_YY_REPLY
@@ -39,18 +39,7 @@
     1=1
   </select>
 
-  <!--<select id="selectPublicCode" resultType="java.lang.String">-->
-    <!--SELECT-->
-    <!--PUBLIC_CODE-->
-    <!--FROM MP_YY_REPLY-->
-    <!--WHERE PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}-->
-    <!--AND-->
-    <!--REPLY_TYPE = #{replyType,jdbcType=INTEGER}-->
-    <!--AND-->
-    <!--1=1-->
-  <!--</select>-->
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey">
     delete from MP_YY_REPLY
     where REPLY_CODE = #{replyCode,jdbcType=VARCHAR}
   </delete>
