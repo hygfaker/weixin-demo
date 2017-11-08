@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
-import com.minstone.mobile.mp.wechat.publics.service.impl.IWxPublicServiceImpl;
+import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.utils.code.IdGen;
@@ -21,9 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +84,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
     @Autowired
     private Validator validator;
 
-    private static Logger logger = LoggerFactory.getLogger(IWxPublicServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(WxPublicServiceImpl.class);
 
 
     @Autowired

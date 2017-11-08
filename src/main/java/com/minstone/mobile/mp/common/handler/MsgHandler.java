@@ -34,7 +34,7 @@ public class MsgHandler extends AbstractHandler {
 
         if (!wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) {
             //TODO 可以选择将消息保存到本地
-            logger.info(String.valueOf(wxMessage));
+            logger.debug(String.valueOf(wxMessage));
         }
         /*
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
@@ -73,6 +73,6 @@ public class MsgHandler extends AbstractHandler {
         String content = "收到信息内容：" + JsonUtil.toJson(wxMessage);
 
 //        return new ImageBuilder().build("ugtdCRNQEzwsBBNmNFTjSjeMy4ajXbq4I1zVoXkgYsU",wxMessage,weixinService);
-        return null;
+
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public interface WxPublicDao<T> {
 
 
+
     int deleteByPrimaryKey(String publicCode);
 
     int forceDeleteByPrimaryKey(String publicCode);
@@ -40,4 +41,5 @@ public interface WxPublicDao<T> {
 
     // 查询参数为数组的时候，不能用实体，mapper 里面读取不到属性
     List<String> selectPublicCodes(String[] publicCodes);
+
 }

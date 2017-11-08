@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.ResultUtil;
-import com.minstone.mobile.mp.wechat.publics.service.impl.IWxPublicServiceImpl;
+import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.common.ResultEnum;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -14,14 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.jvm.hotspot.debugger.Page;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author huangyg
@@ -56,7 +54,7 @@ public class WxPublicController {
     private WxMpService service;
 
     @Autowired
-    private IWxPublicServiceImpl wxPublicService;
+    private WxPublicServiceImpl wxPublicService;
 
     private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
 

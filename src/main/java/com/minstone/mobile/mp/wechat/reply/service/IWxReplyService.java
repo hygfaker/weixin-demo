@@ -58,6 +58,9 @@ public interface IWxReplyService {
     // TODO: 2017/11/8 mapper 还没完善
 //    4-1. 根据公众号、关键词获取回复消息
 
+    // TODO: 2017/11/8
+//    4-2.根据 touserid 获取回复内容
+
     /**
      * 添加公众号的时候，初始化【消息回复】数据
      * @author huangyg
@@ -316,7 +319,17 @@ public interface IWxReplyService {
      */
     public List<WxReplyRule> getMatchContent(WxReplyRule rule) throws WxErrorException;
 
+
+
+
+
+
+
     public List<WxReplyRule> selectTest(WxReplyRule rule) throws WxErrorException;
+
+
+
+
 
 
     /************ 目前没啥用的方法 ************/

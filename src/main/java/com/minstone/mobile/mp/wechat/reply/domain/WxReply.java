@@ -15,6 +15,10 @@ public class WxReply {
 
     public WxReply() {super();}
 
+    public WxReply(String publicCode){
+        this.setPublicCode(publicCode);
+    }
+
     public WxReply(String publicCode , String content , Integer replyType){
         this.setPublicCode(publicCode);
         this.setReplyCode(IdGen.uuid());

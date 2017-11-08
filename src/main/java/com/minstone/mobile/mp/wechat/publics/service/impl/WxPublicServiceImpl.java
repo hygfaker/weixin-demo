@@ -3,7 +3,6 @@ package com.minstone.mobile.mp.wechat.publics.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.*;
-import com.minstone.mobile.mp.common.annotation.ParamValidate;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
@@ -11,7 +10,6 @@ import com.minstone.mobile.mp.wechat.publics.dao.WxPublicImgDao;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.code.IdGen;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicImg;
-import com.sun.tools.javac.comp.Todo;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class IWxPublicServiceImpl implements IWxPublicService {
+public class WxPublicServiceImpl implements IWxPublicService {
     //todo 切换公众号
     @Autowired
     private WxPublicDao wxPublicDao;
@@ -44,7 +42,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
     @Autowired
     private Validator validator;
 
-    private static Logger logger = LoggerFactory.getLogger(IWxPublicServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(WxPublicServiceImpl.class);
 
     /**
      * 添加公众号信息
@@ -258,6 +256,7 @@ public class IWxPublicServiceImpl implements IWxPublicService {
 
         }
     }
+
 
     public static <T> List<T> checkContains(T[] t1, T[] t2) {
         List<T> checkList = Arrays.asList(t1);

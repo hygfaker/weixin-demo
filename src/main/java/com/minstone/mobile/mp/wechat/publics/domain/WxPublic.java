@@ -12,6 +12,10 @@ public class WxPublic {
     public WxPublic() {
         super();
     }
+    public WxPublic(String openId){
+        this.setOpenId(openId);
+    }
+
     public WxPublic(Map<String,Object> reqMap) {
         this.setPublicCode(IdGen.uuid());
         this.setOpenId((String) reqMap.get("openId"));

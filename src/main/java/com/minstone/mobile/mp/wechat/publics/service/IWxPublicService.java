@@ -29,6 +29,7 @@ public interface IWxPublicService {
     // 获取公众号
     // 获取公众号分页
 
+
     // TODO: 2017/10/27
     /**
      * 添加公众号信息
@@ -105,5 +106,6 @@ public interface IWxPublicService {
 
 
     public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;
+
 
 }
