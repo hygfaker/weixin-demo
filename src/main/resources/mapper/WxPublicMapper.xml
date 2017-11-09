@@ -58,16 +58,10 @@
     AND 1=1
   </select>
 
-  <!--  <select id="test" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic" resultType="java.util.Arrays">
-    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
-    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-    AND 1=1
-  </select>-->
-
   <select id="selectPublicCode" resultType="java.lang.String">
     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC where
     <if test="publicCode != null">
-     PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+      PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
       AND
     </if>
     1=1
@@ -110,7 +104,6 @@
     </foreach>
     AND 1=1
   </delete>
-
 
   <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME,
@@ -282,5 +275,12 @@
     </set>
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
+
+
+  <!--  <select id="test" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic" resultType="java.util.Arrays">
+   SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
+   where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+   AND 1=1
+ </select>-->
 
 </mapper>

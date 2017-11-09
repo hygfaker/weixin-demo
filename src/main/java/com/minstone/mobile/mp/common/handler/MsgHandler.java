@@ -49,7 +49,7 @@ public class MsgHandler extends AbstractHandler {
 
         // 根据用户发送的消息类型进行判断 msgType = text、image、amr（语音）、名片也是 text、location（地理位置）、video
         if (wxMessage.getMsgType() == "text"){
-            // TODO: 2017/11/8 构建自动回复
+            // TODO: 2017/11/8 关键词自动回复和非关键词自动回复
 
         }
         // 关键字自动回复
@@ -71,8 +71,14 @@ public class MsgHandler extends AbstractHandler {
 
         //TODO 组装回复消息
         String content = "收到信息内容：" + JsonUtil.toJson(wxMessage);
-        return new TextBuilder().build(content,wxMessage,weixinService);
+        return new TextBuilder().build("success" +
+                "",wxMessage,weixinService);
 
+        /** todo
+         * 避免系统提示“该公众号暂时无法提供服务，请稍后再试”：
+         * 1、直接回复success（推荐方式）
+         * 2、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
+         */
 
 //        return new ImageBuilder().build("ugtdCRNQEzwsBBNmNFTjSjeMy4ajXbq4I1zVoXkgYsU",wxMessage,weixinService);
 

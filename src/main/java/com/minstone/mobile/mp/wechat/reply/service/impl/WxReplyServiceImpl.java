@@ -80,15 +80,15 @@ public class WxReplyServiceImpl implements IWxReplyService {
     private WxReplyRuleDao wxReplyRuleDao;
     @Autowired
     private WxReplyKeywordDao wxReplyKeywordDao;
-
+    @Autowired
+    private WxPublicDao wxPublicDao;
     @Autowired
     private Validator validator;
 
     private static Logger logger = LoggerFactory.getLogger(WxPublicServiceImpl.class);
 
 
-    @Autowired
-    private WxPublicDao wxPublicDao;
+
 
     /**
      * 添加公众号的时候，初始化【消息回复】数据

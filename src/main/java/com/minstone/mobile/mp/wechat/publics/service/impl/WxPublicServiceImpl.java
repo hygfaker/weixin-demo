@@ -213,7 +213,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
      */
     @Transactional(readOnly = true)
     @Override
-    public WxPublic get(WxPublic wxPublic) throws WxErrorException, IOException {
+    public WxPublic get(WxPublic wxPublic) throws WxErrorException {
         // TODO: 2017/11/2 校验 wxpublic 参数中的 publicCodes 数组
         WxPublic selectResult = wxPublicDao.selectByPrimaryKey(wxPublic);
         if (selectResult != null) {

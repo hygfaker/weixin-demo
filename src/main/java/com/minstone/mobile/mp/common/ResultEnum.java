@@ -93,9 +93,24 @@ public enum ResultEnum {
     KEYWORD_HAS_EXISTED(500,"关键词已经存在"),
 
     /**
+     * 500,"保存定点消息出错"
+     */
+    SAVE_LOCATION_PUSH_ERROR(500,"保存定点消息出错"),
+
+    /**
+     * 500,"定点消息已经存在"
+     */
+    LOCATION_PUSH_EXISTED(500,"定点消息已经存在"),
+
+    /**
      * 404,"找不到该公众号图片信息"
      */
     PUBLIC_IMG_NOTFOUND(404,"找不到该公众号图片信息"),
+
+    /**
+     * 404,"找不到该定点消息"
+     */
+    LOCATION_PUSH_NOTFOUND(404,"找不到该定点消息"),
 
     /**
      * 404,"该公众号没有相应回复类型信息"

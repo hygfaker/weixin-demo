@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -8,6 +9,33 @@ import javax.validation.constraints.NotNull;
 
 public class WxMessagePush {
 
+    public WxMessagePush(){
+        super();
+    }
+
+    /**
+     * 根据公众号初始化话定点消息实体
+     * @param publicCode
+     * @return
+     * @author huangyg
+     */
+    public WxMessagePush(String publicCode,Integer pushFlag){
+        this.setPublicCode(publicCode);
+        this.setPushFlag(pushFlag);
+    }
+
+    /**
+     * 定点消息数组
+     */
+    @NotEmpty(message = "【pushCodes】参数缺失（且内容不为空）")
+    private String[] pushCodes;
+
+    /**
+     * 微信原始 ID
+     */
+    private String openId;
+
+    @NotEmpty(message = "【pushCode】参数缺失（且内容不为空）")
     private String pushCode;
 
     @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
@@ -36,6 +64,22 @@ public class WxMessagePush {
     private String modifyer;
 
     private Integer delFlag;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String[] getPushCodes() {
+        return pushCodes;
+    }
+
+    public void setPushCodes(String[] pushCodes) {
+        this.pushCodes = pushCodes;
+    }
 
     public String getPushCode() {
         return pushCode;

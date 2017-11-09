@@ -12,6 +12,13 @@ public class WxPublic {
     public WxPublic() {
         super();
     }
+
+    /**
+     * 根据公众号的原始 ID 生成实体
+ * @param openId
+     * @return
+     * @author huangyg
+     */
     public WxPublic(String openId){
         this.setOpenId(openId);
     }

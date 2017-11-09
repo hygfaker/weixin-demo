@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
+import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.wechat.message.service.impl.WxMessagePushServiceImpl;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.utils.ResultUtil;
@@ -17,25 +18,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("push")
 public class WxMessagePushController {
 
-    // TODO: 2017/10/24
-    // 添加定点推送
-    // 批量添加定点推送
+    // 1-1. 添加定点推送
 
-    // 删除定点推送（逻辑）
-    // 删除定点推送（物理）
-    // 批量删除定点推送（逻辑）
-    // 批量删除定点推送（物理）
 
-    // 修改定点推送
-    // 开启、关闭定点推送
+    // 2-1. 逻辑删除定点消息
+    // 2-2. 物理删除定点消息
+    // 2-3. 批量逻辑删除定点消息
+    // 2-4. 批量物理删除定点消息
 
-    // 分页查看定点推送
+    // 3-1. 更新定点消息
+    // 4-1. 修改定点消息状态
+
+    // 5-1. 获取定点消息分页列表
+    // 5-2. 获取定点消息
 
     @Autowired
     private WxMessagePushServiceImpl wxMessagePushService;
 
     /**
-     * 添加定点提送
+     * 1-1. 添加定点推送
      * @param wxMessagePush 定点推送实体
      * @return java.lang.String 定点推送主键
      * @author huangyg
@@ -46,79 +47,91 @@ public class WxMessagePushController {
     }
 
     /**
-     * 删除定点推送（逻辑)
+     * 2-1. 逻辑删除定点消息
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
     @GetMapping("/delete")
-    public CommonResult delete(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    public CommonResult delete(WxMessagePush wxMessagePush) throws WxErrorException{
+        return wxMessagePushService.delete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
     }
 
     /**
-     * 删除定点推送（物理)
+     * 2-2. 物理删除定点消息
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
     @GetMapping("/forceDelete")
-    public CommonResult forceDelete(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    public CommonResult forceDelete(WxMessagePush wxMessagePush) throws WxErrorException{
+        return wxMessagePushService.forceDelete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
     }
 
     /**
-     * 批量删除定点推送（逻辑)
+     * 2-3. 批量逻辑删除定点消息
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
     @GetMapping("/deleteBatch")
-    public CommonResult deleteBatch(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    public CommonResult deleteBatch(WxMessagePush wxMessagePush) throws WxErrorException{
+        return wxMessagePushService.deleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
     }
 
     /**
-     * 批量删除定点推送（物理)
+     * 2-4. 批量物理删除定点消息
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
     @GetMapping("/forceDeleteBatch")
-    public CommonResult forceDeleteBatch(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    public CommonResult forceDeleteBatch(WxMessagePush wxMessagePush) throws WxErrorException{
+        return wxMessagePushService.forceDeleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
+
     }
 
     /**
-     * 修改定点推送
+     * 3-1. 更新定点消息
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
     @PostMapping("/update")
-    public CommonResult update(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    public CommonResult update(WxMessagePush wxMessagePush) throws WxErrorException{
+        return ResultUtil.success(wxMessagePushService.update(wxMessagePush));
     }
 
     /**
-     * 开启、关闭定点推送
+     * 4-1. 修改定点消息状态
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
-    @PostMapping("modifyPushFlag")
-    public CommonResult modifyPushFlag(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    @GetMapping("/updateFlag")
+    public CommonResult updateFlag(WxMessagePush wxMessagePush) throws WxErrorException{
+        return ResultUtil.success(wxMessagePushService.updateFlag(wxMessagePush));
     }
 
     /**
-     * 分页查看定点推送
+     * 5-1. 获取定点消息分页列表
      * @param wxMessagePush 定点推送实体
      * @return CommonResult
      * @author huangyg
      */
-    @PostMapping("getPage")
-    public CommonResult getPage(WxMessagePush wxMessagePush){
-        return ResultUtil.success();
+    @GetMapping("/getPage")
+    public CommonResult getPage(WxMessagePush wxMessagePush,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException{
+        return ResultUtil.pageFormat(wxMessagePushService.getPage(wxMessagePush,currentPage,pageSize));
+    }
+
+    /**
+     * 5-2. 获取定点消息
+     * @param wxMessagePush 定点推送实体
+     * @return CommonResult
+     * @author huangyg
+     */
+    @GetMapping("/get")
+    public CommonResult getPage(WxMessagePush wxMessagePush) throws WxErrorException{
+        return ResultUtil.success(wxMessagePushService.get(wxMessagePush));
     }
 }

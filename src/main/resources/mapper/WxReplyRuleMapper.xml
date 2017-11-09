@@ -174,11 +174,11 @@
     </insert>
 
     <delete id="deleteByPrimaryKey">
-    update MP_YY_REP_RULE
-    SET  DEL_FLAG = 1
-    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-    AND 1=1
-  </delete>
+        update MP_YY_REP_RULE
+        SET  DEL_FLAG = 1
+        where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+        AND 1=1
+    </delete>
 
     <delete id="deleteBatch" parameterType="java.util.Arrays">
         update MP_YY_REP_RULE
@@ -191,10 +191,10 @@
     </delete>
 
     <update id="forceDeleteByPrimaryKey">
-    delete from  MP_YY_REP_RULE
-    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-    AND 1=1
-  </update>
+        delete from  MP_YY_REP_RULE
+        where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+        AND 1=1
+    </update>
 
     <delete id="forceDeleteBatch" parameterType="java.util.Arrays">
         delete from MP_YY_REP_RULE
@@ -207,26 +207,26 @@
 
     <!-- keyword 表的 DEL_FLAG、RULE_CODE 使用别名 -->
     <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
-    FROM MP_YY_REP_RULE r
-    LEFT JOIN
+        SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+        FROM MP_YY_REP_RULE r
+        LEFT JOIN
         MP_YY_REP_KEYWORD k
-    ON (r.RULE_CODE = k.RULE_CODE)
-    AND k.DEL_FLAG = 0
-    WHERE r.RULE_CODE= #{ruleCode,jdbcType=VARCHAR}
-    AND r.DEL_FLAG = 0
-  </select>
+        ON (r.RULE_CODE = k.RULE_CODE)
+        AND k.DEL_FLAG = 0
+        WHERE r.RULE_CODE= #{ruleCode,jdbcType=VARCHAR}
+        AND r.DEL_FLAG = 0
+    </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-      SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
-    FROM MP_YY_REP_RULE r
-    LEFT JOIN
+        SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+        FROM MP_YY_REP_RULE r
+        LEFT JOIN
         MP_YY_REP_KEYWORD k
-    ON (r.RULE_CODE = k.RULE_CODE)
-    AND k.DEL_FLAG = 0
-    WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-    AND r.DEL_FLAG = 0
-  </select>
+        ON (r.RULE_CODE = k.RULE_CODE)
+        AND k.DEL_FLAG = 0
+        WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        AND r.DEL_FLAG = 0
+    </select>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule">
         update MP_YY_REP_RULE
@@ -266,22 +266,22 @@
     </update>
 
     <update id="updateRuleFlag">
-    update MP_YY_REP_RULE
-    set USE_FLAG = #{useFlag,jdbcType=INTEGER}
-    where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
-  </update>
+        update MP_YY_REP_RULE
+        set USE_FLAG = #{useFlag,jdbcType=INTEGER}
+        where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+    </update>
 
 
     <select id="selectTest" resultMap="BaseResultMap">
-    SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
-    FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
-    WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-     AND (k.KEYWORD = #{keyword,jdbcType=VARCHAR})
-    AND k.DEL_FLAG = 0
-    AND r.RULE_CODE = k.RULE_CODE
-    AND r.DEL_FLAG = 0
-    AND r.USE_FLAG = 1
-  </select>
+        SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
+        FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
+        WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        AND (k.KEYWORD = #{keyword,jdbcType=VARCHAR})
+        AND k.DEL_FLAG = 0
+        AND r.RULE_CODE = k.RULE_CODE
+        AND r.DEL_FLAG = 0
+        AND r.USE_FLAG = 1
+    </select>
 
     <select id="selectMatchContent" resultMap="BaseResultMap">
         SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
