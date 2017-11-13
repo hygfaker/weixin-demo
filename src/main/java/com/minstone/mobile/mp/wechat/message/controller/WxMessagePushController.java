@@ -2,12 +2,15 @@ package com.minstone.mobile.mp.wechat.message.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.service.impl.WxMessagePushServiceImpl;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author huangyg
@@ -86,7 +89,7 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @GetMapping("/forceDeleteBatch")
-    public CommonResult forceDeleteBatch(WxMessagePush wxMessagePush) throws WxErrorException{
+    public CommonResult forceDeleteBatch( WxMessagePush wxMessagePush) throws WxErrorException{
         return wxMessagePushService.forceDeleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
 
     }
@@ -116,6 +119,8 @@ public class WxMessagePushController {
     /**
      * 5-1. 获取定点消息分页列表
      * @param wxMessagePush 定点推送实体
+     * @param currentPage 当前页
+     * @param pageSize 每页数量
      * @return CommonResult
      * @author huangyg
      */
@@ -133,5 +138,18 @@ public class WxMessagePushController {
     @GetMapping("/get")
     public CommonResult getPage(WxMessagePush wxMessagePush) throws WxErrorException{
         return ResultUtil.success(wxMessagePushService.get(wxMessagePush));
+    }
+
+    /**
+     * 7-4.单位推送记录统计查询
+     *
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @return
+     * @author huangyg
+     */
+    @GetMapping("/getRecordByDate")
+    public CommonResult getRecordByDate(@RequestParam String pushCode,@RequestParam String startDate,@RequestParam String endDate,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException{
+        return ResultUtil.pageFormat(wxMessagePushService.getRecordByDate(pushCode,startDate,endDate,currentPage,pageSize));
     }
 }

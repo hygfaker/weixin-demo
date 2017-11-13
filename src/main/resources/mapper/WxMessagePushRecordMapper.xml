@@ -37,8 +37,7 @@
         1=1
     </select>
 
-
-    <select id="select" parameterType="java.lang.String">
+    <select id="selectByUserCode" parameterType="java.lang.String" resultType="java.lang.String">
         select PUSH_CODE
         from MP_YY_MSG_PUSH_RECORD where
         USER_CODE = #{userCode,jdbcType=VARCHAR}
@@ -55,6 +54,17 @@
       1=1
   </select>
 
+    <select id="selectRecordByDate" resultType="java.util.Map">
+        select distinct(left(PUSH_DATE,#{len})) as pushDate,
+        count(*) as total from MP_YY_MSG_PUSH_RECORD where
+        <if test="pushCode != null">
+            PUSH_CODE = #{pushCode,jdbcType=VARCHAR}
+            AND
+        </if>
+        left(PUSH_DATE,#{len}) <![CDATA[>=]]>  #{startDate}
+        and left(PUSH_DATE,#{len}) <![CDATA[<=]]> #{endDate}
+        GROUP BY left(PUSH_DATE,#{len})
+    </select>
 
     <delete id="delete">
         update MP_YY_MSG_PUSH_RECORD
@@ -92,7 +102,6 @@
         </if>
         1=1
     </delete>
-
 
     <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord">
     insert into MP_YY_MSG_PUSH_RECORD (RECORD_CODE, PUSH_CODE, USER_CODE, 

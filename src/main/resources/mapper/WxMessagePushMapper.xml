@@ -207,7 +207,8 @@
         DEL_FLAG
     </sql>
 
-    <select id="select" resultMap="BaseResultMap" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
+    <select id="select" resultMap="BaseResultMap"
+            parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
         select *
         from MP_YY_MSG_PUSH WHERE
         <if test="pushCode != null">
@@ -221,8 +222,10 @@
         1=1
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
-        select <include refid="Base_Column_List"/>
+    <select id="selectAll" resultMap="BaseResultMap"
+            parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessagePush">
+        select
+        <include refid="Base_Column_List"/>
         from MP_YY_MSG_PUSH WHERE
         <if test="publicCode != null">
             PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
@@ -235,7 +238,15 @@
         DEL_FLAG = 0
         AND
         1 = 1
-        ORDER BY PUSH_DATE DESC
     </select>
+
+    <select id="selectMessageByOpenIdAndUserCode" resultMap="BaseResultMap">
+       select * from MP_YY_MSG_PUSH m
+        where m.PUBLIC_CODE
+        in (select PUBLIC_CODE from MP_YY_PUBLIC where OPEN_ID=#{openId})
+        and m.PUSH_CODE
+        not in (select PUSH_CODE from MP_YY_MSG_PUSH_RECORD where USER_CODE=#{userCode})
+    </select>
+
 
 </mapper>

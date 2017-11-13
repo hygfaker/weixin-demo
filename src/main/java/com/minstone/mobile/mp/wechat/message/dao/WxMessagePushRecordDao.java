@@ -2,10 +2,14 @@ package com.minstone.mobile.mp.wechat.message.dao;
 
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
+@Mapper
 @Component
 public interface WxMessagePushRecordDao {
 
@@ -51,11 +55,16 @@ public interface WxMessagePushRecordDao {
      */
     List<WxMessagePushRecord> select(WxMessagePushRecord record);
 
-    List<String> select(String userCode);
+    /**
+     * 获取某个用户接收到的定点消息列表
+     * @param userCode
+     * @return java.util.List<java.lang.String>
+     * @author huangyg
+     */
+    List<String> selectByUserCode(String userCode);
 
-//    List<WxMessagePushRecord> selectAll(WxMessagePushRecord record);
 
-    // TODO: 2017/11/9 直接根据微信原始 id 和用户获取记录（没拿来用，考虑数据库性能...）
+    // 直接根据微信原始 id 和用户获取记录（没拿来用，考虑数据库性能...）
     WxMessagePushRecord selectRecord(WxMessagePushRecord record);
 
     /**
@@ -65,5 +74,16 @@ public interface WxMessagePushRecordDao {
      * @author huangyg
      */
     int update(WxMessagePushRecord record);
+
+
+    /**
+     * 推送记录统计查询
+     *
+     * @param startDate 开始时间
+     * @param startDate 结束时间
+     * @return
+     * @author huangyg
+     */
+     List<Map<String,Integer>> selectRecordByDate(@Param(value = "pushCode") String pushCode , @Param(value = "startDate") String startDate , @Param(value = "endDate") String endDate , @Param(value="len") int len);
 
 }

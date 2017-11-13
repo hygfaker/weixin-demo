@@ -1,6 +1,5 @@
 package com.minstone.mobile.mp.wechat.message.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Validator;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangyg
@@ -275,6 +275,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      * @return boolean
      * @author huangyg
      */
+    @Transactional(readOnly = true)
     @Override
     public PageInfo<WxMessagePushRecord> getRecord(WxMessagePushRecord messagePushRecord,int currentPage,int pageSize) throws WxErrorException {
         // 灵活获取记录列表，所以不进行参数校验。（不传获取全部）
@@ -298,6 +299,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord>
      * @author huangyg
      */
+    @Transactional(readOnly = true)
     @Override
     public List<WxMessagePushRecord> getRecord(WxMessagePushRecord wxMessagePushRecord) throws WxErrorException{
         return this.getRecord(wxMessagePushRecord,1,99999).getList();
@@ -309,11 +311,50 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      * @return java.util.List<java.lang.String>
      * @author huangyg
      */
+    @Transactional(readOnly = true)
     @Override
     public List<String> getRecord(String userCode) throws WxErrorException{
-        return messagePushRecordDao.select(userCode);
+        return messagePushRecordDao.selectByUserCode(userCode);
     }
 
+    /**
+     * 7-4.单位推送记录统计查询
+     *
+     * @param pushCode 定点消息主键
+     * @param startDate 开始时间
+     * @param startDate 结束时间
+     * @return
+     * @author huangyg
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public PageInfo<Map<String,Integer>> getRecordByDate(String pushCode,String startDate, String endDate,int currentPage,int pageSize) throws WxErrorException{
+        if (currentPage < 0) {
+            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+        }
+        if (pageSize < 0) {
+            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+        }
 
+        int len = startDate.length();
 
+        PageHelper.startPage(currentPage,pageSize);
+
+        List<Map<String,Integer>> list = messagePushRecordDao.selectRecordByDate(pushCode,startDate,endDate,len);
+        PageInfo<Map<String,Integer>> page = new PageInfo<>(list);
+        return page;
+    }
+
+    /**
+     * 7-5. 根据微信原始 id 和用户 id 获取定点消息表中可以推送的消息列表（如果定点消息记录表中有数据则不能推）
+     * @param openId 微信原始 id
+     * @param userCode 用户 id
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePush>
+     * @author huangyg
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<WxMessagePush> selectMessageByOpenIdAndUserCode(String openId,String userCode) throws WxErrorException{
+        return wxMessagePushDao.selectMessageByOpenIdAndUserCode(openId,userCode);
+    }
 }

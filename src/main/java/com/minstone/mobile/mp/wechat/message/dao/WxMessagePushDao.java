@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.message.dao;
 
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -83,5 +84,6 @@ public interface WxMessagePushDao {
     List<WxMessagePush> selectAll(WxMessagePush record);
 
 
+    List<WxMessagePush> selectMessageByOpenIdAndUserCode(@Param(value = "openId") String openId,@Param(value = "userCode") String userCode);
 
 }

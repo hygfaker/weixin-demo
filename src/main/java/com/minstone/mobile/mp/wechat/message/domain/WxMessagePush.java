@@ -3,6 +3,7 @@ package com.minstone.mobile.mp.wechat.message.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -24,12 +25,15 @@ public class WxMessagePush {
         this.setPushFlag(pushFlag);
     }
 
+//     enties
     /**
      * 定点消息数组
      */
     @NotEmpty(message = "【pushCodes】参数缺失（且内容不为空）")
     private String[] pushCodes;
 
+
+    //     pojo
     /**
      * 微信原始 ID
      */

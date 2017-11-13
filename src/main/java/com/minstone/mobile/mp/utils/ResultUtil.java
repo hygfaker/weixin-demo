@@ -40,7 +40,7 @@ public final class ResultUtil {
         CommonResult result = new CommonResult();
         result.setStatus(ResultEnum.SUCCESS.getCode());
         result.setDesc(ResultEnum.SUCCESS.getMsg());
-        result.setTime(DateUtil.getStringDate());
+        result.setTime(DateUtil.getResultStringDate());
         result.setData(data);
         result.setPager(pager);
         logger.info("返回结果：" + result.toString());
@@ -57,7 +57,7 @@ public final class ResultUtil {
         CommonResult result = new CommonResult();
         result.setStatus(ResultEnum.SUCCESS.getCode());
         result.setDesc(ResultEnum.SUCCESS.getMsg());
-        result.setTime(DateUtil.getStringDate());
+        result.setTime(DateUtil.getResultStringDate());
         result.setData(object);
         logger.info("返回结果：" + result.toString());
         logger.info("============================ end ====================================");
@@ -73,7 +73,7 @@ public final class ResultUtil {
     public static CommonResult failure(ResultEnum resultEnums){
         CommonResult result = new CommonResult();
         result.setStatus(resultEnums.getCode());
-        result.setTime(DateUtil.getStringDate());
+        result.setTime(DateUtil.getResultStringDate());
         result.setDesc(resultEnums.getMsg());
         logger.info("返回结果：" + result.toString());
         logger.info("============================ end ====================================");
@@ -102,7 +102,7 @@ public final class ResultUtil {
     public static CommonResult failure(int code, String msg){
         CommonResult result = new CommonResult();
         result.setStatus(code);
-        result.setTime(DateUtil.getStringDate());
+        result.setTime(DateUtil.getResultStringDate());
         result.setDesc(msg);
         logger.info("返回结果：" + result.toString());
         logger.info("============================ end ====================================");

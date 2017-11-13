@@ -5,9 +5,9 @@ import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by huangyg on 2017/10/24.
@@ -147,4 +147,23 @@ public interface IWxMessagePushService {
      * @author huangyg
      */
     public List<String> getRecord(String userCode) throws WxErrorException;
+
+    /**
+     * 7-4.单位推送记录统计查询
+     *
+     * @param startDate 开始时间
+     * @param startDate 开始时间
+     * @return
+     * @author huangyg
+     */
+    public PageInfo<Map<String,Integer>> getRecordByDate(String pushCode,String startDate, String endDate,int currentPage,int pageSize) throws WxErrorException;
+
+    /**
+     * 7-5. 根据微信原始 id 和用户 id 获取定点消息表中可以推送的消息列表（如果定点消息记录表中有数据则不能推）
+     * @param openId 微信原始 id
+     * @param userCode 用户 id
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePush>
+     * @author huangyg
+     */
+    public List<WxMessagePush> selectMessageByOpenIdAndUserCode(String openId,String userCode) throws WxErrorException;
 }
