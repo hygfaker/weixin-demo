@@ -1,5 +1,8 @@
 package com.minstone.mobile.mp.wechat.user.controller;
 
+import com.minstone.mobile.mp.common.CommonResult;
+import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.tag.WxTagListUser;
@@ -7,6 +10,7 @@ import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -20,51 +24,70 @@ public class WxTagController {
 
     // 创建标签
     @PostMapping("/create")
-    public String tagCreateSimple(String name) throws WxErrorException {
+    public CommonResult tagCreateSimple(String name) throws WxErrorException {
         WxUserTag userTag = this.wxService.getUserTagService().tagCreate(name);
-        return userTag.toString();
+        return ResultUtil.success(userTag);
     }
 
     // 获取公众号已创建的标签
     @GetMapping("/get")
-    public List<WxUserTag> tagGet() throws WxErrorException{
-        return this.wxService.getUserTagService().tagGet();
+    public CommonResult tagGet() throws WxErrorException{
+        List<WxUserTag> tagList = this.wxService.getUserTagService().tagGet();
+        return ResultUtil.success(tagList);
     }
 
     // 删除标签
     @GetMapping("/delete")
-    public Boolean tagDelete(@RequestParam Long tagid) throws WxErrorException{
-        return this.wxService.getUserTagService().tagDelete(tagid);
+    public CommonResult tagDelete(@RequestParam Long tagid) throws WxErrorException{
+        if (this.wxService.getUserTagService().tagDelete(tagid)){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     // 修改标签
-    @PostMapping("/tagUpdate")
-    public Boolean tagUpdate(Long tagID, String name) throws WxErrorException{
-        return this.wxService.getUserTagService().tagUpdate(tagID,name);
+    @PostMapping("/update")
+    public CommonResult tagUpdate(Long tagID, String name) throws WxErrorException{
+        if (this.wxService.getUserTagService().tagUpdate(tagID,name)){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     // 获取标签下粉丝列表
-    @GetMapping("/listUser")
-    public WxTagListUser tagListUser(Long tagID, String nextOpenid) throws WxErrorException{
-        return this.wxService.getUserTagService().tagListUser(tagID,nextOpenid);
+    @GetMapping("/usersOfTag")
+    public CommonResult tagListUser(Long tagID, String nextOpenid) throws WxErrorException{
+         WxTagListUser listUser = this.wxService.getUserTagService().tagListUser(tagID,nextOpenid);
+        return ResultUtil.success(listUser);
     }
 
     // 批量为用户打标签
-    @PostMapping("/batchTagging")
-    public Boolean batchTagging(Long tagID, String[] openids) throws WxErrorException{
-        return this.wxService.getUserTagService().batchTagging(tagID,openids);
+    @PostMapping("/batchTagForUser")
+    public CommonResult batchTagging(Long tagID, String[] openids) throws WxErrorException{
+        if (this.wxService.getUserTagService().batchTagging(tagID,openids)){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     // 批量为用户取消标签
-    @PostMapping("/batchUntagging")
-    public Boolean batchUntagging(Long tagID, String[] openids) throws WxErrorException{
-        return this.wxService.getUserTagService().batchUntagging(tagID,openids);
+    @PostMapping("/batchCanceltag")
+    public CommonResult batchUntagging(Long tagID, String[] openids) throws WxErrorException{
+        if (this.wxService.getUserTagService().batchUntagging(tagID,openids)){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 
     // 获取用户身上的标签列表
-    @GetMapping("/userTagList")
-    public List<Long> userTagList(String openid) throws WxErrorException{
-        return this.wxService.getUserTagService().userTagList(openid);
+    @GetMapping("/tagsOfUser")
+    public CommonResult userTagList(String openid) throws WxErrorException{
+        List<Long> tagList = this.wxService.getUserTagService().userTagList(openid);
+        return ResultUtil.success(tagList);
     }
 
 }

@@ -4,9 +4,8 @@ import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.utils.LocationUtil;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord;
-import com.minstone.mobile.mp.wechat.message.service.impl.WxMessagePushServiceImpl;
-import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
-import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
+import com.minstone.mobile.mp.wechat.message.service.IWxMessagePushService;
+import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -29,9 +28,9 @@ import java.util.Map;
 public class LocationHandler extends AbstractHandler {
 
     @Autowired
-    private WxMessagePushServiceImpl messagePushService;
+    private IWxMessagePushService messagePushService;
     @Autowired
-    private WxPublicServiceImpl publicService;
+    private IWxPublicService publicService;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
@@ -41,21 +40,7 @@ public class LocationHandler extends AbstractHandler {
             return null;
         }
 
-        // 处理地理位置推送
-/*
-        // 1. 获取微信原始 id 对应的公众号主键  xx
-        String publicCode = publicService.get(new WxPublic(wxMessage.getToUser())).getPublicCode();
-
-        // 2. 根据公众号主键获取已开启发送的的定点消息列表  xx
-        List<WxMessagePush> messagePushes = messagePushService.getList(new WxMessagePush(publicCode, 1));
-
-        // 3. 根据用户获取定点消息推送表中的记录  xx
-        List<String> pushRecords = messagePushService.getRecord(wxMessage.getFromUser());
-
-        // 4. 判断待发送的定点消息 （ todo - toPushList[] 可以加入缓存，每次进来就不用判断数据库，直接拿数据操作即可）
-     */
-
-//      获取可以推送的内容列表
+        // 处理地理位置推送，获取可以推送的内容列表
         List<WxMessagePush> messagePushes = messagePushService.selectMessageByOpenIdAndUserCode(wxMessage.getToUser(),wxMessage.getFromUser());
 
         WxMessagePush toPush = null;
@@ -69,10 +54,9 @@ public class LocationHandler extends AbstractHandler {
 
         }
 
-        // 将用户和数据保存到数据记录表中
         if (toPush != null){
+            // 将用户和数据保存到数据记录表中
             messagePushService.addRecord(new WxMessagePushRecord(wxMessage.getFromUser(), toPush.getPushCode()));
-            // 6. 推送
             try {
                 return new TextBuilder().build(toPush.getContent(), wxMessage, null);
             } catch (Exception e) {
@@ -82,6 +66,7 @@ public class LocationHandler extends AbstractHandler {
         }else {
             return null;
         }
+
         //TODO  可以将用户地理位置信息保存到本地数据库，以便以后使用
 
     }

@@ -36,7 +36,7 @@ public final class ResultUtil {
      * @param pager 分页信息，包括当前页，页总数等
      * @return
      */
-    public static CommonResult success(Object data, Object pager){
+    public static CommonResult success(Object data, CommonResult.CommonPage pager){
         CommonResult result = new CommonResult();
         result.setStatus(ResultEnum.SUCCESS.getCode());
         result.setDesc(ResultEnum.SUCCESS.getMsg());
@@ -121,15 +121,9 @@ public final class ResultUtil {
      * @return
      */
     public static CommonResult pageFormat(PageInfo pageInfo){
-        Map<String,Object> pager = new HashMap<>();
-        pager.put("pageIndex",Integer.valueOf(pageInfo.getPageNum()));
-        pager.put("pageSize",Integer.valueOf(pageInfo.getPageSize()));
-        pager.put("pageCount",Integer.valueOf(pageInfo.getPages()));
-        pager.put("itemCount",Long.valueOf(pageInfo.getTotal()));
-
+        CommonResult.CommonPage pager = new CommonResult.CommonPage(pageInfo);
         List data = pageInfo.getList();
         return success(data,pager);
-
     }
 
 //    /**

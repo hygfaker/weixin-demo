@@ -20,8 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import java.util.List;
  * Created by huangyg on 2017/9/21.
  */
 
-@Component
+@Service
 @Transactional
 public class WxReplyServiceImpl implements IWxReplyService {
 //    todo
@@ -86,9 +88,6 @@ public class WxReplyServiceImpl implements IWxReplyService {
     private Validator validator;
 
     private static Logger logger = LoggerFactory.getLogger(WxPublicServiceImpl.class);
-
-
-
 
     /**
      * 添加公众号的时候，初始化【消息回复】数据

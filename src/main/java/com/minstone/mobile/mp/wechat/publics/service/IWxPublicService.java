@@ -3,6 +3,7 @@ package com.minstone.mobile.mp.wechat.publics.service;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Map;
  *
  * 对外提供的公众号管理的接口
  */
+
 public interface IWxPublicService {
 
     // TODO: 2017/10/26

@@ -3,6 +3,7 @@ package com.minstone.mobile.mp.common.contoller;
 import com.minstone.mobile.mp.common.handler.MsgHandler;
 import com.minstone.mobile.mp.common.handler.SubscribeHandler;
 import com.minstone.mobile.mp.common.handler.UnsubscribeHandler;
+import com.minstone.mobile.mp.wechat.sendall.controller.SendAllHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -118,6 +119,10 @@ public class WechatController {
                     .rule()
                     .msgType(WxConsts.EVT_UNSUBSCRIBE)
                     .handler(new UnsubscribeHandler())  // 取消关注事件
+                    .end()
+                    .rule()
+                    .msgType(WxConsts.MASS_MSG_NEWS)
+                    .handler(new SendAllHandler())  // 群发图文消息
                     .end()
                     .rule()
                     .msgType(WxConsts.XML_MSG_TEXT)

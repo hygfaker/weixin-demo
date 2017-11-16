@@ -261,6 +261,8 @@ public class WxErrorMsg {
                 break;
             case 45028:
                 errmsg="没有群发的权限";
+            case 45157:
+                errmsg="该标签分组已经存在";
                 break;
             case 46001:
                 errmsg="不存在媒体数据";

@@ -5,6 +5,7 @@ import com.minstone.mobile.mp.common.builder.ImageBuilder;
 import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.builder.VoiceBuilder;
 import com.minstone.mobile.mp.utils.JsonUtil;
+import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
 import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class MsgHandler extends AbstractHandler {
 
     @Autowired
-    private WxReplyServiceImpl wxReplyService;
+    private IWxReplyService replyService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
@@ -32,9 +33,21 @@ public class MsgHandler extends AbstractHandler {
 
 
 
-        if (!wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) {
-            //TODO 可以选择将消息保存到本地
-            logger.debug(String.valueOf(wxMessage));
+        if (!wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) { // 不是 event 事件
+
+        }
+        //  todo 接受用户发送的数据，保存到数据库
+        if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_IMAGE) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_VOICE) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_SHORTVIDEO) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_VIDEO) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_NEWS) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_LINK) ||
+                wxMessage.getMsgType().equals(WxConsts.XML_MSG_LOCATION)){
+
+
+
         }
         /*
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
@@ -48,7 +61,7 @@ public class MsgHandler extends AbstractHandler {
         */
 
         // 根据用户发送的消息类型进行判断 msgType = text、image、amr（语音）、名片也是 text、location（地理位置）、video
-        if (wxMessage.getMsgType() == "text"){
+        if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT)){
             // TODO: 2017/11/8 关键词自动回复和非关键词自动回复
 
         }

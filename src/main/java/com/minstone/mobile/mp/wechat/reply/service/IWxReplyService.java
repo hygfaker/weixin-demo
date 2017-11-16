@@ -16,7 +16,6 @@ import java.util.List;
  * 消息回复对外基础 API
  * Created by huangyg on 2017/9/21.
  */
-@Service
 public interface IWxReplyService {
 
 //    0. 初始化数据

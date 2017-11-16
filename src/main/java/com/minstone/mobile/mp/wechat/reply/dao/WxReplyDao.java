@@ -2,7 +2,6 @@ package com.minstone.mobile.mp.wechat.reply.dao;
 
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

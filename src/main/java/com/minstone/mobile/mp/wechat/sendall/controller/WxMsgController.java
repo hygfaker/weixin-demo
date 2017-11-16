@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.wechat.send.controller;
+package com.minstone.mobile.mp.wechat.sendall.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.utils.ResultUtil;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by huangyg on 2017/8/10.
  */
 @RestController
-@RequestMapping("mass")
+@RequestMapping("sendAll")
 public class WxMsgController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class WxMsgController {
     // 删除群发
 
     // 按 openId 列表群发消息
-    @PostMapping("/openids")
+    @PostMapping("/openid")
     public CommonResult massOpenIdsMessageSend(@ModelAttribute WxMpMassOpenIdsMessage wxMpMassOpenIdsMessage) throws WxErrorException {
         WxMpMassSendResult result = this.wxMpService.massOpenIdsMessageSend(wxMpMassOpenIdsMessage);
         return ResultUtil.success(result);

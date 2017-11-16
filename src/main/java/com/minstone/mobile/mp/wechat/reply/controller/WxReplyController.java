@@ -1,7 +1,9 @@
 package com.minstone.mobile.mp.wechat.reply.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
+import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
 import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
@@ -11,6 +13,8 @@ import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +30,7 @@ import java.util.List;
 public class WxReplyController {
 
     @Autowired
-    private WxReplyServiceImpl wxReplyService;
+    private IWxReplyService wxReplyService;
 //    0. 初始化数据
 
 //    ===== 关注时回复 =====

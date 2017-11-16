@@ -15,7 +15,6 @@ import java.util.Set;
 @Component
 public class ValidatorUtil {
 
-
     public static <T> void param(T t,Validator validator, String... validFileds) throws ConstraintViolationException {
         for (String filed : validFileds) {
             Set<ConstraintViolation<T>> constraintViolations = validator.validateProperty(t, filed);

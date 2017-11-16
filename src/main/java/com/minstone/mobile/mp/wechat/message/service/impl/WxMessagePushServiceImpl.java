@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
@@ -30,7 +31,7 @@ import java.util.Map;
  * @description
  * @since 2017/10/24
  */
-@Component
+@Service
 @Transactional
 public class WxMessagePushServiceImpl implements IWxMessagePushService {
 

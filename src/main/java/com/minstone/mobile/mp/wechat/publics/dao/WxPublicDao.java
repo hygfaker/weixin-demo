@@ -12,8 +12,6 @@ import java.util.List;
 @Mapper
 public interface WxPublicDao<T> {
 
-
-
     int deleteByPrimaryKey(String publicCode);
 
     int forceDeleteByPrimaryKey(String publicCode);

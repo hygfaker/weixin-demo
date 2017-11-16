@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by huangyg on 2017/10/24.
  */
-@Service
+
 public interface IWxMessagePushService {
 
     // ----------------- 提供的服务 -----------------//
