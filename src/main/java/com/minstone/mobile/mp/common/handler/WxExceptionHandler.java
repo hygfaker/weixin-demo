@@ -69,12 +69,12 @@ public class WxExceptionHandler {
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
             return ResultUtil.failure(ResultEnum.PARAM_ERROR, msg);
 
-        } else if (e instanceof MissingServletRequestPartException) {  // Post 请求控制器提交参数缺失(@Valid 校验)
+        } else if (e instanceof MissingServletRequestPartException) {
 
             MissingServletRequestPartException exception = (MissingServletRequestPartException) e;
             return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
 
-        } else if (e instanceof BindException) {  // get 请求控制器提交参数缺失(@Valid 校验)
+        } else if (e instanceof BindException) {  // get/Post 请求控制器提交参数缺失(@Valid 校验)
             BindException exception = (BindException) e;
             return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getAllErrors().get(0).getDefaultMessage());
 

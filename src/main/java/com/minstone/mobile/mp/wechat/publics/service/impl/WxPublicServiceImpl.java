@@ -89,7 +89,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
     public boolean delete(WxPublic wxPublic) throws WxErrorException, IOException {
         ValidatorUtil.param(wxPublic, validator, "publicCode");
         // 校验公众号是否存在
-        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic);
+        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
         if (checkPublicCodes.size() > 0) {
             return wxPublicDao.deleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
@@ -110,10 +110,10 @@ public class WxPublicServiceImpl implements IWxPublicService {
         ValidatorUtil.param(wxPublic, validator, "publicCodes");
         // 校验公众号是否存在
         List<String> correctPublicCodes = wxPublicDao.selectPublicCodes(wxPublic.getPublicCodes());
-        List<String> resultList = checkContains(correctPublicCodes.toArray(new String[correctPublicCodes.size()]),wxPublic.getPublicCodes());
-        if (resultList.size() == 0){
+        List<String> resultList = checkContains(correctPublicCodes.toArray(new String[correctPublicCodes.size()]), wxPublic.getPublicCodes());
+        if (resultList.size() == 0) {
             return wxPublicDao.deleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
-        }else {
+        } else {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
@@ -130,7 +130,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         ValidatorUtil.param(wxPublic, validator, "publicCode");
 
         // 删除公众号图片
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxPublic);
+        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
         if (checkPublicCode != null) {
             return wxPublicDao.forceDeleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
@@ -151,11 +151,11 @@ public class WxPublicServiceImpl implements IWxPublicService {
         ValidatorUtil.param(wxPublic, validator, "publicCodes");
         // 校验公众号是否存在
         List<String> correctPublicCodes = wxPublicDao.selectPublicCodes(wxPublic.getPublicCodes());
-        List<String> resultList = checkContains(correctPublicCodes.toArray(new String[correctPublicCodes.size()]),wxPublic.getPublicCodes());
+        List<String> resultList = checkContains(correctPublicCodes.toArray(new String[correctPublicCodes.size()]), wxPublic.getPublicCodes());
 
-        if (resultList.size() == 0){
+        if (resultList.size() == 0) {
             return wxPublicDao.forceDeleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
-        }else {
+        } else {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
@@ -171,13 +171,13 @@ public class WxPublicServiceImpl implements IWxPublicService {
      */
     @Override
     public boolean update(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException {
-        ValidatorUtil.param(wxPublic,validator,"publicCode");
+        ValidatorUtil.param(wxPublic, validator, "publicCode");
         // 校验公众号是否存在
-        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic);
+        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
         if (checkPublicCodes.size() > 0) {
             String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(wxPublic.getPublicCode());
-            if (imgCode != null ) {
+            if (imgCode != null) {
                 WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
                 if (wxPublicImgDao.updateByPrimaryKeySelective(wxPublicImg) > 0) {
                     // 更新公众号信息
@@ -188,7 +188,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
             } else {
                 throw new CommonException(ResultEnum.PUBLIC_IMG_NOTFOUND);
             }
-        }else{
+        } else {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         }
     }
@@ -229,14 +229,14 @@ public class WxPublicServiceImpl implements IWxPublicService {
      * @param wxPublic    公众号实体
      * @param currentPage 当前页
      * @param pageSize    每页显示的数量
-     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.domain.WxPublic> 分页内容
+     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
      * @author huangyg
      */
     @Transactional(readOnly = true)
     @Override
-    public PageInfo<WxPublic> getPage(WxPublic wxPublic, int currentPage, int pageSize) throws WxErrorException, IOException {
+    public PageInfo<WxPublic> getPage(int currentPage, int pageSize) throws WxErrorException, IOException {
 
-        ValidatorUtil.param(wxPublic,validator,"publicCode");
+//        ValidatorUtil.param(wxPublic,validator,"publicCode");
         if (currentPage < 0) {
             throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
         }
@@ -244,17 +244,17 @@ public class WxPublicServiceImpl implements IWxPublicService {
             throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
         }
         // 检查公众号是否存在
-        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic);
-        if (checkPublicCodes.size() == 0) {
-            PageHelper.startPage(currentPage, pageSize);
-            List<WxPublic> list = wxPublicDao.selectAll();
-            PageInfo<WxPublic> page = new PageInfo<>(list);
-            return page;
+//        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
+//        if (checkPublicCodes.size() > 0) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<WxPublic> list = wxPublicDao.selectAll();
+        PageInfo<WxPublic> page = new PageInfo<>(list);
+        return page;
 
-        } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
-
-        }
+//        } else {
+//            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+//
+//        }
     }
 
 
@@ -272,6 +272,12 @@ public class WxPublicServiceImpl implements IWxPublicService {
     @Override
     public List<String> test(WxPublic wxPublic) throws WxErrorException, IOException {
         return wxPublicDao.test(wxPublic);
+    }
+
+    @Override
+    public String getPublicCodeByOpenId(String openId) throws WxErrorException {
+        List<String> publicCodes = wxPublicDao.selectPublicCodeByOpenId(openId);
+        return publicCodes.size() > 0 ? publicCodes.get(0).toString() : null;
     }
 
 }

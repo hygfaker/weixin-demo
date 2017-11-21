@@ -87,11 +87,18 @@
         <!--selectByExampleQueryId="false">-->
         <!--</table>-->
 
-        <table schema="mdweixin" tableName="MP_YY_MSG_PUSH_RECORD" domainObjectName="WxMessagePushRecord"
+        <!--<table schema="mdweixin" tableName="MP_YY_MSG_PUSH_RECORD" domainObjectName="WxMessagePushRecord"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <table schema="mdweixin" tableName="MP_YY_MSG" domainObjectName="WxMessage"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
+
 
     </context>
 

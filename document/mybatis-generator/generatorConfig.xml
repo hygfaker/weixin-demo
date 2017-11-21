@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="mdweixin" targetRuntime="MyBatis3">
+
+        <!-- 数据库连接信息 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/mdweixin"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!-- 生成 Model 对象路径配置 -->
+        <javaModelGenerator targetPackage="com.minstone.mobile.mp.wechat.message.domain" targetProject="/Users/huangyg/Documents/Git/wechat/src/main/java/">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 生成 sqlXMLMapper 文件路径配置 -->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="/Users/huangyg/Documents/Git/wechat/src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 生成 DAO 的类文件路径配置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.minstone.mobile.mp.wechat.message.dao" targetProject="/Users/huangyg/Documents/Git/wechat/src/main/java/">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
+        <!--<table schema="mdweixin" tableName="MP_YY_PUB_IMG" domainObjectName="WxPublicImg"-->
+            <!--enableCountByExample="false" enableUpdateByExample="false"-->
+            <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+            <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_PUBLIC" domainObjectName="WxPublic"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_PUB_CONFIG" domainObjectName="WxPublicConfig"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_REPLY" domainObjectName="WxReply"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_REP_RULE" domainObjectName="WxReplyRule"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_REP_KEYWORD" domainObjectName="WxReplyKeyword"-->
+            <!--enableCountByExample="false" enableUpdateByExample="false"-->
+            <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+            <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_REP_KEYWORD" domainObjectName="WxReplyKeyword"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_MSG_PUSH" domainObjectName="WxMessagePush"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <!--<table schema="mdweixin" tableName="MP_YY_MSG_PUSH_RECORD" domainObjectName="WxMessagePushRecord"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <table schema="mdweixin" tableName="MP_YY_MSG" domainObjectName="WxMessage"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+
+    </context>
+
+</generatorConfiguration>

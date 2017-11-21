@@ -283,18 +283,16 @@
         AND r.USE_FLAG = 1
     </select>
 
-    <select id="selectMatchContent" resultMap="BaseResultMap">
-        SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
-        FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
-        WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-        <if test=""></if>
-        AND (k.KEYWORD = #{keyword,jdbcType=VARCHAR})
-        AND k.DEL_FLAG = 0
-        AND r.RULE_CODE = k.RULE_CODE
+    <select id="selectMatchContent" resultType="java.lang.String">
+        SELECT r.content FROM MP_YY_REP_RULE r
+        LEFT JOIN MP_YY_REP_KEYWORD k
+        ON  r.RULE_CODE = k.RULE_CODE
+        AND r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        AND k.KEYWORD LIKE CASE WHEN (k.MATCH_FLAG=1) THEN #{keyword,jdbcType=VARCHAR}
+        ELSE "%"#{keyword,jdbcType=VARCHAR}"%" END
+        WHERE k.KEYWORD IS NOT NULL
         AND r.DEL_FLAG = 0
-        AND r.USE_FLAG = 1
+        AND k.DEL_FLAG = 0
     </select>
-
-
 
 </mapper>

@@ -3,6 +3,8 @@ package com.minstone.mobile.mp.wechat.publics.domain;
 import com.minstone.mobile.mp.utils.code.IdGen;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +17,7 @@ public class WxPublic {
 
     /**
      * 根据公众号的原始 ID 生成实体
- * @param openId
+     * @param openId
      * @return
      * @author huangyg
      */

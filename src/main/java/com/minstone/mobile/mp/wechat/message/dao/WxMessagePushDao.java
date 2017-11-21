@@ -70,7 +70,7 @@ public interface WxMessagePushDao {
     /**
      * 获取定点消息
      * @param record 定点消息实体
-     * @return com.minstone.mobile.mp.wechat.message.domain.WxMessagePush
+     * @return com.minstone.mobile.mp.wechat.message.reply.WxMessagePush
      * @author huangyg
      */
     WxMessagePush select(WxMessagePush record);
@@ -78,7 +78,7 @@ public interface WxMessagePushDao {
     /**
      * 获取公众号下的定点推送
      * @param record 定点消息实体
-     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePush>
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.reply.WxMessagePush>
      * @author huangyg
      */
     List<WxMessagePush> selectAll(WxMessagePush record);

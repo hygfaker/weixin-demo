@@ -81,12 +81,14 @@ public interface WxReplyRuleDao {
      */
     List<WxReplyRule> selectByPrimaryKey(WxReplyRule record);
 
+
+
     /**
-     * 查找公众号下的关键词规则列表（测试）
-     * @param publicCode 公众号主键
+     * 查找公众号下的关键词回复内容列表（测试）
+     * @param rule 消息规则回复实体
      * @return
      */
-    List<WxReplyRule> selectMatchContent(WxReplyRule rule);
+    List<String> selectMatchContent(WxReplyRule rule);
 
     /**
      * 查找公众号下的关键词规则列表（测试）

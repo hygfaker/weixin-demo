@@ -33,21 +33,21 @@ public class WxMsgController {
     // 按 openId 列表群发消息
     @PostMapping("/openid")
     public CommonResult massOpenIdsMessageSend(@ModelAttribute WxMpMassOpenIdsMessage wxMpMassOpenIdsMessage) throws WxErrorException {
-        WxMpMassSendResult result = this.wxMpService.massOpenIdsMessageSend(wxMpMassOpenIdsMessage);
+        WxMpMassSendResult result = this.wxMpService.getMassMessageService().massOpenIdsMessageSend(wxMpMassOpenIdsMessage);
         return ResultUtil.success(result);
     }
 
     // 按分组群发消息
     @PostMapping("/group")
     public CommonResult massGroupMessageSend(@ModelAttribute WxMpMassTagMessage wxMpMassTagMessage) throws WxErrorException {
-        WxMpMassSendResult result = this.wxMpService.massGroupMessageSend(wxMpMassTagMessage);
+        WxMpMassSendResult result = this.wxMpService.getMassMessageService().massGroupMessageSend(wxMpMassTagMessage);
         return ResultUtil.success(result);
     }
 
     // 群发消息预览接口
     @PostMapping("/preview")
     public CommonResult massMessagePreview(@ModelAttribute WxMpMassPreviewMessage wxMpMassPreviewMessage) throws Exception {
-        WxMpMassSendResult result = this.wxMpService.massMessagePreview(wxMpMassPreviewMessage);
+        WxMpMassSendResult result = this.wxMpService.getMassMessageService().massMessagePreview(wxMpMassPreviewMessage);
         return ResultUtil.success();
     }
 

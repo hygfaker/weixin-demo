@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.reply.domain;
 
 import com.minstone.mobile.mp.utils.code.IdGen;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -13,11 +14,40 @@ import javax.validation.constraints.NotNull;
  */
 public class WxReply {
 
+    private enum REPLY_TYPE{
+        SUBSCRIPT_REPLY(0),
+        NO_KEYWORD_REPLY(1),
+        KEYWORD_REPLY(2);
+
+        private int replytype;
+
+        REPLY_TYPE(int replytype) {
+            this.replytype = replytype;
+        }
+
+        public int getReplytype() {
+            return replytype;
+        }
+
+        public void setReplytype(int replytype) {
+            this.replytype = replytype;
+        }
+    }
+
     public WxReply() {super();}
 
     public WxReply(String publicCode){
         this.setPublicCode(publicCode);
     }
+
+    /**
+     *
+ * @param publicCode
+ * @param content
+ * @param replyType
+     * @return
+     * @author huangyg
+     */
 
     public WxReply(String publicCode , String content , Integer replyType){
         this.setPublicCode(publicCode);

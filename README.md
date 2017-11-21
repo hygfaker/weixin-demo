@@ -11,3 +11,16 @@
 1. 配置微信公众号中的接口地址：http://my-domain.tunnel.qydev.com/wechat/portal （注意my-domain要跟上面的一致，需要符合微信官方的要求）；
 1. 根据自己需要修改各个handler的实现，加入自己的业务逻辑。
 	
+	
+## 加解密异常
+如果在加解密的过程中出现java.security.InvalidKeyException: Illegal key size，则需要下载一个东西：
+
+JRE/JDK 6：http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html
+
+JRE/JDK 7：http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
+
+JRE/JDK 8：http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+
+如果安装了JRE，将两个jar文件放到$JAVA_HOME/lib/security目录下覆盖原来的文件
+
+如果安装了JDK，将两个jar文件放到$JAVA_HOME/jre/lib/security目录下覆盖原来文件

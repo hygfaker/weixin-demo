@@ -318,6 +318,9 @@ public class WxErrorMsg {
             case 61501:
                 errmsg="日期范围错误";
                 break;
+            case 65400:
+                errmsg="无法使用客服";
+                break;
             case 9001001:
                 errmsg="POST数据参数不合法";
                 break;

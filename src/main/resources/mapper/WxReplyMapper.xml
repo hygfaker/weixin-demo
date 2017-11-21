@@ -39,6 +39,15 @@
     1=1
   </select>
 
+  <select id="selectUseFlagByPublicCode" resultType="java.lang.Integer">
+    SELECT REPLY_FLAG FROM MP_YY_REPLY WHERE
+    PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    AND
+    REPLY_TYPE = #{replyType,jdbcType=INTEGER}
+    AND
+    1=1
+  </select>
+
   <delete id="deleteByPrimaryKey">
     delete from MP_YY_REPLY
     where REPLY_CODE = #{replyCode,jdbcType=VARCHAR}

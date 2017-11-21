@@ -116,6 +116,7 @@ public class WxPublicController {
         }
     }
 
+    // 获取公众号的时候会切换公众号，此时相当于改变 accessToken
     @GetMapping("/get")
     public CommonResult get(WxPublic wxPublic) throws WxErrorException, IOException {
 
@@ -132,8 +133,8 @@ public class WxPublicController {
 
     // 分页获取公众号列表
     @GetMapping("/getPage")
-    public CommonResult getPage(WxPublic wxPublic,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException, IOException {
-        PageInfo page = wxPublicService.getPage(wxPublic,currentPage,pageSize);
+    public CommonResult getPage(@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException, IOException {
+        PageInfo page = wxPublicService.getPage(currentPage,pageSize);
         return ResultUtil.pageFormat(page);
     }
 

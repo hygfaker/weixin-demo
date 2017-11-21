@@ -15,6 +15,7 @@ import com.minstone.mobile.mp.wechat.reply.dao.WxReplyKeywordDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyRuleDao;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
 import com.minstone.mobile.mp.common.ResultEnum;
+import com.sun.deploy.security.ruleset.Rule;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,6 +98,28 @@ public class WxReplyServiceImpl implements IWxReplyService {
     @Override
     public void initData() throws WxErrorException {
 
+        String publicCode = IdGen.uuid();
+        WxReply followReply = new WxReply(publicCode,"谢谢关注",0);
+        WxReply  normalReply = new WxReply(publicCode,"非关键词回复",1);
+        WxReply keywordReply = new WxReply(publicCode,"关键词回复",2);
+
+        addNormal(normalReply);
+        addFollow(followReply);
+        addContent(keywordReply);
+
+        WxReplyRule rule = new WxReplyRule();
+        String ruleCode = IdGen.uuid();
+        rule.setPublicCode(publicCode);
+        rule.setRuleCode(ruleCode);
+        rule.setRuleName("初始化规则名称");
+        rule.setUseFlag(1);
+        rule.setKefuReplyFlag(0);
+        rule.setContent("关键词初始化回复内容");
+        rule.setDelFlag(0);
+        List<WxReplyKeyword> list = new ArrayList<>();
+        list.add(new WxReplyKeyword(IdGen.uuid(), ruleCode,"初始化关键词",1,0));
+        rule.setKeywords(list);
+        addRule(rule);
     }
 
     /************ 封装的方法 ************/
@@ -113,7 +136,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public List<WxReply> getInfo(WxReply reply) throws WxErrorException {
         ValidatorUtil.param(reply, validator, "publicCode", "replyType");
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply);
+        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         } else {
@@ -141,7 +164,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public WxReply addContent(WxReply reply) throws WxErrorException {
         ValidatorUtil.param(reply, validator, "publicCode", "content");
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply);
+        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         } else {
@@ -153,6 +176,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
                 logger.info("更新公众号信息成功");
                 return selectList.get(0);
             } else {
+                reply.setReplyCode(IdGen.uuid());
                 if (wxReplyDao.insert(reply) < 1) {
                     throw new CommonException(ResultEnum.SAVE_REPLY_CONTENT_ERROR);
                 }
@@ -309,7 +333,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
             throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
         }
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(rule);
+        List<String> checkPublicCode = wxPublicDao.selectPublicCode(rule.getPublicCode());
         if (checkPublicCode.size() == 0) {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         } else {
@@ -375,6 +399,18 @@ public class WxReplyServiceImpl implements IWxReplyService {
         } else {
             throw new CommonException(ResultEnum.NOTFOUND_ERROR);
         }
+    }
+
+    /**
+     * 3-1-4. 查看关键词回复是否开启(内部使用)
+     *
+     * @param publicCode 公众号主键
+     * @return
+     * @author huangyg
+     */
+    @Override
+    public boolean keywordsUseFlag(String publicCode,Integer replyType) throws WxErrorException, CommonException {
+        return wxReplyDao.selectUseFlagByPublicCode(publicCode,replyType)==1 || false ;
     }
 
     /**
@@ -615,11 +651,11 @@ public class WxReplyServiceImpl implements IWxReplyService {
      * 4-1. 根据公众号、关键词获取回复消息
      *
      * @param rule 关键词实体
-     * @return com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule
+     * @return com.minstone.mobile.mp.wechat.reply.reply.WxReplyRule
      * @author huangyg
      */
     @Override
-    public List<WxReplyRule> getMatchContent(WxReplyRule rule) throws WxErrorException {
+    public List<String> getMatchContent(WxReplyRule rule) throws WxErrorException {
         return wxReplyRuleDao.selectMatchContent(rule);
     }
 

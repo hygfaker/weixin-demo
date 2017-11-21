@@ -1,6 +1,6 @@
 package com.minstone.mobile.mp.common.contoller;
 
-import com.minstone.mobile.mp.common.handler.MsgHandler;
+import com.minstone.mobile.mp.wechat.message.controller.MsgHandler;
 import com.minstone.mobile.mp.common.handler.SubscribeHandler;
 import com.minstone.mobile.mp.common.handler.UnsubscribeHandler;
 import com.minstone.mobile.mp.wechat.sendall.controller.SendAllHandler;
@@ -68,11 +68,15 @@ public class WechatController {
                                required = false) String msgSignature) {
 
 
-        this.logger.info("\n======================接收微信请求====================== \n[signature=[{}], encType=[{}], msgSignature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ", signature, encType, msgSignature, timestamp, nonce, requestBody);
+        this.logger.info("\n======================接收微信请求====================== \n[signature=[{}], encType=[{}], msgSignature=[{}]," + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] \n======================================================",
+                signature, encType, msgSignature, timestamp, nonce, requestBody);
 
-        if (!this.wxService.checkSignature(timestamp, nonce, signature)) {
-            throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
-        }
+
+
+
+//        if (!this.wxService.checkSignature(timestamp, nonce, signature)) {
+//            throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
+//        }
 
         String out = null;
 
@@ -90,11 +94,9 @@ public class WechatController {
 
         } else if ("aes".equals(encType)) {
             // aes加密的消息
-            WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(
-                    requestBody, this.wxService.getWxMpConfigStorage(), timestamp,
-                    nonce, msgSignature);
+            WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, this.wxService.getWxMpConfigStorage(), timestamp,nonce, msgSignature);
 
-            this.logger.info("\n消息解密后内容为：\n{} ", inMessage.toString());
+//            this.logger.info("\n消息解密后内容为：\n{} ", inMessage.toString());
 
             WxMpXmlOutMessage outMessage = this.route(inMessage);
             if (outMessage == null) {
@@ -104,7 +106,7 @@ public class WechatController {
             out = outMessage.toEncryptedXml(this.wxService.getWxMpConfigStorage());
         }
 
-        this.logger.info("\n======================组装回复信息======================\n{}", out);
+        this.logger.info("\n======================组装回复信息======================\n{} + \n=======================================================", out);
 
         return out;
     }
@@ -112,9 +114,9 @@ public class WechatController {
 
     private WxMpXmlOutMessage route(WxMpXmlMessage message) {
         try {// 路由规则
-            this.router.rule()
+             this.router.rule()
                     .msgType(WxConsts.EVT_SUBSCRIBE)
-                    .handler(new SubscribeHandler()) // 订阅时事件
+                    .handler(new SubscribeHandler()) // 关注时回复
                     .end()
                     .rule()
                     .msgType(WxConsts.EVT_UNSUBSCRIBE)
@@ -125,8 +127,7 @@ public class WechatController {
                     .handler(new SendAllHandler())  // 群发图文消息
                     .end()
                     .rule()
-                    .msgType(WxConsts.XML_MSG_TEXT)
-                    .handler(new MsgHandler())  // 用户发送消息
+                    .handler(new MsgHandler())  // 兜底路由规则，一般放到最后
                     .end();
             // 将消息交给路由器
             return this.router.route(message);

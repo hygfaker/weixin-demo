@@ -10,6 +10,14 @@ public class WxReplyKeyword {
         super();
     }
 
+    public WxReplyKeyword(String keywordCode, String ruleCode, String keyword, Integer matchFlag, Integer delFlag) {
+        this.keywordCode = keywordCode;
+        this.ruleCode = ruleCode;
+        this.keyword = keyword;
+        this.matchFlag = matchFlag;
+        this.delFlag = delFlag;
+    }
+
     private String keywordCode;
 
     private String ruleCode;

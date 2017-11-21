@@ -34,6 +34,19 @@ public class DateUtil {
         return new Date(timestamp);
     }
 
+    /**
+     * Unix时间戳转换成指定格式日期字符串
+     * @param timestampString 时间戳 如："1473048265";
+     * @param pattern 要格式化的格式 默认："yyyy-MM-dd HH:mm:ss";
+     *
+     * @return 返回结果 如："2016-09-05 16:06:42";
+     */
+    public static String unix2Date(String timestampString,DatePattern pattern) {
+        Long timestamp = Long.parseLong(timestampString) * 1000;
+        String date = new SimpleDateFormat(pattern.getPattern()).format(new Date(timestamp));
+        return date;
+    }
+
     public static Date dateToUnixTimestamp(String dateStr) {
         String d = dateStr.trim();
         String pattern = DatePattern.getPatternByDateStr(dateStr);

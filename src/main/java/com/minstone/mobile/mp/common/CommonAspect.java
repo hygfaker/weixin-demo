@@ -33,7 +33,6 @@ public class CommonAspect {
 
         logger.info("============================ WeiXin ============================");
 
-
         logger.info("URL           :{}   {}",request.getMethod(),request.getRequestURI());
         logger.info("Method        :{}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         logger.info("Address       :{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());

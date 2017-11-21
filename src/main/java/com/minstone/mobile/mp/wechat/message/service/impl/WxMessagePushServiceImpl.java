@@ -66,7 +66,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      * 1-1. 添加定点消息
      *
      * @param wxMessagePush 定点消息实体
-     * @return com.minstone.mobile.mp.wechat.message.domain.WxMessagePush
+     * @return com.minstone.mobile.mp.wechat.message.reply.WxMessagePush
      * @author huangyg
      */
     @Override
@@ -210,7 +210,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         }
 
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxMessagePush);
+        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxMessagePush.getPublicCode());
         if (checkPublicCode.size() == 0) {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
         } else {
@@ -297,7 +297,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
     /**
      * 7-2. 获取推送记录列表
      * @param wxMessagePushRecord 推送记录列表
-     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord>
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.reply.WxMessagePushRecord>
      * @author huangyg
      */
     @Transactional(readOnly = true)
@@ -350,7 +350,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      * 7-5. 根据微信原始 id 和用户 id 获取定点消息表中可以推送的消息列表（如果定点消息记录表中有数据则不能推）
      * @param openId 微信原始 id
      * @param userCode 用户 id
-     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePush>
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.reply.WxMessagePush>
      * @author huangyg
      */
     @Transactional(readOnly = true)

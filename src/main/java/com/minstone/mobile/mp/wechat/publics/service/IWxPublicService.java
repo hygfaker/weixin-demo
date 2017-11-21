@@ -101,13 +101,21 @@ public interface IWxPublicService {
     /**
      * 分页获取公众号信息
      * @param 
-     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.domain.WxPublic> 分页内容
+     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
      * @author huangyg
      */
-    public PageInfo<WxPublic> getPage(WxPublic wxPublic,int currentPage,int pageSize) throws WxErrorException, IOException;
+    public PageInfo<WxPublic> getPage(int currentPage,int pageSize) throws WxErrorException, IOException;
 
 
     public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;
 
+    /**
+     * 根据公众号原始 id 获取公众号 publicCode
+     * @param openId 公众号原始 id
+     * @return java.lang.String
+     * @author huangyg
+     */
+
+    public String getPublicCodeByOpenId(String openId) throws WxErrorException;
 
 }

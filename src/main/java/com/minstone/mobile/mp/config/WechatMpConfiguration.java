@@ -1,8 +1,16 @@
 package com.minstone.mobile.mp.config;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.handler.*;
+import com.minstone.mobile.mp.wechat.message.controller.LocationHandler;
+import com.minstone.mobile.mp.wechat.message.controller.MsgHandler;
+import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
+import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -16,7 +24,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
+import java.util.UnknownFormatConversionException;
 
 /**
  * wechat mp configuration
@@ -47,6 +58,8 @@ public class WechatMpConfiguration {
     private UnsubscribeHandler unsubscribeHandler;
     @Autowired
     private SubscribeHandler subscribeHandler;
+    @Autowired
+    private IWxPublicService publicService;
 
     //配置mybatis的分页插件pageHelper
     @Bean
@@ -69,12 +82,27 @@ public class WechatMpConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WxMpConfigStorage configStorage() {
+    public WxMpConfigStorage configStorage() throws WxErrorException, IOException {
+
+        // 从配置文件里面获取公众号信息
         WxMpInMemoryConfigStorage configStorage = new WxMpInMemoryConfigStorage();
-        configStorage.setAppId(properties.getAppId());
-        configStorage.setSecret(properties.getSecret());
-        configStorage.setToken(properties.getToken());
-        configStorage.setAesKey(properties.getAesKey());
+
+//        configStorage.setAppId(properties.getAppId());
+//        configStorage.setSecret(properties.getSecret());
+//        configStorage.setToken(properties.getToken());
+//        configStorage.setAesKey(properties.getAesKey());
+
+        // 获取数据库里面的公众号信息
+        PageInfo<WxPublic> info = publicService.getPage(0,999);
+        WxPublic wxPublic = info.getList().size() > 0 ? info.getList().get(0) : null;
+        if (wxPublic == null){
+            return null;
+        }
+
+        configStorage.setAppId(wxPublic.getAppId());
+        configStorage.setSecret(wxPublic.getAppSerct());
+        configStorage.setToken(wxPublic.getToken());
+        configStorage.setAesKey(wxPublic.getAeskey());
         return configStorage;
     }
 
@@ -86,7 +114,9 @@ public class WechatMpConfiguration {
 //        WxMpService wxMpService = new me.chanjar.weixin.mp.imp.impl.jodd.WxMpServiceImpl();
 //        WxMpService wxMpService = new me.chanjar.weixin.mp.imp.impl.apache.WxMpServiceImpl();
         WxMpService wxMpService = new me.chanjar.weixin.mp.api.impl.WxMpServiceImpl();
-        wxMpService.setWxMpConfigStorage(configStorage);
+        if (configStorage != null) {
+            wxMpService.setWxMpConfigStorage(configStorage);
+        }
         return wxMpService;
     }
 

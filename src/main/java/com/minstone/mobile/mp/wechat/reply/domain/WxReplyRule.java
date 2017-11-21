@@ -29,6 +29,11 @@ public class WxReplyRule {
     }
 
     /**
+     * 关键词，作为参数使用
+     */
+    private String keyword;
+
+    /**
      * 关键词规则列表集
      */
     private String[] ruleCodes;
@@ -70,10 +75,7 @@ public class WxReplyRule {
     @NotNull(message = "【keywords】 参数缺失")
     private List<WxReplyKeyword> keywords;
 
-    /**
-     * 关键词，最为参数使用
-     */
-    private String keyword;
+
 
     /**
      * 匹配模式

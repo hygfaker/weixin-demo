@@ -7,6 +7,7 @@ import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,13 +35,14 @@ public interface IWxReplyService {
 //    3-1. 获取关键词规则列表（分页）
 //    3-1-1. 获取单个关键词规则
 //    3-1-2. 获取关键词规则下的关键词列表（分页）
+//    3-1-3. 根据公众号获取所有关键词（分页）
+//    3-1-4. 查看关键词回复是否开启
 
 //    3-2. 开启、关闭所有关键词回复开关
 
 //    3-3. 添加关键词规则（添加跟修改在接口看下能不能合并）
 //    3-3-1. 添加关键词
 //    3-3-2. 批量添加关键词
-//    3-1-3. 根据公众号获取所有关键词（分页）
 
 
 //    3-4. 删除关键词规则（物理逻辑）
@@ -65,7 +67,6 @@ public interface IWxReplyService {
      * @author huangyg
      */
     public void initData() throws WxErrorException;
-
 
     /************ 封装的方法 ************/
 
@@ -209,6 +210,14 @@ public interface IWxReplyService {
     public List<WxReplyKeyword> getKeywords(WxReplyRule keyword) throws WxErrorException,CommonException;
 
     /**
+     * 3-1-4. 查看关键词回复是否开启(内部使用)
+     * @param publicCode 公众号主键
+     * @returnk
+     * @author huangyg
+     */
+    public boolean keywordsUseFlag(String publicCode,Integer replyType) throws WxErrorException,CommonException;
+
+    /**
      * 3-2. 开启、关闭所有关键词规则开关
      *
      * @param reply
@@ -313,16 +322,10 @@ public interface IWxReplyService {
      * 4-1. 根据公众号、关键词获取回复消息
      *
      * @param rule 关键词实体
-     * @return com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule
+     * @return com.minstone.mobile.mp.wechat.reply.reply.WxReplyRule
      * @author huangyg
      */
-    public List<WxReplyRule> getMatchContent(WxReplyRule rule) throws WxErrorException;
-
-
-
-
-
-
+    public List<String> getMatchContent(WxReplyRule rule) throws WxErrorException;
 
     public List<WxReplyRule> selectTest(WxReplyRule rule) throws WxErrorException;
 

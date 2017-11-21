@@ -169,7 +169,7 @@
       AND k.DEL_FLAG = 0
   </select>
 
-    <select id="checkKeywords">
+    <select id="checkKeywords" resultType="java.lang.String">
         SELECT KEYWORD
         FROM MP_YY_REP_RULE r,MP_YY_REP_KEYWORD k
         WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}

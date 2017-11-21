@@ -50,7 +50,7 @@ public interface WxMessagePushRecordDao {
     /**
      * 获取消息记录
      * @param record 消息记录实体
-     * @return java.util.List<com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord>
+     * @return java.util.List<com.minstone.mobile.mp.wechat.message.reply.WxMessagePushRecord>
      * @author huangyg
      */
     List<WxMessagePushRecord> select(WxMessagePushRecord record);
