@@ -118,4 +118,6 @@ public interface IWxPublicService {
 
     public String getPublicCodeByOpenId(String openId) throws WxErrorException;
 
+    public WxPublic selectByOpenId(String openId);
+
 }

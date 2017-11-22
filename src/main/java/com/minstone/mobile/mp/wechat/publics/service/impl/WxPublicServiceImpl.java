@@ -280,4 +280,8 @@ public class WxPublicServiceImpl implements IWxPublicService {
         return publicCodes.size() > 0 ? publicCodes.get(0).toString() : null;
     }
 
+    @Override
+    public WxPublic selectByOpenId(String openId){
+        return wxPublicDao.selectByOpenId(openId);
+    }
 }

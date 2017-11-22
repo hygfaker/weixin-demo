@@ -42,4 +42,6 @@ public interface WxPublicDao<T> {
     // 查询参数为数组的时候，不能用实体，mapper 里面读取不到属性
     List<String> selectPublicCodes(String[] publicCodes);
 
+    // 根据 openid 获取公众号实体
+    WxPublic selectByOpenId(String openId);
 }

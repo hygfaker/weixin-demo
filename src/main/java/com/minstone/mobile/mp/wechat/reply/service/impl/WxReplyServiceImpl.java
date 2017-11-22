@@ -15,16 +15,12 @@ import com.minstone.mobile.mp.wechat.reply.dao.WxReplyKeywordDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyRuleDao;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
 import com.minstone.mobile.mp.common.ResultEnum;
-import com.sun.deploy.security.ruleset.Rule;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;

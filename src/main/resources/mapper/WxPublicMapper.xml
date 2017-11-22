@@ -2,66 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao">
 
-  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-    <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode" />
-    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
-    <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName" />
-    <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname" />
-    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
-    <result column="APP_SERCT" jdbcType="VARCHAR" property="appSerct" />
-    <result column="TOKEN" jdbcType="VARCHAR" property="token" />
-    <result column="AESKEY" jdbcType="VARCHAR" property="aeskey" />
-    <result column="URL" jdbcType="VARCHAR" property="url" />
-    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
-    <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate" />
-    <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate" />
-    <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer" />
-    <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag" />
-    <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode" />
-    <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
-    <!--<association property="publicImg" javaTyWxPublicImgcImg">-->
-    <!--<id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>-->
-    <!--<result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />-->
-    <!--<result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />-->
-    <!--</association>-->
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
+        <id column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode"/>
+        <result column="OPEN_ID" jdbcType="VARCHAR" property="openId"/>
+        <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName"/>
+        <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname"/>
+        <result column="APP_ID" jdbcType="VARCHAR" property="appId"/>
+        <result column="APP_SERCT" jdbcType="VARCHAR" property="appSerct"/>
+        <result column="TOKEN" jdbcType="VARCHAR" property="token"/>
+        <result column="AESKEY" jdbcType="VARCHAR" property="aeskey"/>
+        <result column="URL" jdbcType="VARCHAR" property="url"/>
+        <result column="CREATOR" jdbcType="VARCHAR" property="creator"/>
+        <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate"/>
+        <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate"/>
+        <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer"/>
+        <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag"/>
+        <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode"/>
+        <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>
+        <!--<association property="publicImg" javaTyWxPublicImgcImg">-->
+        <!--<id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>-->
+        <!--<result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />-->
+        <!--<result column="QRCODE" jdbcType="LONGVARBINARY" property="qrcode" />-->
+        <!--</association>-->
+    </resultMap>
 
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY,
     URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE, IMG_CODE
   </sql>
 
-  <select id="selectImgCodeByPrimaryKey" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="selectImgCodeByPrimaryKey" parameterType="java.lang.String" resultType="java.lang.String">
     select IMG_CODE from MP_YY_PUBLIC where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic"
+            resultMap="BaseResultMap">
+        select * from MP_YY_PUBLIC where
+        <if test="publicCode != null">
+            PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+            AND
+        </if>
+        <if test="openId != null">
+            OPEN_ID = #{openId,jdbcType=VARCHAR}
+            AND
+        </if>
+        DEL_FLAG = 0
+    </select>
+
+    <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from MP_YY_PUBLIC where
-    <if test="publicCode != null">
-      PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-      AND
-    </if>
-    <if test="openId != null">
       OPEN_ID = #{openId,jdbcType=VARCHAR}
       AND
-    </if>
     DEL_FLAG = 0
+     AND
+    1=1
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select * from MP_YY_PUBLIC
     WHERE DEL_FLAG = 0
     AND 1=1
     ORDER BY CREATE_DATE ASC
   </select>
 
-  <select id="test" resultType="java.lang.String">
+    <select id="test" resultType="java.lang.String">
     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
     AND 1=1
   </select>
 
-  <select id="selectPublicCode" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="selectPublicCode" parameterType="java.lang.String" resultType="java.lang.String">
     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
     AND DEL_FLAG = 0
@@ -69,7 +79,7 @@
     1=1
   </select>
 
-  <select id="selectPublicCodeByOpenId" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="selectPublicCodeByOpenId" parameterType="java.lang.String" resultType="java.lang.String">
     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
     where OPEN_ID = #{openId,jdbcType=VARCHAR}
     AND DEL_FLAG = 0
@@ -77,45 +87,45 @@
     1=1
   </select>
 
-  <select id="selectPublicCodes" resultType="java.lang.String">
-    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC where PUBLIC_CODE IN
-    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
-      #{item}
-    </foreach>
-    AND 1=1
-  </select>
+    <select id="selectPublicCodes" resultType="java.lang.String">
+        SELECT PUBLIC_CODE FROM MP_YY_PUBLIC where PUBLIC_CODE IN
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND 1=1
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     update MP_YY_PUBLIC
     set DEL_FLAG = 1
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="deleteBatch">
-    update MP_YY_PUBLIC
-    set DEL_FLAG = 1
-    where PUBLIC_CODE IN
-    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
-      #{item}
-    </foreach>
-    AND 1=1
-  </delete>
+    <delete id="deleteBatch">
+        update MP_YY_PUBLIC
+        set DEL_FLAG = 1
+        where PUBLIC_CODE IN
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND 1=1
+    </delete>
 
-  <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
     delete from MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </delete>
 
-  <delete id="forceDeleteBatch">
-    delete from MP_YY_PUBLIC
-    where PUBLIC_CODE IN
-    <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
-      #{item}
-    </foreach>
-    AND 1=1
-  </delete>
+    <delete id="forceDeleteBatch">
+        delete from MP_YY_PUBLIC
+        where PUBLIC_CODE IN
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND 1=1
+    </delete>
 
-  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
+    <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME,
     PUBLIC_NICKNAME, APP_ID, APP_SERCT,
     TOKEN, AESKEY, URL,
@@ -130,167 +140,167 @@
     #{imgCode,jdbcType=VARCHAR})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-    insert into MP_YY_PUBLIC
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="publicCode != null">
-        PUBLIC_CODE,
-      </if>
-      <if test="openId != null">
-        OPEN_ID,
-      </if>
-      <if test="publicName != null">
-        PUBLIC_NAME,
-      </if>
-      <if test="publicNickname != null">
-        PUBLIC_NICKNAME,
-      </if>
-      <if test="appId != null">
-        APP_ID,
-      </if>
-      <if test="appSerct != null">
-        APP_SERCT,
-      </if>
-      <if test="token != null">
-        TOKEN,
-      </if>
-      <if test="aeskey != null">
-        AESKEY,
-      </if>
-      <if test="url != null">
-        URL,
-      </if>
-      <if test="creator != null">
-        CREATOR,
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE,
-      </if>
-      <if test="modifyDate != null">
-        MODIFY_DATE,
-      </if>
-      <if test="modifyer != null">
-        MODIFYER,
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG,
-      </if>
-      <if test="systemCode != null">
-        SYSTEM_CODE,
-      </if>
-      <if test="imgCode != null">
-        IMG_CODE,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="publicCode != null">
-        #{publicCode,jdbcType=VARCHAR},
-      </if>
-      <if test="openId != null">
-        #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="publicName != null">
-        #{publicName,jdbcType=VARCHAR},
-      </if>
-      <if test="publicNickname != null">
-        #{publicNickname,jdbcType=VARCHAR},
-      </if>
-      <if test="appId != null">
-        #{appId,jdbcType=VARCHAR},
-      </if>
-      <if test="appSerct != null">
-        #{appSerct,jdbcType=VARCHAR},
-      </if>
-      <if test="token != null">
-        #{token,jdbcType=VARCHAR},
-      </if>
-      <if test="aeskey != null">
-        #{aeskey,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyDate != null">
-        #{modifyDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyer != null">
-        #{modifyer,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        #{delFlag,jdbcType=INTEGER},
-      </if>
-      <if test="systemCode != null">
-        #{systemCode,jdbcType=VARCHAR},
-      </if>
-      <if test="imgCode != null">
-        #{imgCode,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
+        insert into MP_YY_PUBLIC
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="publicCode != null">
+                PUBLIC_CODE,
+            </if>
+            <if test="openId != null">
+                OPEN_ID,
+            </if>
+            <if test="publicName != null">
+                PUBLIC_NAME,
+            </if>
+            <if test="publicNickname != null">
+                PUBLIC_NICKNAME,
+            </if>
+            <if test="appId != null">
+                APP_ID,
+            </if>
+            <if test="appSerct != null">
+                APP_SERCT,
+            </if>
+            <if test="token != null">
+                TOKEN,
+            </if>
+            <if test="aeskey != null">
+                AESKEY,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG,
+            </if>
+            <if test="systemCode != null">
+                SYSTEM_CODE,
+            </if>
+            <if test="imgCode != null">
+                IMG_CODE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="publicCode != null">
+                #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="publicName != null">
+                #{publicName,jdbcType=VARCHAR},
+            </if>
+            <if test="publicNickname != null">
+                #{publicNickname,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="appSerct != null">
+                #{appSerct,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="aeskey != null">
+                #{aeskey,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="systemCode != null">
+                #{systemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="imgCode != null">
+                #{imgCode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
-    update MP_YY_PUBLIC
-    <set>
-      <if test="openId != null">
-        OPEN_ID = #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="publicName != null">
-        PUBLIC_NAME = #{publicName,jdbcType=VARCHAR},
-      </if>
-      <if test="publicNickname != null">
-        PUBLIC_NICKNAME = #{publicNickname,jdbcType=VARCHAR},
-      </if>
-      <if test="appId != null">
-        APP_ID = #{appId,jdbcType=VARCHAR},
-      </if>
-      <if test="appSerct != null">
-        APP_SERCT = #{appSerct,jdbcType=VARCHAR},
-      </if>
-      <if test="token != null">
-        TOKEN = #{token,jdbcType=VARCHAR},
-      </if>
-      <if test="aeskey != null">
-        AESKEY = #{aeskey,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        URL = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        CREATOR = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        CREATE_DATE = #{createDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyDate != null">
-        MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyer != null">
-        MODIFYER = #{modifyer,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        DEL_FLAG = #{delFlag,jdbcType=INTEGER},
-      </if>
-      <if test="systemCode != null">
-        SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
-      </if>
-      <if test="imgCode != null">
-        IMG_CODE = #{imgCode,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-  </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
+        update MP_YY_PUBLIC
+        <set>
+            <if test="openId != null">
+                OPEN_ID = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="publicName != null">
+                PUBLIC_NAME = #{publicName,jdbcType=VARCHAR},
+            </if>
+            <if test="publicNickname != null">
+                PUBLIC_NICKNAME = #{publicNickname,jdbcType=VARCHAR},
+            </if>
+            <if test="appId != null">
+                APP_ID = #{appId,jdbcType=VARCHAR},
+            </if>
+            <if test="appSerct != null">
+                APP_SERCT = #{appSerct,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                TOKEN = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="aeskey != null">
+                AESKEY = #{aeskey,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="systemCode != null">
+                SYSTEM_CODE = #{systemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="imgCode != null">
+                IMG_CODE = #{imgCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+    </update>
 
 
-  <!--  <select id="test" parameterType="com.minstone.mobile.mp.wechat.publreplymain.WxPublic" resultType="java.util.Arrays">
-   SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
-   where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-   AND 1=1
- </select>-->
+    <!--  <select id="test" parameterType="com.minstone.mobile.mp.wechat.publreplymain.WxPublic" resultType="java.util.Arrays">
+     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
+     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+     AND 1=1
+   </select>-->
 
 </mapper>
