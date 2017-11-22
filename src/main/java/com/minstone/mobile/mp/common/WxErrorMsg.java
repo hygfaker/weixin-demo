@@ -321,6 +321,15 @@ public class WxErrorMsg {
             case 65400:
                 errmsg="无法使用客服";
                 break;
+            case 65401:
+                errmsg="该客服账号不存在";
+                break;
+            case 65402:
+                errmsg="该客服账号没有绑定到微信公众号，请选择其他客服账号";
+                break;
+            case 65415:
+                errmsg="该客服账号不在线，请选择其他客服账号";
+                break;
             case 9001001:
                 errmsg="POST数据参数不合法";
                 break;

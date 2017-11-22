@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.wechat.message.controller;
+package com.minstone.mobile.mp.wechat.message.handler;
 
 import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;

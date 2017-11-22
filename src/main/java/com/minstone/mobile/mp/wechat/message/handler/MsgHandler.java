@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.wechat.message.controller;
+package com.minstone.mobile.mp.wechat.message.handler;
 
 import com.minstone.mobile.mp.common.builder.VideoBuilder;
 import com.minstone.mobile.mp.common.builder.ImageBuilder;
@@ -105,7 +105,7 @@ public class MsgHandler extends AbstractHandler {
                     .fromUser(wxMessage.getToUser())
                     .toUser(wxMessage.getFromUser()).build();
         }
-        */
+ */
 
 
         /**

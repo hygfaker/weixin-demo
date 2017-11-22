@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.common.contoller;
+package com.minstone.mobile.mp.wechat.kefu.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.utils.DateUtil;

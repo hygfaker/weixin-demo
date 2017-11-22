@@ -1,12 +1,11 @@
 package com.minstone.mobile.mp.config;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.handler.*;
-import com.minstone.mobile.mp.wechat.message.controller.LocationHandler;
-import com.minstone.mobile.mp.wechat.message.controller.MsgHandler;
-import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
+import com.minstone.mobile.mp.wechat.menu.handler.MenuHandler;
+import com.minstone.mobile.mp.wechat.message.handler.LocationHandler;
+import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -25,9 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
-import java.util.UnknownFormatConversionException;
 
 /**
  * wechat mp configuration

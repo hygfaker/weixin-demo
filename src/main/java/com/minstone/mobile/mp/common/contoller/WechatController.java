@@ -1,8 +1,7 @@
 package com.minstone.mobile.mp.common.contoller;
 
-import com.minstone.mobile.mp.wechat.message.controller.MsgHandler;
+import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
 import com.minstone.mobile.mp.common.handler.SubscribeHandler;
-import com.minstone.mobile.mp.common.handler.UnsubscribeHandler;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.sendall.controller.SendAllHandler;
@@ -108,7 +107,9 @@ public class WechatController {
             wxConfigProvider.setAesKey(wxPublic.getAeskey());
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxConfigProvider, timestamp,nonce, msgSignature);
 
-            WxMpXmlOutMessage outMessage = this.route(inMessage);
+            // 路由在 WechatMpConfiguration 类里面配置
+            WxMpXmlOutMessage outMessage = this.router.route(inMessage);
+//            WxMpXmlOutMessage outMessage = this.route(inMessage);
             if (outMessage == null) {
                 return "";
             }
@@ -129,11 +130,7 @@ public class WechatController {
         try {// 路由规则
              this.router.rule()
                     .msgType(WxConsts.EVT_SUBSCRIBE)
-                    .handler(new SubscribeHandler()) // 关注时回复
-                    .end()
-                    .rule()
-                    .msgType(WxConsts.EVT_UNSUBSCRIBE)
-                    .handler(new UnsubscribeHandler())  // 取消关注事件
+                    .handler(new SubscribeHandler()) // 关注时回复（已完成）
                     .end()
                     .rule()
                     .msgType(WxConsts.MASS_MSG_NEWS)
