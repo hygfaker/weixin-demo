@@ -4,6 +4,7 @@ import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import com.minstone.mobile.mp.wechat.kefu.constant.KefuConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
+import me.chanjar.weixin.mp.api.WxMpKefuService;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfInfo;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -20,7 +21,6 @@ import java.util.Map;
 @Component
 public class MenuHandler extends AbstractHandler {
 
-
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
@@ -35,7 +35,10 @@ public class MenuHandler extends AbstractHandler {
                 List<WxMpKfInfo> kfList = weixinService.getKefuService().kfOnlineList().getKfOnlineList();
                 if (kfList.size() > 0) {
                     WxMpKfInfo kfInfo = kfList.get(0);
-                    return WxMpXmlOutMessage.TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser()).build();
+                    boolean success = weixinService.getKefuService().kfSessionCreate(wxMessage.getFromUser(),kfInfo.getAccount());
+                    if (!success){
+                        return null;
+                    }
                 }
             } catch (WxErrorException e) {
                 logger.error(String.valueOf(e));

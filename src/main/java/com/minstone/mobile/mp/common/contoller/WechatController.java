@@ -54,7 +54,7 @@ public class WechatController {
         }
 
         if (this.wxService.checkSignature(timestamp, nonce, signature)) {
-            this.logger.info("\n----------------------------认证成功----------------------------\n");
+            this.logger.info("\n----------------------------认证成功-----------------------------\n");
             return echostr;
         }
         return "非法请求";
