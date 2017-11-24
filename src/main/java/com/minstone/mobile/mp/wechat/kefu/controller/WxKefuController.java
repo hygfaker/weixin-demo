@@ -3,8 +3,10 @@ package com.minstone.mobile.mp.wechat.kefu.controller;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.ResultUtil;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.kefu.request.WxMpKfAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -118,6 +120,7 @@ public class WxKefuController {
         return ResultUtil.success(this.service.getKefuService().kfMsgList(start, end, msgid, number));
 
     }
+
 
 
 }

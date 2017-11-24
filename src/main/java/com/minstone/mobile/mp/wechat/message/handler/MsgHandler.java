@@ -17,6 +17,7 @@ import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,7 @@ public class MsgHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-                                    Map<String, Object> context, WxMpService weixinService,
+                                    Map<String, Object> context, WxMpService wxMpService,
                                     WxSessionManager sessionManager) throws WxErrorException {
 
         // 根据 toUser 获取 publicCode
@@ -83,7 +84,7 @@ public class MsgHandler extends AbstractHandler {
                 replyRule.setKeyword(wxMessage.getContent());
                 List<String> mathcContents = replyService.getMatchContent(replyRule);
                 if (mathcContents.size() > 0) {
-                    return new TextBuilder().build(mathcContents.get(0), wxMessage, weixinService);
+                    return new TextBuilder().build(mathcContents.get(0), wxMessage, wxMpService);
                 }
             }
 
@@ -92,10 +93,17 @@ public class MsgHandler extends AbstractHandler {
             reply.setPublicCode(publicCode);
             reply = replyService.getNormal(reply).get(0);
             if (reply.getReplyFlag() == 1) {
-                return new TextBuilder().build(reply.getContent(), wxMessage, weixinService);
+                return new TextBuilder().build(reply.getContent(), wxMessage, wxMpService);
             }
         }
 
+        if (StringUtils.startsWithAny(wxMessage.getContent(),  "客服")){
+            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
+            kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
+            kefuMessage.setToUser(wxMessage.getFromUser());
+            kefuMessage.setContent(wxMessage.getKfAccount() + "测试回复");
+            wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+        }
         /*
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
         if (StringUtils.startsWithAny(wxMessage.getContent(),  "客服")
@@ -105,8 +113,8 @@ public class MsgHandler extends AbstractHandler {
                     .fromUser(wxMessage.getToUser())
                     .toUser(wxMessage.getFromUser()).build();
         }
- */
 
+ */
 
         /**
          * 避免系统提示“该公众号暂时无法提供服务，请稍后再试”：

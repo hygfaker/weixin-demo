@@ -1,9 +1,12 @@
-package com.minstone.mobile.mp.wechat.publics.dao;
+package com.minstone.mobile.mp.wechat.config.dao;
 
+import com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 @Mapper
-public interface WxPublicConfigMapper {
+@Component
+public interface WxPublicConfigDao {
     int deleteByPrimaryKey(String configCode);
 
     int insert(WxPublicConfig record);

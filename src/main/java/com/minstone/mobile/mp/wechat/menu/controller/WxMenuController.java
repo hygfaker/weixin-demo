@@ -48,7 +48,7 @@ public class WxMenuController{
      * 详情请见: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
      * </pre>
      *
-     * 自定义菜单删除接口
+     * 自定义菜单删除接口weixinService.getKefuService().kfOnlineList().getKfOnlineList()
      * 详情请见: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141015&token=&lang=zh_CN
      * </pre>
      *

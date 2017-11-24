@@ -42,7 +42,7 @@ public class KfSessionHandler extends AbstractHandler {
             kefuMessage.setToUser(wxMessage.getFromUser());
             kefuMessage.setContent(wxMessage.getKfAccount() + " 为您服务");
             try {
-                logger.info("-- 客服欢迎您 --");
+                logger.info("-- " + wxMessage.getKfAccount() + " 为您服务 --");
                 wxMpService.getKefuService().sendKefuMessage(kefuMessage);
             } catch (WxErrorException e) {
                 logger.error(e.toString());
@@ -56,7 +56,7 @@ public class KfSessionHandler extends AbstractHandler {
             kefuMessage.setToUser(wxMessage.getFromUser());
             kefuMessage.setContent(wxMessage.getKfAccount() + " 服务结束");
             try {
-                logger.info("-- 服务结束 --");
+                logger.info("-- " + wxMessage.getKfAccount() + " 服务结束 --");
                 wxMpService.getKefuService().sendKefuMessage(kefuMessage);
             } catch (WxErrorException e) {
                 logger.error(e.toString());

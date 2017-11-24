@@ -29,16 +29,19 @@ public class MenuHandler extends AbstractHandler {
 
         String msg = String.format("type:%s, event:%s, key:%s", wxMessage.getMsgType(), wxMessage.getEvent(), wxMessage.getEventKey());
 
-        // todo 如果是 click 类型的客服按钮，则判断是否有在线客服，有的话获取第一个并且创建会话
+        // todo 如果是 click 类型的客服按钮，则判断是否开启客服，有在线客服，有的话获取第一个并且创建会话
         if (KefuConsts.KEFU_KEY.equals(wxMessage.getEventKey())) {
             try {
                 List<WxMpKfInfo> kfList = weixinService.getKefuService().kfOnlineList().getKfOnlineList();
+                //
                 if (kfList.size() > 0) {
                     WxMpKfInfo kfInfo = kfList.get(0);
                     boolean success = weixinService.getKefuService().kfSessionCreate(wxMessage.getFromUser(),kfInfo.getAccount());
                     if (!success){
-                        return null;
+
                     }
+                }else {
+
                 }
             } catch (WxErrorException e) {
                 logger.error(String.valueOf(e));

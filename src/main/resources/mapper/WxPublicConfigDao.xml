@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.minstone.mobile.mp.wechat.config.dao.WxPublicConfigDao" >
+  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+    <id column="CONFIG_CODE" property="configCode" jdbcType="VARCHAR" />
+    <result column="PUBLIC_CODE" property="publicCode" jdbcType="VARCHAR" />
+    <result column="MENU_USE_FLAG" property="menuUseFlag" jdbcType="INTEGER" />
+    <result column="KEFU_USE_FLAG" property="kefuUseFlag" jdbcType="INTEGER" />
+    <result column="PUSH_USE_FLAG" property="pushUseFlag" jdbcType="INTEGER" />
+    <result column="KEFU_OFFLINE_MESSAGE" property="kefuOfflineMessage" jdbcType="VARCHAR" />
+    <result column="KEFU_ONLINE_MESSAGE" property="kefuOnlineMessage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CONFIG_CODE, PUBLIC_CODE, MENU_USE_FLAG, KEFU_USE_FLAG, PUSH_USE_FLAG, KEFU_OFFLINE_MESSAGE, 
+    KEFU_ONLINE_MESSAGE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MP_YY_PUB_FLAG
+    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MP_YY_PUB_FLAG
+    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+    insert into MP_YY_PUB_FLAG (CONFIG_CODE, PUBLIC_CODE, MENU_USE_FLAG, 
+      KEFU_USE_FLAG, PUSH_USE_FLAG, KEFU_OFFLINE_MESSAGE, 
+      KEFU_ONLINE_MESSAGE)
+    values (#{configCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{menuUseFlag,jdbcType=INTEGER}, 
+      #{kefuUseFlag,jdbcType=INTEGER}, #{pushUseFlag,jdbcType=INTEGER}, #{kefuOfflineMessage,jdbcType=VARCHAR}, 
+      #{kefuOnlineMessage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+    insert into MP_YY_PUB_FLAG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="configCode != null" >
+        CONFIG_CODE,
+      </if>
+      <if test="publicCode != null" >
+        PUBLIC_CODE,
+      </if>
+      <if test="menuUseFlag != null" >
+        MENU_USE_FLAG,
+      </if>
+      <if test="kefuUseFlag != null" >
+        KEFU_USE_FLAG,
+      </if>
+      <if test="pushUseFlag != null" >
+        PUSH_USE_FLAG,
+      </if>
+      <if test="kefuOfflineMessage != null" >
+        KEFU_OFFLINE_MESSAGE,
+      </if>
+      <if test="kefuOnlineMessage != null" >
+        KEFU_ONLINE_MESSAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="configCode != null" >
+        #{configCode,jdbcType=VARCHAR},
+      </if>
+      <if test="publicCode != null" >
+        #{publicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUseFlag != null" >
+        #{menuUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="kefuUseFlag != null" >
+        #{kefuUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="pushUseFlag != null" >
+        #{pushUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="kefuOfflineMessage != null" >
+        #{kefuOfflineMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="kefuOnlineMessage != null" >
+        #{kefuOnlineMessage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+    update MP_YY_PUB_FLAG
+    <set >
+      <if test="publicCode != null" >
+        PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUseFlag != null" >
+        MENU_USE_FLAG = #{menuUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="kefuUseFlag != null" >
+        KEFU_USE_FLAG = #{kefuUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="pushUseFlag != null" >
+        PUSH_USE_FLAG = #{pushUseFlag,jdbcType=INTEGER},
+      </if>
+      <if test="kefuOfflineMessage != null" >
+        KEFU_OFFLINE_MESSAGE = #{kefuOfflineMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="kefuOnlineMessage != null" >
+        KEFU_ONLINE_MESSAGE = #{kefuOnlineMessage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+    update MP_YY_PUB_FLAG
+    set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
+      MENU_USE_FLAG = #{menuUseFlag,jdbcType=INTEGER},
+      KEFU_USE_FLAG = #{kefuUseFlag,jdbcType=INTEGER},
+      PUSH_USE_FLAG = #{pushUseFlag,jdbcType=INTEGER},
+      KEFU_OFFLINE_MESSAGE = #{kefuOfflineMessage,jdbcType=VARCHAR},
+      KEFU_ONLINE_MESSAGE = #{kefuOnlineMessage,jdbcType=VARCHAR}
+    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+  </update>
+</mapper>
