@@ -1,4 +1,4 @@
-package com.minstone.mobile.mp.wechat.config.domain;
+package com.minstone.mobile.mp.wechat.publics.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;

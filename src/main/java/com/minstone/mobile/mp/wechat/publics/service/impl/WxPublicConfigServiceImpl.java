@@ -1,12 +1,12 @@
-package com.minstone.mobile.mp.wechat.config.service.impl;
+package com.minstone.mobile.mp.wechat.publics.service.impl;
 
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.utils.code.IdGen;
-import com.minstone.mobile.mp.wechat.config.dao.WxPublicConfigDao;
-import com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig;
-import com.minstone.mobile.mp.wechat.config.service.IWxPublicConfigService;
+import com.minstone.mobile.mp.wechat.publics.dao.WxPublicConfigDao;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
+import com.minstone.mobile.mp.wechat.publics.service.IWxPublicConfigService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
     /**
      * 添加公众号配置信息
      * @param publicConfig 公众号配置信息
-     * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
+     * @return com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig
      * @author huangyg
      */
     @Override
@@ -66,7 +66,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
     /**
      * 获取公众号配置信息
      * @param publicConfig 公众号配置实体
-     * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
+     * @return com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig
      * @author huangyg
      */
     @Override

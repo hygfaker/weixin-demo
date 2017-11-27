@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.minstone.mobile.mp.wechat.config.dao.WxPublicConfigDao" >
-  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+<mapper namespace="com.minstone.mobile.mp.wechat.publics.dao.WxPublicConfigDao" >
+  <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig" >
     <id column="CONFIG_CODE" property="configCode" jdbcType="VARCHAR" />
     <result column="PUBLIC_CODE" property="publicCode" jdbcType="VARCHAR" />
     <result column="MENU_USE_FLAG" property="menuUseFlag" jdbcType="INTEGER" />
@@ -24,7 +24,7 @@
     delete from MP_YY_PUB_CONFIG
     where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+  <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig" >
     insert into MP_YY_PUB_CONFIG (CONFIG_CODE, PUBLIC_CODE, MENU_USE_FLAG, 
       KEFU_USE_FLAG, PUSH_USE_FLAG, KEFU_OFFLINE_MESSAGE, 
       KEFU_ONLINE_MESSAGE)
@@ -32,7 +32,7 @@
       #{kefuUseFlag,jdbcType=INTEGER}, #{pushUseFlag,jdbcType=INTEGER}, #{kefuOfflineMessage,jdbcType=VARCHAR}, 
       #{kefuOnlineMessage,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+  <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig" >
     insert into MP_YY_PUB_CONFIG
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="configCode != null" >
@@ -81,7 +81,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig" >
     update MP_YY_PUB_CONFIG
     <set >
       <if test="publicCode != null" >
@@ -105,7 +105,7 @@
     </set>
     where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig" >
+  <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig" >
     update MP_YY_PUB_CONFIG
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
       MENU_USE_FLAG = #{menuUseFlag,jdbcType=INTEGER},

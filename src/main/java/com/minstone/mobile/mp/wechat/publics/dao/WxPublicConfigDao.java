@@ -1,6 +1,6 @@
-package com.minstone.mobile.mp.wechat.config.dao;
+package com.minstone.mobile.mp.wechat.publics.dao;
 
-import com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
