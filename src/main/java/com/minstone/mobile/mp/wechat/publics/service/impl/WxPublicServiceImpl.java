@@ -64,7 +64,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
             // 保存公众号信息
             wxPublic.setImgCode(imgCode);
             // 默认设置为不删除标志
-            wxPublic.setDelFlag(DeleteFlagEnum.NOT_DELETE.getDelFlag());
+            wxPublic.setDelFlag(CommonFlagEnum.NOT_DELETE.getDelFlag());
             // 生成公众号主键
             String publicCode = IdGen.uuid();
             wxPublic.setPublicCode(publicCode);

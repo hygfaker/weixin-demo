@@ -7,9 +7,7 @@ import com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig;
 import com.minstone.mobile.mp.wechat.config.service.IWxPublicConfigService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author huangyg
@@ -22,9 +20,21 @@ public class WxPublicConfigController {
     @Autowired
     IWxPublicConfigService publicConfigService;
 
-    // 添加/修改公众号配置信息
+
+    @PostMapping("/add")
     public CommonResult add(WxPublicConfig publicConfig) throws WxErrorException{
         return ResultUtil.success(publicConfigService.add(publicConfig));
+    }
+
+
+    @PostMapping("/update")
+    public CommonResult update(WxPublicConfig publicConfig) throws WxErrorException{
+        return ResultUtil.success(publicConfigService.update(publicConfig));
+    }
+
+    @GetMapping("/get")
+    public CommonResult get(WxPublicConfig publicConfig) throws WxErrorException{
+        return ResultUtil.success(publicConfigService.get(publicConfig));
     }
 
 }

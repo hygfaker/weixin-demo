@@ -9,6 +9,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -80,6 +81,9 @@ public class WxExceptionHandler {
 
         } else if (e instanceof ValidationException) { // ValidatorUtil 工具类校验参数异常
             ValidationException exception = (ValidationException) e;
+            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
+        } else if (e instanceof DuplicateKeyException) { // 数据库字段设置为 unique 后，数据重复
+            DuplicateKeyException exception = (DuplicateKeyException) e;
             return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
         } else {
             logger.error("【系统异常】= {}", e);

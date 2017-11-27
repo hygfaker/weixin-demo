@@ -5,7 +5,7 @@ package com.minstone.mobile.mp.common;
  * @description 逻辑删除枚举状态
  * @since 2017/11/2
  */
-public enum DeleteFlagEnum {
+public enum CommonFlagEnum {
 
 
     /**
@@ -28,7 +28,7 @@ public enum DeleteFlagEnum {
     private Integer delFlag;
 
 
-    DeleteFlagEnum(Integer delFlag) {
+    CommonFlagEnum(Integer delFlag) {
         this.delFlag = delFlag;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
  * @author:  huangyg
  * @创建时间: 2017-11-24
  */
+@Data
 public class WxPublicConfig {
 
     public WxPublicConfig(String configCode, String publicCode, Integer menuUseFlag, Integer kefuUseFlag, Integer pushUseFlag, String kefuOfflineMessage, String kefuOnlineMessage) {
@@ -20,6 +21,17 @@ public class WxPublicConfig {
         this.pushUseFlag = pushUseFlag;
         this.kefuOfflineMessage = kefuOfflineMessage;
         this.kefuOnlineMessage = kefuOnlineMessage;
+    }
+
+    public WxPublicConfig( String publicCode, Integer menuUseFlag, Integer kefuUseFlag, Integer pushUseFlag, String kefuOfflineMessage, String kefuOnlineMessage) {
+        this.publicCode = publicCode;
+        this.menuUseFlag = menuUseFlag;
+        this.kefuUseFlag = kefuUseFlag;
+        this.pushUseFlag = pushUseFlag;
+        this.kefuOfflineMessage = kefuOfflineMessage;
+        this.kefuOnlineMessage = kefuOnlineMessage;
+    }
+    public WxPublicConfig() {
     }
 
     /**
@@ -58,6 +70,7 @@ public class WxPublicConfig {
      * 客服在线等时候的提示内容
      */
     private String kefuOnlineMessage;
+
 
     /**
      * 主键

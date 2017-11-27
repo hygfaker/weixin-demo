@@ -25,12 +25,28 @@ public class WxPublicConfigControllerTest {
     private IWxPublicConfigService publicConfigService;
 
     @Test
-    public void addOrModifyFlag() throws Exception {
-
-        WxPublicConfig publicConfig = new WxPublicConfig("configCode","publicCode",1,1,1,"offLineMsg","onlineMsg");
-        String result = publicConfigService.addOrModifyFlag(publicConfig);
-        log.info(result);
+    public void addTest() throws Exception {
+        WxPublicConfig publicConfig = new WxPublicConfig("publicCode",1,1,1,"offLineMsg","onlineMsg");
+        String result = publicConfigService.add(publicConfig);
+        log.info("insert result : {}",result);
         assertNotNull(result);
+    }
+
+    @Test
+    public void updateTest() throws Exception {
+        WxPublicConfig publicConfig = new WxPublicConfig("18dbdd9f7848469ea46c2e5e39dd2a96","publicCode",0,0,0,"offLineMsg","onlineMsg");
+        boolean success = publicConfigService.update(publicConfig);
+        log.info("update result : {}",success);
+        assertNotEquals(false,success);
+    }
+
+    @Test
+    public void getTest() throws Exception {
+        WxPublicConfig publicConfig = new WxPublicConfig();
+//        publicConfig.setConfigCode("configCode");
+        publicConfig.setConfigCode("18dbdd9f7848469ea46c2e5e39dd2a96");
+        WxPublicConfig result = publicConfigService.get(publicConfig);
+        log.info("get result : {}",result);
     }
 
 }

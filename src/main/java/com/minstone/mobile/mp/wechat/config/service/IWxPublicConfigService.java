@@ -10,7 +10,6 @@ import me.chanjar.weixin.common.exception.WxErrorException;
  * @since 2017/11/24
  */
 public interface IWxPublicConfigService {
-    // 添加/修改公众号配置信息
 
     /**
      * 添加公众号配置信息
@@ -34,6 +33,6 @@ public interface IWxPublicConfigService {
      * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
      * @author huangyg
      */
-    public WxPublicConfig getWxpublicConfig(WxPublicConfig publicConfig) throws WxErrorException;
+    public WxPublicConfig get(WxPublicConfig publicConfig) throws WxErrorException;
 
 }

@@ -1,5 +1,7 @@
 package com.minstone.mobile.mp.wechat.config.service.impl;
 
+import com.minstone.mobile.mp.common.CommonException;
+import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.utils.code.IdGen;
 import com.minstone.mobile.mp.wechat.config.dao.WxPublicConfigDao;
@@ -31,6 +33,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
     private Validator validator;
 
     /**
+     * 添加公众号配置信息
      * @param publicConfig 公众号配置信息
      * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
      * @author huangyg
@@ -40,7 +43,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
         // 如果有主键，则为修改，否则为保存
         ValidatorUtil.mustParam(publicConfig, validator, "publicCode");
         publicConfig.setConfigCode(IdGen.uuid());
-        return publicConfigDao.updateByPrimaryKeySelective(publicConfig) > 0 ? publicConfig.getConfigCode() : null;
+        return publicConfigDao.insertSelective(publicConfig) > 0 ? publicConfig.getConfigCode() : null;
     }
 
     /**
@@ -51,29 +54,29 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
      */
     @Override
     public boolean update(WxPublicConfig publicConfig) throws WxErrorException {
-        ValidatorUtil.mustParam(publicConfig, validator, "publicCode", "configCode");
-        return publicConfigDao.insertSelective(publicConfig) > 0 ? true : false;
+        ValidatorUtil.mustParam(publicConfig, validator,  "configCode");
+        if (publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode())!=null){
+            return publicConfigDao.updateByPrimaryKeySelective(publicConfig) > 0 ? true : false;
+        }else{
+            log.error(ResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
+            throw new CommonException(ResultEnum.PUBLIC_CONFIG_NOTFOUND);
+        }
     }
 
     /**
      * 获取公众号配置信息
-     *
      * @param publicConfig 公众号配置实体
      * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
      * @author huangyg
      */
     @Override
-    public WxPublicConfig getWxpublicConfig(WxPublicConfig publicConfig) throws WxErrorException {
-        return null;
+    public WxPublicConfig get(WxPublicConfig publicConfig) throws WxErrorException {
+        ValidatorUtil.mustParam(publicConfig, validator, "configCode");
+        WxPublicConfig result = publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode());
+        if (result == null){
+            log.error(ResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
+            throw new CommonException(ResultEnum.PUBLIC_CONFIG_NOTFOUND);
+        }
+        return result;
     }
-
-    /**
-     * 获取公众号配置信息
-     *
-     * @param publicConfig 公众号配置实体
-     * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
-     * @author huangyg
-     */
-
-
 }
