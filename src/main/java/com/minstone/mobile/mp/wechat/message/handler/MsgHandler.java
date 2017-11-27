@@ -8,6 +8,8 @@ import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import com.minstone.mobile.mp.utils.JsonUtil;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
+import com.minstone.mobile.mp.wechat.publics.service.IWxPublicConfigService;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
@@ -37,6 +39,9 @@ public class MsgHandler extends AbstractHandler {
     private IWxReplyService replyService;
 
     @Autowired
+    private IWxPublicConfigService publicConfigService;
+
+    @Autowired
     private IWxMessageService messageService;
 
     @Autowired
@@ -50,6 +55,16 @@ public class MsgHandler extends AbstractHandler {
 
         // 根据 toUser 获取 publicCode
         String publicCode = publicService.getPublicCodeByOpenId(wxMessage.getToUser());
+
+        /* 用户发送的消息，根据【关键词流程】走 */
+        WxReply reply = new WxReply(publicCode);
+        // 开启所有关键词回复，则匹配关键词
+//        if (replyService.getReplyRule(reply).getReplyFlag() == 1){
+//
+//        }else {
+//            WxPublicConfig publicConfig = new WxPublicConfig()
+//            if (publicConfigService.get())
+//        }
 
         /**
          * 接受用户发送的消息，保存到数据库 【消息管理】中的【所有消息】
@@ -88,13 +103,13 @@ public class MsgHandler extends AbstractHandler {
                 }
             }
 
-            // 判断是否开启非关键词回复，如果开启则直接回复内容
-            WxReply reply = new WxReply();
-            reply.setPublicCode(publicCode);
-            reply = replyService.getNormal(reply).get(0);
-            if (reply.getReplyFlag() == 1) {
-                return new TextBuilder().build(reply.getContent(), wxMessage, wxMpService);
-            }
+//            // 判断是否开启非关键词回复，如果开启则直接回复内容
+//            WxReply reply = new WxReply();
+//            reply.setPublicCode(publicCode);
+//            reply = replyService.getNormal(reply);
+//            if (reply.getReplyFlag() == 1) {
+//                return new TextBuilder().build(reply.getContent(), wxMessage, wxMpService);
+//            }
         }
 
         if (StringUtils.startsWithAny(wxMessage.getContent(),  "客服")){

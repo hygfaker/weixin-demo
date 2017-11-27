@@ -71,7 +71,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
      */
     @Override
     public WxPublicConfig get(WxPublicConfig publicConfig) throws WxErrorException {
-        ValidatorUtil.mustParam(publicConfig, validator, "configCode");
+        ValidatorUtil.orParam(publicConfig, validator, "configCode","publicCode");
         WxPublicConfig result = publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode());
         if (result == null){
             log.error(ResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());

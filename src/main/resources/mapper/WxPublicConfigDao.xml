@@ -18,7 +18,16 @@
     select 
     <include refid="Base_Column_List" />
     from MP_YY_PUB_CONFIG
-    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+    where
+    <if test="configCode != null">
+    CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+    and
+    </if>
+    <if test="publicCode != null">
+      PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+      and
+    </if>
+    1=1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from MP_YY_PUB_CONFIG

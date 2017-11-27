@@ -37,7 +37,7 @@ public class WxPublicConfig {
     /**
      * 主键
      */
-
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String configCode;
 
     /**

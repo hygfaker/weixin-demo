@@ -32,6 +32,7 @@ public interface IWxReplyService {
 //    2-3. 添加、修改非关键词回复内容
 
 //    ===== 关键词回复 =====
+//    3-0. 获取关键词规则
 //    3-1. 获取关键词规则列表（分页）
 //    3-1-1. 获取单个关键词规则
 //    3-1-2. 获取关键词规则下的关键词列表（分页）
@@ -112,7 +113,7 @@ public interface IWxReplyService {
      * @return
      * @author huangyg
      */
-    public List<WxReply> getFollow(WxReply reply) throws WxErrorException ;
+    public WxReply getFollow(WxReply reply) throws WxErrorException ;
 
     /**
      *
@@ -144,7 +145,7 @@ public interface IWxReplyService {
      * @return
      * @author huangyg
      */
-    public List<WxReply> getNormal(WxReply reply) throws WxErrorException ;
+    public WxReply getNormal(WxReply reply) throws WxErrorException ;
 
     /**
      *
@@ -170,6 +171,16 @@ public interface IWxReplyService {
     public WxReply addNormal(WxReply reply) throws WxErrorException;
 
     /************ 关键词规则 ************/
+
+    /**
+     * 3-0. 获取关键词规则
+     *
+     * @param reply 公众号实体
+     *              publicCode 公众号主键
+     * @return
+     * @throws WxErrorException
+     */
+    public WxReply getReplyRule(WxReply reply) throws WxErrorException;
 
     /**
      *  3-1. 获取关键词规则列表（分页）

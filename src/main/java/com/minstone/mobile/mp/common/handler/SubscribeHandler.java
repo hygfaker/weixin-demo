@@ -56,7 +56,7 @@ public class SubscribeHandler extends AbstractHandler {
              *  2. 根据 public 获取 content
              */
             String publicCode = wxPublicService.getPublicCodeByOpenId(wxMessage.getFromUser());
-            String content = wxReplyService.getFollow(new WxReply(publicCode)).get(0).getContent();
+            String content = wxReplyService.getFollow(new WxReply(publicCode)).getContent();
             return new TextBuilder().build(content, wxMessage, weixinService);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
