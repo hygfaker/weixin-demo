@@ -128,7 +128,7 @@ public final class ResultUtil {
 
 //    /**
 //     * DAO 操作统一在这里处理：对返回的数据做结果判断
-//     * @param result dao操作返回结果
+//     * @mustParam result dao操作返回结果
 //     * @return
 //     */
 //    public static CommonResult returnResult(Integer result){

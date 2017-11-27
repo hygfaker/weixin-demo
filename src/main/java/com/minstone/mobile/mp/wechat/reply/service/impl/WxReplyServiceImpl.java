@@ -130,7 +130,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public List<WxReply> getInfo(WxReply reply) throws WxErrorException {
-        ValidatorUtil.param(reply, validator, "publicCode", "replyType");
+        ValidatorUtil.mustParam(reply, validator, "publicCode", "replyType");
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
@@ -158,7 +158,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public WxReply addContent(WxReply reply) throws WxErrorException {
-        ValidatorUtil.param(reply, validator, "publicCode", "content");
+        ValidatorUtil.mustParam(reply, validator, "publicCode", "content");
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
@@ -194,7 +194,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean updateFlag(WxReply reply) throws WxErrorException {
-        ValidatorUtil.param(reply, validator, "publicCode", "replyType", "replyFlag");
+        ValidatorUtil.mustParam(reply, validator, "publicCode", "replyType", "replyFlag");
         WxReply selectResult = this.getReplyByPublicCodeAndReplyType(reply);
         if (selectResult == null) {
             throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
@@ -349,7 +349,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public WxReplyRule getRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule, validator, "ruleCode");
+        ValidatorUtil.mustParam(rule, validator, "ruleCode");
         List<WxReplyRule> selectResult = wxReplyRuleDao.selectByPrimaryKey(rule);
         if (selectResult.size() > 0) {
             return selectResult.get(0);
@@ -369,7 +369,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public List<WxReplyKeyword> getKeywordByRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule, validator, "ruleCode");
+        ValidatorUtil.mustParam(rule, validator, "ruleCode");
         List<WxReplyKeyword> selectResult = wxReplyKeywordDao.selectByRuleCode(rule);
         if (selectResult.size() > 0) {
             return selectResult;
@@ -388,7 +388,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public List<WxReplyKeyword> getKeywords(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule, validator, "publicCode");
+        ValidatorUtil.mustParam(rule, validator, "publicCode");
         List<WxReplyKeyword> selectResult = wxReplyKeywordDao.selectKeywords(rule);
         if (selectResult.size() > 0) {
             return selectResult;
@@ -480,7 +480,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean deleteRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule,validator,"ruleCode");
+        ValidatorUtil.mustParam(rule,validator,"ruleCode");
         return wxReplyRuleDao.deleteByPrimaryKey(rule) > 0 ? true : false;
     }
 
@@ -494,7 +494,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean forceDeleteRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule,validator,"ruleCode");
+        ValidatorUtil.mustParam(rule,validator,"ruleCode");
         return wxReplyRuleDao.forceDeleteByPrimaryKey(rule) > 0 ? true : false;
     }
 
@@ -537,7 +537,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean deleteKeyword(WxReplyKeyword keyword) throws WxErrorException, CommonException {
-        ValidatorUtil.param(keyword,validator,"keywordCode");
+        ValidatorUtil.mustParam(keyword,validator,"keywordCode");
         return wxReplyKeywordDao.deleteByPrimaryKey(keyword) > 0 ? true : false;
     }
 
@@ -552,7 +552,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean forceDeleteKeyword(WxReplyKeyword keyword) throws WxErrorException, CommonException {
-        ValidatorUtil.param(keyword,validator,"keywordCode");
+        ValidatorUtil.mustParam(keyword,validator,"keywordCode");
         return wxReplyKeywordDao.forceDeleteByPrimaryKey(keyword) > 0 ? true : false;
     }
 
@@ -632,7 +632,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean singleRuleFlag(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.param(rule,validator,"ruleCode","useFlag");
+        ValidatorUtil.mustParam(rule,validator,"ruleCode","useFlag");
         if (wxReplyRuleDao.updateRuleFlag(rule) < 0) {
             logger.error("开启/关闭关键词规则开关出错");
             return false;

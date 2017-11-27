@@ -17,7 +17,6 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +70,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public WxMessagePush add(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "publicCode",
+        ValidatorUtil.mustParam(wxMessagePush, validator, "publicCode",
                 "pushName", "latitude", "longitude", "radius", "content");
 
         // 判断数据库是否存在名称相同的的定点推送消息
@@ -102,7 +101,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean delete(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushCode");
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushCode");
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.delete(wxMessagePush) > 0 ? true : false;
         } else {
@@ -119,7 +118,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean forceDelete(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushCode");
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushCode");
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.forceDelete(wxMessagePush) > 0 ? true : false;
         } else {
@@ -137,7 +136,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean deleteBatch(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushCodes");
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushCodes");
         return wxMessagePushDao.deleteBatch(wxMessagePush.getPushCodes()) > 0 ? true : false;
     }
 
@@ -150,7 +149,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean forceDeleteBatch(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushCodes");
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushCodes");
         return wxMessagePushDao.forceDeleteBatch(wxMessagePush.getPushCodes()) > 0 ? true : false;
 
     }
@@ -164,7 +163,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean update(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushCode",
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushCode",
                 "pushName", "latitude", "longitude", "radius", "content");
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.updateByPrimaryKey(wxMessagePush) > 0 ? true : false;
@@ -183,7 +182,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public boolean updateFlag(WxMessagePush wxMessagePush) throws WxErrorException {
-        ValidatorUtil.param(wxMessagePush, validator, "pushFlag","pushCode");
+        ValidatorUtil.mustParam(wxMessagePush, validator, "pushFlag","pushCode");
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.updateFlag(wxMessagePush) > 0 ? true : false;
         } else {
@@ -242,7 +241,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
     @Transactional(readOnly = true)
     @Override
     public WxMessagePush get(WxMessagePush wxMessagePush) throws WxErrorException {
-         ValidatorUtil.param(wxMessagePush,validator,"pushCode");
+         ValidatorUtil.mustParam(wxMessagePush,validator,"pushCode");
          return wxMessagePushDao.select(wxMessagePush);
     }
 
@@ -255,7 +254,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
      */
     @Override
     public WxMessagePushRecord addRecord(WxMessagePushRecord messagePushRecord) throws WxErrorException {
-        ValidatorUtil.param(messagePushRecord,validator,"userCode","pushCode");
+        ValidatorUtil.mustParam(messagePushRecord,validator,"userCode","pushCode");
         List<WxMessagePushRecord> checkResult = messagePushRecordDao.select(messagePushRecord);
         if (checkResult.size() > 0) {
             return null;

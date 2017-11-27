@@ -10,13 +10,30 @@ import me.chanjar.weixin.common.exception.WxErrorException;
  * @since 2017/11/24
  */
 public interface IWxPublicConfigService {
-    // todo
     // 添加/修改公众号配置信息
 
     /**
-     * @param publicConfig 公众号配置信息
+     * 添加公众号配置信息
+     * @param publicConfig 公众号配置实体
      * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
      * @author huangyg
      */
-    public WxPublicConfig addOrModifyFlag(WxPublicConfig publicConfig) throws WxErrorException;
+    public String add(WxPublicConfig publicConfig) throws WxErrorException;
+
+    /**
+     * 修改公众号配置信息
+     * @param publicConfig 公众号配置实体
+     * @return boolean
+     * @author huangyg
+     */
+    public boolean update(WxPublicConfig publicConfig) throws WxErrorException;
+
+    /**
+     * 获取公众号配置信息
+     * @param publicConfig 公众号配置实体
+     * @return com.minstone.mobile.mp.wechat.config.domain.WxPublicConfig
+     * @author huangyg
+     */
+    public WxPublicConfig getWxpublicConfig(WxPublicConfig publicConfig) throws WxErrorException;
+
 }

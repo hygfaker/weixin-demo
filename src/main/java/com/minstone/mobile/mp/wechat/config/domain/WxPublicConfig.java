@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.config.domain;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -9,16 +10,28 @@ import org.springframework.context.annotation.Bean;
  * @author:  huangyg
  * @创建时间: 2017-11-24
  */
-@Data
 public class WxPublicConfig {
+
+    public WxPublicConfig(String configCode, String publicCode, Integer menuUseFlag, Integer kefuUseFlag, Integer pushUseFlag, String kefuOfflineMessage, String kefuOnlineMessage) {
+        this.configCode = configCode;
+        this.publicCode = publicCode;
+        this.menuUseFlag = menuUseFlag;
+        this.kefuUseFlag = kefuUseFlag;
+        this.pushUseFlag = pushUseFlag;
+        this.kefuOfflineMessage = kefuOfflineMessage;
+        this.kefuOnlineMessage = kefuOnlineMessage;
+    }
+
     /**
      * 主键
      */
+
     private String configCode;
 
     /**
      * 公众号主键
      */
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
 
     /**
