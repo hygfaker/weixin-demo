@@ -1,6 +1,7 @@
-package com.minstone.mobile.mp.common.handler;
+package com.minstone.mobile.mp.wechat.kefu;
 
 import com.minstone.mobile.mp.common.builder.TextBuilder;
+import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;

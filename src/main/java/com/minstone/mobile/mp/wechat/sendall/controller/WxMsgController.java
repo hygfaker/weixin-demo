@@ -22,7 +22,7 @@ public class WxMsgController {
     @Autowired
     private WxMpService wxMpService;
 
-    private static String MASS_DELTE = "https://imp.weixin.qq.com/cgi-bin/message/mass/delete?access_token=";
+    private static String MASS_DELTE = "https://impl.weixin.qq.com/cgi-bin/message/mass/delete?access_token=";
 
     // todo
     // 按 openid 列表群发消息

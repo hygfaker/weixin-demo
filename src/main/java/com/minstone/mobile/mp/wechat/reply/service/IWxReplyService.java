@@ -336,7 +336,7 @@ public interface IWxReplyService {
      * @return com.minstone.mobile.mp.wechat.reply.reply.WxReplyRule
      * @author huangyg
      */
-    public List<String> getMatchContent(WxReplyRule rule) throws WxErrorException;
+    public WxReplyRule getMatchContent(WxReplyRule rule) throws WxErrorException;
 
     public List<WxReplyRule> selectTest(WxReplyRule rule) throws WxErrorException;
 

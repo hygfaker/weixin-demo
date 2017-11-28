@@ -668,8 +668,9 @@ public class WxReplyServiceImpl implements IWxReplyService {
      * @author huangyg
      */
     @Override
-    public List<String> getMatchContent(WxReplyRule rule) throws WxErrorException {
-        return wxReplyRuleDao.selectMatchContent(rule);
+    public WxReplyRule getMatchContent(WxReplyRule rule) throws WxErrorException {
+        List<WxReplyRule> resultList = wxReplyRuleDao.selectMatchContent(rule);
+        return resultList.size() > 0 ? resultList.get(0) : null;
     }
 
     @Override

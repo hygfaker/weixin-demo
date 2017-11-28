@@ -44,7 +44,7 @@ public class WxPublicConfigControllerTest {
     public void getTest() throws Exception {
         WxPublicConfig publicConfig = new WxPublicConfig();
 //        publicConfig.setConfigCode("configCode");
-//        publicConfig.setPublicCode("publicCode");
+        publicConfig.setPublicCode("publicCode");
 //        publicConfig.setConfigCode("18dbdd9f7848469ea46c2e5e39dd2a96");
         WxPublicConfig result = publicConfigService.get(publicConfig);
         log.info("get result : {}",result);

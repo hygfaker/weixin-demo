@@ -6,6 +6,7 @@ import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.builder.VoiceBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import com.minstone.mobile.mp.utils.JsonUtil;
+import com.minstone.mobile.mp.wechat.kefu.IWxKfSessionService;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
@@ -20,6 +21,8 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
+import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfInfo;
+import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfOnlineList;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.apache.commons.lang3.StringUtils;
@@ -42,10 +45,13 @@ public class MsgHandler extends AbstractHandler {
     private IWxPublicConfigService publicConfigService;
 
     @Autowired
+    private IWxPublicService publicService;
+
+    @Autowired
     private IWxMessageService messageService;
 
     @Autowired
-    private IWxPublicService publicService;
+    private IWxKfSessionService wxKfSessionService;
 
 
     @Override
@@ -53,55 +59,60 @@ public class MsgHandler extends AbstractHandler {
                                     Map<String, Object> context, WxMpService wxMpService,
                                     WxSessionManager sessionManager) throws WxErrorException {
 
+
         // 根据 toUser 获取 publicCode
         String publicCode = publicService.getPublicCodeByOpenId(wxMessage.getToUser());
 
-        /* 用户发送的消息，根据【关键词流程】走 */
-        WxReply reply = new WxReply(publicCode);
-        // 开启所有关键词回复，则匹配关键词
-//        if (replyService.getReplyRule(reply).getReplyFlag() == 1){
 //
-//        }else {
-//            WxPublicConfig publicConfig = new WxPublicConfig()
-//            if (publicConfigService.get())
-//        }
-
-        /**
-         * 接受用户发送的消息，保存到数据库 【消息管理】中的【所有消息】
-         **/
-        if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_IMAGE) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_VOICE) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_SHORTVIDEO) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_VIDEO) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_NEWS) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_LINK) ||
-                wxMessage.getMsgType().equals(WxConsts.XML_MSG_LOCATION)) {
-
-            WxMessage message = new WxMessage(wxMessage);
-            message.setPublicCode(publicCode);
-            // 添加到数据库
-            messageService.add(message);
-        }
-        /**
-         * 如果是文字消息，匹配关键词/非关键词，自动回复内容
-         **/
+//             /* 用户发送的消息，根据【关键词流程】走 */
         if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT)) {
+            // 获取公众号回复内容实体
+            WxReply reply = new WxReply(publicCode);
+            // 获取公众号配置
+            WxPublicConfig publicConfig = new WxPublicConfig(publicCode);
+            // 获取公众号非关键词回复实体
+            WxReply normalReply = replyService.getNormal(reply);
 
-            /**
-             * 关键词和非关键词的判断有先后顺序，先判断关键词后，没有匹配关键词回复再来判断非关键词回复。
-             */
+            logger.info("===== 是否开启所有关键词回复 =====");
+            if (replyService.getReplyRule(reply).getReplyFlag() == 1) {
+                WxReplyRule replyRule = new WxReplyRule(publicCode, wxMessage.getContent());
+                WxReplyRule matchReplyRule = replyService.getMatchContent(replyRule);
 
-            // 判断是否开启关键词回复，开启的话匹配关键词回复内容
-            if (replyService.keywordsUseFlag(publicCode,2)) {
-                WxReplyRule replyRule = new WxReplyRule();
-                replyRule.setPublicCode(publicCode);
-                replyRule.setKeyword(wxMessage.getContent());
-                List<String> mathcContents = replyService.getMatchContent(replyRule);
-                if (mathcContents.size() > 0) {
-                    return new TextBuilder().build(mathcContents.get(0), wxMessage, wxMpService);
+                logger.info("===== 是否匹配关键词、关键词是否打开和是否开启客服 =====");
+                logger.error("matchReplyRule : {}",matchReplyRule);
+                if (matchReplyRule != null) {
+
+                    if (matchReplyRule.getKefuReplyFlag() != 1) {
+                        logger.info("===== 回复键词匹配内容 =====");
+                        return new TextBuilder().build(matchReplyRule.getContent(), wxMessage, wxMpService);
+                    } else {
+                        logger.info("===== 在线客服、创建会话、回复客服不在线内容或者回复欢迎语 =====");
+                        WxMpKefuMessage kefuMessage = wxKfSessionService.createSession(wxMessage, publicConfig, wxMpService);
+                        wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+                        return null;
+                    }
                 }
             }
+
+            logger.info("===== 记录到消息列表 =====");
+            WxMessage message = new WxMessage(publicCode, wxMessage);
+            messageService.add(message);
+
+            logger.info("===== 是否开启消息转发客服 =====");
+            if (publicConfigService.get(publicConfig).getKefuUseFlag() == 1) {
+                logger.info("===== 在线客服、创建会话、回复客服不在线内容或者回复欢迎语 =====");
+                WxMpKefuMessage kefuMessage = wxKfSessionService.createSession(wxMessage, publicConfig, wxMpService);
+                wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+                return null;
+            } else if (normalReply.getReplyFlag() == 1) {
+                // 回复非关键词设置的内容
+                logger.info("===== 回复非关键词设置内容 =====");
+                return new TextBuilder().build(normalReply.getContent(), wxMessage, wxMpService);
+            }
+
+
+        }
+
 
 //            // 判断是否开启非关键词回复，如果开启则直接回复内容
 //            WxReply reply = new WxReply();
@@ -110,15 +121,37 @@ public class MsgHandler extends AbstractHandler {
 //            if (reply.getReplyFlag() == 1) {
 //                return new TextBuilder().build(reply.getContent(), wxMessage, wxMpService);
 //            }
-        }
 
-        if (StringUtils.startsWithAny(wxMessage.getContent(),  "客服")){
-            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
-            kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
-            kefuMessage.setToUser(wxMessage.getFromUser());
-            kefuMessage.setContent(wxMessage.getKfAccount() + "测试回复");
-            wxMpService.getKefuService().sendKefuMessage(kefuMessage);
-        }
+
+        /**
+         * 接受用户发送的消息，保存到数据库 【消息管理】中的【所有消息】
+
+         if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_IMAGE) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_VOICE) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_SHORTVIDEO) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_VIDEO) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_NEWS) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_LINK) ||
+         wxMessage.getMsgType().equals(WxConsts.XML_MSG_LOCATION)) {
+
+         WxMessage message = new WxMessage(wxMessage);
+         message.setPublicCode(publicCode);
+         // 添加到数据库
+         messageService.add(message);
+         }
+         **/
+
+
+//        if(StringUtils.startsWithAny(wxMessage.getContent(),"客服"))
+//
+//    {
+//        WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
+//        kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
+//        kefuMessage.setToUser(wxMessage.getFromUser());
+//        kefuMessage.setContent(wxMessage.getKfAccount() + "测试回复");
+//        wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+//    }
         /*
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
         if (StringUtils.startsWithAny(wxMessage.getContent(),  "客服")
@@ -136,6 +169,7 @@ public class MsgHandler extends AbstractHandler {
          * 1、直接回复success（推荐方式）
          * 2、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
          */
+        logger.error("--- end msghandler ---");
         return null;
     }
 }

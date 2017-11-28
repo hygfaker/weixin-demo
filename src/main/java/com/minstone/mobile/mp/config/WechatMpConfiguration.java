@@ -3,6 +3,7 @@ package com.minstone.mobile.mp.config;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.handler.*;
+import com.minstone.mobile.mp.wechat.kefu.KfSessionHandler;
 import com.minstone.mobile.mp.wechat.menu.handler.MenuHandler;
 import com.minstone.mobile.mp.wechat.message.handler.LocationHandler;
 import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
@@ -107,9 +108,9 @@ public class WechatMpConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public WxMpService wxMpService(WxMpConfigStorage configStorage) {
-//        WxMpService wxMpService = new me.chanjar.weixin.mp.imp.impl.okhttp.WxMpServiceImpl();
-//        WxMpService wxMpService = new me.chanjar.weixin.mp.imp.impl.jodd.WxMpServiceImpl();
-//        WxMpService wxMpService = new me.chanjar.weixin.mp.imp.impl.apache.WxMpServiceImpl();
+//        WxMpService wxMpService = new me.chanjar.weixin.mp.impl.impl.okhttp.WxMpServiceImpl();
+//        WxMpService wxMpService = new me.chanjar.weixin.mp.impl.impl.jodd.WxMpServiceImpl();
+//        WxMpService wxMpService = new me.chanjar.weixin.mp.impl.impl.apache.WxMpServiceImpl();
         WxMpService wxMpService = new me.chanjar.weixin.mp.api.impl.WxMpServiceImpl();
         if (configStorage != null) {
             wxMpService.setWxMpConfigStorage(configStorage);

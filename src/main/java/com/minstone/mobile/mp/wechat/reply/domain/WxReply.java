@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 /**
  * 消息回复
  */
+@Data
 public class WxReply {
 
     private enum REPLY_TYPE{

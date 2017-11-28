@@ -18,6 +18,10 @@ public class WxReplyRule {
         super();
     }
 
+    public WxReplyRule(String publicCode, String keyword) {
+        this.setPublicCode(publicCode);
+        this.setKeyword(keyword);
+    }
 
 
     public String[] getRuleCodes() {

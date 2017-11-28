@@ -111,7 +111,7 @@ public class WxUserController {
                                        HttpServletResponse response, HttpServletRequest request) throws WxErrorException, IOException {
 
         // 请求以下链接获取 access_token
-        String url = "https://imp.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
+        String url = "https://impl.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
         String res = this.service.get(url,null);
 
         String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
@@ -191,7 +191,7 @@ public class WxUserController {
 
         // 请求以下链接获取 access_token
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
-        String res = this.imp.get(url,null);
+        String res = this.impl.get(url,null);
 
         String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
 
@@ -217,14 +217,14 @@ public class WxUserController {
 
         // 请求以下链接获取 access_token
         String getCodeUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + this.properties.getAppId() + "&secret=" + this.properties.getSecret() + "&code="+code+"&grant_type=authorization_code";
-        String res = this.imp.get(getCodeUrl,null);
+        String res = this.impl.get(getCodeUrl,null);
 
         String openid = new JsonParser().parse(res).getAsJsonObject().get("openid").getAsString();
         String accessToken = new JsonParser().parse(res).getAsJsonObject().get("access_token").getAsString();
 
 
         String getUserInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
-        String userInfo = this.imp.get(getUserInfo,null);
+        String userInfo = this.impl.get(getUserInfo,null);
 
         logger.info("回调的页面：" + callbackUrl);
         // 跳转到回调页面

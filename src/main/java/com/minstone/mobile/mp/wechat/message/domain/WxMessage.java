@@ -96,7 +96,8 @@ public class WxMessage {
      */
     private String msgId;
 
-    public WxMessage(WxMpXmlMessage wxMessage) {
+    public WxMessage(String publicCode,WxMpXmlMessage wxMessage) {
+        this.publicCode = publicCode;
         this.msgCode = IdGen.uuid();
         this.userCode = wxMessage.getFromUser();
         this.createDate = DateUtil.unix2Date(wxMessage.getCreateTime().toString(), DateUtil.DatePattern.DATE_TIME) ;

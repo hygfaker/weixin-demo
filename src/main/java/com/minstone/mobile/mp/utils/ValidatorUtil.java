@@ -51,7 +51,7 @@ public class ValidatorUtil {
             if (iterator.hasNext()) {
                 continue;
             } else{
-                 break;
+                 return;
             }
         }
         throw new ValidationException("参数缺失,请传入" + Arrays.toString(validFileds) + "中的某一个参数");

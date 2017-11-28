@@ -283,8 +283,8 @@
         AND r.USE_FLAG = 1
     </select>
 
-    <select id="selectMatchContent" resultType="java.lang.String">
-        SELECT r.content FROM MP_YY_REP_RULE r
+    <select id="selectMatchContent" resultMap="BaseResultMap">
+        SELECT r.* FROM MP_YY_REP_RULE r
         LEFT JOIN MP_YY_REP_KEYWORD k
         ON  r.RULE_CODE = k.RULE_CODE
         AND r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
@@ -293,6 +293,7 @@
         WHERE k.KEYWORD IS NOT NULL
         AND r.DEL_FLAG = 0
         AND k.DEL_FLAG = 0
+        AND r.USE_FLAG = 1
     </select>
 
 </mapper>

@@ -33,6 +33,10 @@ public class WxPublicConfig {
     }
     public WxPublicConfig() {
     }
+    public WxPublicConfig(String publicCode) {
+        this.setPublicCode(publicCode);
+    }
+
 
     /**
      * 主键
@@ -70,6 +74,7 @@ public class WxPublicConfig {
      * 客服在线等时候的提示内容
      */
     private String kefuOnlineMessage;
+
 
 
     /**
