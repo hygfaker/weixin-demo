@@ -79,7 +79,7 @@ public class MsgHandler extends AbstractHandler {
                 WxReplyRule matchReplyRule = replyService.getMatchContent(replyRule);
 
                 logger.info("===== 是否匹配关键词、关键词是否打开和是否开启客服 =====");
-                logger.error("matchReplyRule : {}",matchReplyRule);
+                logger.info("matchReplyRule : {}",matchReplyRule);
                 if (matchReplyRule != null) {
 
                     if (matchReplyRule.getKefuReplyFlag() != 1) {
@@ -109,8 +109,6 @@ public class MsgHandler extends AbstractHandler {
                 logger.info("===== 回复非关键词设置内容 =====");
                 return new TextBuilder().build(normalReply.getContent(), wxMessage, wxMpService);
             }
-
-
         }
 
 
@@ -169,7 +167,6 @@ public class MsgHandler extends AbstractHandler {
          * 1、直接回复success（推荐方式）
          * 2、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
          */
-        logger.error("--- end msghandler ---");
         return null;
     }
 }
