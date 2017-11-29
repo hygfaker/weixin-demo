@@ -7,14 +7,18 @@ import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessageDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
+import com.minstone.mobile.mp.wechat.message.dto.MessageDto;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +27,7 @@ import java.util.List;
  * @description
  * @since 2017/11/17
  */
-@Service
+@Service("messageService")
 public class WxMessageServiceImpl implements IWxMessageService {
 
     @Autowired
@@ -106,11 +110,13 @@ public class WxMessageServiceImpl implements IWxMessageService {
         message.setDayLimit(message.getDayLimit()!=null ? message.getDayLimit() : 5);
         List<WxMessage> messageList = messageDao.selectAll(message);
 
+        // 获取 messageList中的
+
+
         PageHelper.startPage(currentPage, pageSize);
         PageInfo<WxMessage> pageInfo = new PageInfo<>(messageList);
         return pageInfo;
     }
-
 
 
     /**
@@ -126,6 +132,8 @@ public class WxMessageServiceImpl implements IWxMessageService {
         if (selectResult == null){
             throw new CommonException(ResultEnum.MESSAGE_NOTFOUND);
         }
+        // 设置为已回复
+        message.setMsgFlag(1);
         return messageDao.updateByPrimaryKeySelective(message) > 0 ? true : false;
     }
 
