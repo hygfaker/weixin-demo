@@ -165,16 +165,12 @@ public class WechatMpConfiguration {
                 .event(WxConsts.EVT_LOCATION).handler(this.getLocationHandler())
                 .end();
 
-        // 接收地理位置消息
-        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_LOCATION)
-                .handler(this.getLocationHandler()).end();
-
         // 扫码事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_SCAN).handler(this.getScanHandler()).end();
 
         // 默认
-        newRouter.rule().async(false).handler(this.getMsgHandler()).end();
+        newRouter.rule().async(true).handler(this.getMsgHandler()).end();
 
         return newRouter;
     }

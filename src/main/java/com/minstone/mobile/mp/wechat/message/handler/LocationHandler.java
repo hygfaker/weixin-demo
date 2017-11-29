@@ -36,11 +36,6 @@ public class LocationHandler extends AbstractHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
 
-        // 如果不是地理位置推送，直接退出
-        if (!wxMessage.getMsgType().equals(WxConsts.XML_MSG_EVENT)) {
-            return null;
-        }
-
         // 处理地理位置推送，获取可以推送的内容列表
         List<WxMessagePush> messagePushes = messagePushService.selectMessageByOpenIdAndUserCode(wxMessage.getToUser(),wxMessage.getFromUser());
 
@@ -66,9 +61,7 @@ public class LocationHandler extends AbstractHandler {
         }else {
             return null;
         }
-
         //TODO  可以将用户地理位置信息保存到本地数据库，以便以后使用
-
     }
 
 }

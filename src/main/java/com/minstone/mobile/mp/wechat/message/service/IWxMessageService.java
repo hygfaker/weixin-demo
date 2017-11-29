@@ -88,5 +88,5 @@ public interface IWxMessageService {
      * @author huangyg
      */
 
-    public boolean replyMessage(WxMessage message) throws WxErrorException;
+    public boolean replyMessage(WxMessage message);
 }

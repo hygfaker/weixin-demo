@@ -126,7 +126,7 @@ public class WxMessageServiceImpl implements IWxMessageService {
      * @author huangyg
      */
     @Override
-    public boolean replyMessage(WxMessage message) throws WxErrorException {
+    public boolean replyMessage(WxMessage message) {
         ValidatorUtil.mustParam(message, validator, "msgCode", "replyContent");
         WxMessage selectResult = messageDao.selectByPrimaryKey(message.getMsgCode());
         if (selectResult == null){

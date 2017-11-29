@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.message.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonResult;
+import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessageDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
@@ -44,27 +45,25 @@ public class WxMessageController {
             }
         }
         List<WxMpUser> userList = mpService.getUserService().userInfoList(userCodeList);
-
-        // 将所有用户的头像和昵称拼接一起
-        List<MessageDto> messageDtoList = new ArrayList<MessageDto>();
-        for (WxMessage temp : pageInfo.getList()) {
+        List<WxMessage> messageList = pageInfo.getList();
+        for (WxMessage temp : messageList) {
             for (WxMpUser user : userList) {
                 if (temp.getUserCode().equals(user.getOpenId())){
-                    MessageDto messageDto = new MessageDto();
-                    messageDto.setContent(temp.getContent());
-                    messageDto.setCreateDate(temp.getCreateDate());
-                    messageDto.setImgUrl(user.getHeadImgUrl());
-                    messageDto.setMsgFlag(temp.getMsgFlag());
-                    messageDto.setReplyContent(temp.getReplyContent());
-                    messageDtoList.add(messageDto);
+                    temp.setImgUrl(user.getHeadImgUrl());
+                    temp.setNickName(user.getNickname());
                 }
             }
         }
-        PageInfo<MessageDto> resultPage = new PageInfo<>(messageDtoList);
-        resultPage.setPageNum(pageInfo.getPageNum());
-        resultPage.setPageSize(pageInfo.getPageSize());
-        resultPage.setPages(pageInfo.getPages());
-        resultPage.setTotal(pageInfo.getTotal());
-        return ResultUtil.pageFormat(resultPage);
+        pageInfo.setList(messageList);
+        return ResultUtil.pageFormat(pageInfo);
+    }
+
+    @PostMapping("/replyMessage")
+    public CommonResult replyMessage(WxMessage message){
+        if (messageService.replyMessage(message)){
+            return ResultUtil.success();
+        }else {
+            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        }
     }
 }

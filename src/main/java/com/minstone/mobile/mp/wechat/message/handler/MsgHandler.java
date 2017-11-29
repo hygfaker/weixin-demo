@@ -53,8 +53,6 @@ public class MsgHandler extends AbstractHandler {
 
         // 根据 toUser 获取 publicCode
         String publicCode = publicService.getPublicCodeByOpenId(wxMessage.getToUser());
-
-//
 //             /* 用户发送的消息，根据【关键词流程】走 */
         if (wxMessage.getMsgType().equals(WxConsts.XML_MSG_TEXT)) {
             // 获取公众号回复内容实体
@@ -100,6 +98,12 @@ public class MsgHandler extends AbstractHandler {
                 logger.info("===== 回复非关键词设置内容 =====");
                 return new TextBuilder().build(normalReply.getContent(), wxMessage, wxMpService);
             }
+        }else {
+
+            logger.info("===== 记录到消息列表 =====");
+            WxMessage message = new WxMessage(publicCode, wxMessage);
+            messageService.add(message);
+
         }
 
 

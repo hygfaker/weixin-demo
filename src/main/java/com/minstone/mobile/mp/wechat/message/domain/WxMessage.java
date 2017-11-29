@@ -77,6 +77,17 @@ public class WxMessage {
         this.delFlag = 0;
     }
 
+
+    /**
+     * 头像 url
+     */
+    private String imgUrl;
+    /**
+     *  昵称
+     */
+    private String nickName;
+
+
     /**
      * 时间限制，默认为5天内
      */
