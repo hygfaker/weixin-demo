@@ -118,6 +118,11 @@ public enum ResultEnum {
     REPLY_TYPE_NOTFOUND(404,"该公众号没有相应回复类型信息"),
 
     /**
+     * 404,"没有该消息信息"
+     */
+    MESSAGE_NOTFOUND(404,"没有该消息信息"),
+
+    /**
      * 404,"该公众号没有相应回复类型信息"
      */
     PUBLIC_CONFIG_NOTFOUND(404,"该公众号没有相应配置信息");

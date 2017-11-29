@@ -1,11 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.handler;
 
-import com.minstone.mobile.mp.common.builder.VideoBuilder;
-import com.minstone.mobile.mp.common.builder.ImageBuilder;
 import com.minstone.mobile.mp.common.builder.TextBuilder;
-import com.minstone.mobile.mp.common.builder.VoiceBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;
-import com.minstone.mobile.mp.utils.JsonUtil;
 import com.minstone.mobile.mp.wechat.kefu.IWxKfSessionService;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
@@ -15,21 +11,16 @@ import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
-import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
-import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfInfo;
-import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfOnlineList;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -35,15 +35,15 @@ public class ValidatorUtil {
             }
         }
     }
-//
-//    /**
-//     * 方法校验 - 校验参数数组中必然有一个能够校验到，不需要全部校验
-//     * @param t 需要验证的实体类型
-//     * @param validator
-//     * @param validFileds 需要验证的字段
-//     * @return void
-//     * @author huangyg
-//     */
+
+    /**
+     * 方法校验 - 校验参数数组中必然有一个能够校验到，不需要全部校验
+     * @param t 需要验证的实体类型
+     * @param validator
+     * @param validFileds 需要验证的字段
+     * @return void
+     * @author huangyg
+     */
     public static <T> void orParam(T t, Validator validator, String... validFileds) throws ConstraintViolationException {
         for (String filed : validFileds) {
             Set<ConstraintViolation<T>> constraintViolations = validator.validateProperty(t, filed);

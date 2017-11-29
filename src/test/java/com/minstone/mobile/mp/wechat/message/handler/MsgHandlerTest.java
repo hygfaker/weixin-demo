@@ -1,28 +1,16 @@
 package com.minstone.mobile.mp.wechat.message.handler;
 
-import com.minstone.mobile.mp.common.builder.TextBuilder;
-import com.minstone.mobile.mp.wechat.kefu.IWxKfSessionService;
-import com.minstone.mobile.mp.wechat.kefu.impl.WxKfSessionService;
-import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicConfigService;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.swing.*;
-
-import static org.junit.Assert.*;
 
 /**
  * @author huangyg

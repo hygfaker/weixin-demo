@@ -2,29 +2,107 @@ package com.minstone.mobile.mp.wechat.message.domain;
 
 import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.code.IdGen;
+import lombok.Data;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 描述:MP_YY_MSG表的实体类
  * @version
  * @author:  huangyg
- * @创建时间: 2017-11-17
+ * @创建时间: 2017-11-28
  */
+@Data
 public class WxMessage {
+
+    public WxMessage(){
+
+    }
+    public WxMessage(String publicCode) {
+        this.publicCode = publicCode;
+    }
+    public WxMessage(String msgCode, String publicCode, String userCode, String msgId, String createDate, String msgType, String content, String mediaId, String url, String format, String recognition, String thumbMediaId, Double locationX, Double locationY, Double locationScale, String description, Integer delFlag, Integer msgFlag, String replyContent) {
+        this.msgCode = msgCode;
+        this.publicCode = publicCode;
+        this.userCode = userCode;
+        this.msgId = msgId;
+        this.createDate = createDate;
+        this.msgType = msgType;
+        this.content = content;
+        this.mediaId = mediaId;
+        this.url = url;
+        this.format = format;
+        this.recognition = recognition;
+        this.thumbMediaId = thumbMediaId;
+        this.locationX = locationX;
+        this.locationY = locationY;
+        this.locationScale = locationScale;
+        this.description = description;
+        this.delFlag = delFlag;
+        this.msgFlag = msgFlag;
+        this.replyContent = replyContent;
+    }
+
+    public WxMessage(String publicCode,WxMpXmlMessage wxMessage) {
+        this.publicCode = publicCode;
+        this.msgCode = IdGen.uuid();
+        this.userCode = wxMessage.getFromUser();
+        this.createDate = DateUtil.unix2Date(wxMessage.getCreateTime().toString(), DateUtil.DatePattern.DATE_TIME) ;
+        this.msgType = wxMessage.getMsgType();
+        if (wxMessage.getContent()!=null){
+            this.content = content;
+        }
+        this.msgId = wxMessage.getMsgId().toString();
+
+        // 如果有 content，则是文本消息
+        this.content = wxMessage.getContent()!=null ? wxMessage.getContent() : null;
+        // 【链接消息】 中的【消息标题】
+        if (wxMessage.getTitle()!=null){
+            this.content = wxMessage.getTitle();
+        }
+        // 【地理位置消息】 中的【地理位置信息】
+        if (wxMessage.getLabel()!=null){
+            this.content = wxMessage.getLabel();
+        }
+        this.url = wxMessage.getPicUrl();
+        this.mediaId = wxMessage.getMediaId();
+        this.format = wxMessage.getFormat();
+        this.recognition = wxMessage.getRecognition();
+        this.thumbMediaId = wxMessage.getThumbMediaId();
+        this.locationX = wxMessage.getLocationX();
+        this.locationY = wxMessage.getLocationY();
+        this.locationScale = wxMessage.getScale();
+        this.description = wxMessage.getDescription();
+        // 默认为0，不删除
+        this.delFlag = 0;
+    }
+
+    /**
+     * 时间限制，默认为5天内
+     */
+    private Integer dayLimit;
+
     /**
      * 主键
      */
+    @NotEmpty(message = "【msgCode】参数缺失（且内容不为空）")
     private String msgCode;
 
     /**
      * 公众号主键（统一）
      */
+    @NotEmpty(message = "【publicCode】参数缺失（且内容不为空）")
     private String publicCode;
 
     /**
      * 消息来源（统一）
      */
     private String userCode;
+
+    /**
+     * 消息id，64位整型（统一）
+     */
+    private String msgId;
 
     /**
      * 消息创建时间（统一）
@@ -39,6 +117,7 @@ public class WxMessage {
     /**
      * 文本消息时为【内容】、链接消息是为【消息标题】、地理位置消息时为【地理位置信息】
      */
+    @NotEmpty(message = "【content】参数缺失（且内容不为空）")
     private String content;
 
     /**
@@ -92,43 +171,15 @@ public class WxMessage {
     private Integer delFlag;
 
     /**
-     * 消息id，64位整型（统一）
+     * 消息回复状态，0表示未回复状态，1表示回复状态
      */
-    private String msgId;
+    private Integer msgFlag;
 
-    public WxMessage(String publicCode,WxMpXmlMessage wxMessage) {
-        this.publicCode = publicCode;
-        this.msgCode = IdGen.uuid();
-        this.userCode = wxMessage.getFromUser();
-        this.createDate = DateUtil.unix2Date(wxMessage.getCreateTime().toString(), DateUtil.DatePattern.DATE_TIME) ;
-        this.msgType = wxMessage.getMsgType();
-        if (wxMessage.getContent()!=null){
-            this.content = content;
-        }
-        this.msgId = wxMessage.getMsgId().toString();
+    /**
+     * 回复内容 
+     */
+    private String replyContent;
 
-        // 如果有 content，则是文本消息
-        this.content = wxMessage.getContent()!=null ? wxMessage.getContent() : null;
-        // 【链接消息】 中的【消息标题】
-        if (wxMessage.getTitle()!=null){
-            this.content = wxMessage.getTitle();
-        }
-        // 【地理位置消息】 中的【地理位置信息】
-        if (wxMessage.getLabel()!=null){
-            this.content = wxMessage.getLabel();
-        }
-        this.url = wxMessage.getPicUrl();
-        this.mediaId = wxMessage.getMediaId();
-        this.format = wxMessage.getFormat();
-        this.recognition = wxMessage.getRecognition();
-        this.thumbMediaId = wxMessage.getThumbMediaId();
-        this.locationX = wxMessage.getLocationX();
-        this.locationY = wxMessage.getLocationY();
-        this.locationScale = wxMessage.getScale();
-        this.description = wxMessage.getDescription();
-        // 默认为0，不删除
-        this.delFlag = 0;
-    }
 
 
     /**
@@ -180,6 +231,22 @@ public class WxMessage {
     }
 
     /**
+     * 消息id，64位整型（统一）
+     * @return MSG_ID 消息id，64位整型（统一）
+     */
+    public String getMsgId() {
+        return msgId;
+    }
+
+    /**
+     * 消息id，64位整型（统一）
+     * @param msgId 消息id，64位整型（统一）
+     */
+    public void setMsgId(String msgId) {
+        this.msgId = msgId == null ? null : msgId.trim();
+    }
+
+    /**
      * 消息创建时间（统一）
      * @return CREATE_DATE 消息创建时间（统一）
      */
@@ -208,7 +275,7 @@ public class WxMessage {
      * @param msgType 消息类型
      */
     public void setMsgType(String msgType) {
-        this.msgType = msgType;
+        this.msgType = msgType == null ? null : msgType.trim();
     }
 
     /**
@@ -341,9 +408,9 @@ public class WxMessage {
 
     /**
      * 地理位置消息中的【地图缩放大小】
-     * @return locationScale 地理位置消息中的【地图缩放大小】
+     * @return LOCATION_SCALE 地理位置消息中的【地图缩放大小】
      */
-    public Double getScale() {
+    public Double getLocationScale() {
         return locationScale;
     }
 
@@ -351,7 +418,7 @@ public class WxMessage {
      * 地理位置消息中的【地图缩放大小】
      * @param locationScale 地理位置消息中的【地图缩放大小】
      */
-    public void setScale(Double locationScale) {
+    public void setLocationScale(Double locationScale) {
         this.locationScale = locationScale;
     }
 
@@ -388,41 +455,34 @@ public class WxMessage {
     }
 
     /**
-     * 消息id，64位整型（统一）
-     * @return MSG_ID 消息id，64位整型（统一）
+     * 消息回复状态，0表示未回复状态，1表示回复状态
+     * @return MSG_FLAG 消息回复状态，0表示未回复状态，1表示回复状态
      */
-    public String getMsgId() {
-        return msgId;
+    public Integer getMsgFlag() {
+        return msgFlag;
     }
 
     /**
-     * 消息id，64位整型（统一）
-     * @param msgId 消息id，64位整型（统一）
+     * 消息回复状态，0表示未回复状态，1表示回复状态
+     * @param msgFlag 消息回复状态，0表示未回复状态，1表示回复状态
      */
-    public void setMsgId(String msgId) {
-        this.msgId = msgId == null ? null : msgId.trim();
+    public void setMsgFlag(Integer msgFlag) {
+        this.msgFlag = msgFlag;
     }
 
-    @Override
-    public String toString() {
-        return "WxMessage{" +
-                "msgCode='" + msgCode + '\'' +
-                ", publicCode='" + publicCode + '\'' +
-                ", userCode='" + userCode + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", msgType='" + msgType + '\'' +
-                ", content='" + content + '\'' +
-                ", mediaId='" + mediaId + '\'' +
-                ", url='" + url + '\'' +
-                ", format='" + format + '\'' +
-                ", recognition='" + recognition + '\'' +
-                ", thumbMediaId='" + thumbMediaId + '\'' +
-                ", locationX=" + locationX +
-                ", locationY=" + locationY +
-                ", locationScale=" + locationScale +
-                ", description='" + description + '\'' +
-                ", delFlag=" + delFlag +
-                ", msgId='" + msgId + '\'' +
-                '}';
+    /**
+     * 回复内容 
+     * @return REPLY_CONTENT 回复内容 
+     */
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    /**
+     * 回复内容 
+     * @param replyContent 回复内容 
+     */
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent == null ? null : replyContent.trim();
     }
 }

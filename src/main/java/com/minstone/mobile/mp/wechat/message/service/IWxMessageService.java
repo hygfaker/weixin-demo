@@ -1,8 +1,8 @@
 package com.minstone.mobile.mp.wechat.message.service;
 
+import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import org.springframework.stereotype.Service;
 
 /**
  * @author huangyg
@@ -19,6 +19,8 @@ public interface IWxMessageService {
     // 2-3. 批量删除消息
     // 2-4. 批量删除消息
     // 3-1. 获取消息
+    // 3-2. 获取消息列表
+    // 4-1. 回复消息
 
 
     /**
@@ -43,23 +45,23 @@ public interface IWxMessageService {
      * @return boolean
      * @author huangyg
      */
-    public boolean forceDelete(WxMessage message) throws WxErrorException;
-
-    /**
-     * 2-3. 批量删除消息
-     * @param message 消息实体
-     * @return boolean
-     * @author huangyg
-     */
-    public boolean batchDelete(WxMessage message) throws WxErrorException;
-
-    /**
-     * 2-4. 强制批量删除消息
-     * @param message 消息实体
-     * @return boolean
-     * @author huangyg
-     */
-    public boolean batchForceDelete(WxMessage message) throws WxErrorException;
+//    public boolean forceDelete(WxMessage message) throws WxErrorException;
+//
+//    /**
+//     * 2-3. 批量删除消息
+//     * @param message 消息实体
+//     * @return boolean
+//     * @author huangyg
+//     */
+//    public boolean batchDelete(WxMessage message) throws WxErrorException;
+//
+//    /**
+//     * 2-4. 强制批量删除消息
+//     * @param message 消息实体
+//     * @return boolean
+//     * @author huangyg
+//     */
+//    public boolean batchForceDelete(WxMessage message) throws WxErrorException;
 
     /**
      * 3-1. 获取消息
@@ -67,6 +69,22 @@ public interface IWxMessageService {
      * @return boolean
      * @author huangyg
      */
-    public boolean get(WxMessage message) throws WxErrorException;
+    public WxMessage getDetail(WxMessage message) throws WxErrorException;
 
+    /**
+     * 3-2. 获取消息分页
+     * @param message 消息实体
+     * @return boolean
+     * @author huangyg
+     */
+    public PageInfo<WxMessage> getPage(WxMessage message, int currentPage, int pageSize) throws WxErrorException;
+
+    /**
+     * 4-1. 回复消息
+     * @param message 消息实体
+     * @return void
+     * @author huangyg
+     */
+
+    public boolean replyMessage(WxMessage message) throws WxErrorException;
 }

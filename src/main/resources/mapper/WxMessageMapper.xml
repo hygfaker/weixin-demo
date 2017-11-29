@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.minstone.mobile.mp.wechat.message.dao.WxMessageDao" >
-
   <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.message.domain.WxMessage" >
     <id column="MSG_CODE" property="msgCode" jdbcType="VARCHAR" />
     <result column="PUBLIC_CODE" property="publicCode" jdbcType="VARCHAR" />
@@ -20,41 +19,58 @@
     <result column="LOCATION_SCALE" property="locationScale" jdbcType="DOUBLE" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" />
+    <result column="MSG_FLAG" property="msgFlag" jdbcType="INTEGER" />
+    <result column="REPLY_CONTENT" property="replyContent" jdbcType="VARCHAR" />
   </resultMap>
-
   <sql id="Base_Column_List" >
     MSG_CODE, PUBLIC_CODE, USER_CODE, MSG_ID, CREATE_DATE, MSG_TYPE, CONTENT, MEDIA_ID, 
     URL, FORMAT, RECOGNITION, THUMB_MEDIA_ID, LOCATION_X, LOCATION_Y, LOCATION_SCALE, 
-    DESCRIPTION, DEL_FLAG
+    DESCRIPTION, DEL_FLAG, MSG_FLAG, REPLY_CONTENT
   </sql>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from MP_YY_MSG
     where MSG_CODE = #{msgCode,jdbcType=VARCHAR}
   </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage"  >
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage">
+    select
+    <include refid="Base_Column_List" />
+    from MP_YY_MSG
+    where
+    <if test="publicCode != null">
+      PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+      and
+    </if>
+    <if test="dayLimit != null">
+      CREATE_DATE > DATE_SUB(CURDATE(),INTERVAL #{dayLimit,jdbcType=INTEGER} day)
+      and
+    </if>
+    DEL_FLAG = 0
+    and 1=1
+    order by CREATE_DATE
+    asc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from MP_YY_MSG
     where MSG_CODE = #{msgCode,jdbcType=VARCHAR}
   </delete>
-
   <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage" >
     insert into MP_YY_MSG (MSG_CODE, PUBLIC_CODE, USER_CODE, 
       MSG_ID, CREATE_DATE, MSG_TYPE, 
       CONTENT, MEDIA_ID, URL, 
       FORMAT, RECOGNITION, THUMB_MEDIA_ID, 
       LOCATION_X, LOCATION_Y, LOCATION_SCALE, 
-      DESCRIPTION, DEL_FLAG)
+      DESCRIPTION, DEL_FLAG, MSG_FLAG, 
+      REPLY_CONTENT)
     values (#{msgCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, 
-      #{msgId,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{msgType,jdbcType=VARCHAR},
+      #{msgId,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{msgType,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{format,jdbcType=VARCHAR}, #{recognition,jdbcType=VARCHAR}, #{thumbMediaId,jdbcType=VARCHAR}, 
-      #{locationX,jdbcType=DOUBLE}, #{locationY,jdbcType=DOUBLE}, #{locationScale,jdbcType=DOUBLE},
-      #{description,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER})
+      #{locationX,jdbcType=DOUBLE}, #{locationY,jdbcType=DOUBLE}, #{locationScale,jdbcType=DOUBLE}, 
+      #{description,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{msgFlag,jdbcType=INTEGER}, 
+      #{replyContent,jdbcType=VARCHAR})
   </insert>
-
   <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage" >
     insert into MP_YY_MSG
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -109,6 +125,12 @@
       <if test="delFlag != null" >
         DEL_FLAG,
       </if>
+      <if test="msgFlag != null" >
+        MSG_FLAG,
+      </if>
+      <if test="replyContent != null" >
+        REPLY_CONTENT,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="msgCode != null" >
@@ -162,9 +184,14 @@
       <if test="delFlag != null" >
         #{delFlag,jdbcType=INTEGER},
       </if>
+      <if test="msgFlag != null" >
+        #{msgFlag,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-
   <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage" >
     update MP_YY_MSG
     <set >
@@ -216,10 +243,15 @@
       <if test="delFlag != null" >
         DEL_FLAG = #{delFlag,jdbcType=INTEGER},
       </if>
+      <if test="msgFlag != null" >
+        MSG_FLAG = #{msgFlag,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        REPLY_CONTENT = #{replyContent,jdbcType=VARCHAR},
+      </if>
     </set>
     where MSG_CODE = #{msgCode,jdbcType=VARCHAR}
   </update>
-
   <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.message.domain.WxMessage" >
     update MP_YY_MSG
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
@@ -237,8 +269,9 @@
       LOCATION_Y = #{locationY,jdbcType=DOUBLE},
       LOCATION_SCALE = #{locationScale,jdbcType=DOUBLE},
       DESCRIPTION = #{description,jdbcType=VARCHAR},
-      DEL_FLAG = #{delFlag,jdbcType=INTEGER}
+      DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+      MSG_FLAG = #{msgFlag,jdbcType=INTEGER},
+      REPLY_CONTENT = #{replyContent,jdbcType=VARCHAR}
     where MSG_CODE = #{msgCode,jdbcType=VARCHAR}
   </update>
-  
 </mapper>

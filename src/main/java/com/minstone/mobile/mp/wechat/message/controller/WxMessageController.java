@@ -15,7 +15,5 @@ import org.springframework.web.bind.annotation.*;
 
 public class WxMessageController {
     @PostMapping("test")
-    public CommonResult test(@RequestParam String app_id,@RequestParam String app_type,@RequestParam String dataVersion,@RequestParam String user_id){
-        return ResultUtil.success("app_id : " + app_id + "   app_type : " + app_type + "    dataVersion : " + dataVersion+ "   user_id : " + user_id);
-    }
+
 }
