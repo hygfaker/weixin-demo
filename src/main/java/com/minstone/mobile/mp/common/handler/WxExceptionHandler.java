@@ -2,15 +2,14 @@ package com.minstone.mobile.mp.common.handler;
 
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
-import com.minstone.mobile.mp.common.ResultEnum;
-import com.minstone.mobile.mp.common.WxErrorMsg;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
+import com.minstone.mobile.mp.common.constants.WxErrorMessage;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -43,7 +42,7 @@ public class WxExceptionHandler {
         if (e instanceof MethodArgumentNotValidException) {  // 参数校验异常
             MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;
             String msg = exception.getBindingResult().getFieldError().getDefaultMessage();
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, msg);
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, msg);
         } else if (e instanceof CommonException) {
             CommonException exception = (CommonException) e;
             String msg = exception.getMessage();
@@ -52,42 +51,42 @@ public class WxExceptionHandler {
         } else if (e instanceof DataIntegrityViolationException) { // 数据库异常
             DataIntegrityViolationException exception = (DataIntegrityViolationException) e;
             String msg = exception.getCause().getMessage();
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR, msg);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR, msg);
         } else if (e instanceof WxErrorException) { // 微信框架的异常
 
             WxErrorException exception = (WxErrorException) e;
 
-            String msg = WxErrorMsg.errorMsg(exception.getError().getErrorCode());
+            String msg = WxErrorMessage.errorMsg(exception.getError().getErrorCode());
             if ("unknown".equals(msg)) {
                 msg = exception.getError().getErrorMsg();
             }
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR, msg);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR, msg);
 
         } else if (e instanceof MissingServletRequestParameterException) { // 控制器提交参数缺失
 
             MissingServletRequestParameterException exception = (MissingServletRequestParameterException) e;
             String msg = "【" + exception.getParameterType() + "】" + "类型的"
                     + "【" + exception.getParameterName() + "】" + "参数缺失。";
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, msg);
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, msg);
 
         } else if (e instanceof MissingServletRequestPartException) {
 
             MissingServletRequestPartException exception = (MissingServletRequestPartException) e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, exception.getMessage());
 
         } else if (e instanceof BindException) {  // get/Post 请求控制器提交参数缺失(@Valid 校验)
             BindException exception = (BindException) e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getAllErrors().get(0).getDefaultMessage());
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, exception.getAllErrors().get(0).getDefaultMessage());
 
         } else if (e instanceof ValidationException) { // ValidatorUtil 工具类校验参数异常
             ValidationException exception = (ValidationException) e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, exception.getMessage());
         } else if (e instanceof DuplicateKeyException) { // 数据库字段设置为 unique 后，数据重复
             DuplicateKeyException exception = (DuplicateKeyException) e;
-            return ResultUtil.failure(ResultEnum.PARAM_ERROR, exception.getMessage());
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, exception.getMessage());
         } else {
             logger.error("【系统异常】= {}", e);
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.domain;
 
 import com.minstone.mobile.mp.utils.DateUtil;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import lombok.Data;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -318,7 +318,7 @@ public class WxMessage {
      * @param mediaId 图片消息、语音消息、视频消息、可以调用多媒体文件下载接口拉取数据。 
      */
     public void setMediaId(String mediaId) {
-        this.mediaId = mediaId == null ? null : mediaId.trim();
+        this.mediaId = mediaId;
     }
 
     /**

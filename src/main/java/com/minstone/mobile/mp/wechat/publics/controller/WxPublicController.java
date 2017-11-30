@@ -2,10 +2,10 @@ package com.minstone.mobile.mp.wechat.publics.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonResult;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
-import com.minstone.mobile.mp.common.ResultEnum;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -70,7 +70,7 @@ public class WxPublicController {
         if (wxPublicService.delete(wxPublic)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -81,7 +81,7 @@ public class WxPublicController {
         if (wxPublicService.forceDelete(wxPublic)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -92,7 +92,7 @@ public class WxPublicController {
         if (wxPublicService.deleteBatch(wxPublic)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -102,7 +102,7 @@ public class WxPublicController {
         if (wxPublicService.forceDeleteBatch(wxPublic)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -112,7 +112,7 @@ public class WxPublicController {
         if (wxPublicService.update(wxPublic,publicHeadImg,publicQrcode)){
             return ResultUtil.success();
         }else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -149,7 +149,7 @@ public class WxPublicController {
     public void downloadIcon(String imgCode, Integer imgType, HttpServletResponse response) throws WxErrorException, IOException {
 
         if (imgType != 0 && imgType != 1) {
-//            return ResultUtil.failure(ResultEnum.PARAM_ERROR,"imgType 参数错误");
+//            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR,"imgType 参数错误");
             return;
         }
 

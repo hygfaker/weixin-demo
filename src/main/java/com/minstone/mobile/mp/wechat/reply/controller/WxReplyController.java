@@ -1,24 +1,19 @@
 package com.minstone.mobile.mp.wechat.reply.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.minstone.mobile.mp.utils.ValidatorUtil;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
-import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
-import com.minstone.mobile.mp.common.ResultEnum;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author huangyg
@@ -79,7 +74,7 @@ public class WxReplyController {
         if (wxReplyService.followFlag(reply)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -103,7 +98,7 @@ public class WxReplyController {
         if (wxReplyService.normalFlag(reply)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -140,7 +135,7 @@ public class WxReplyController {
         if (wxReplyService.allRuleFlag(reply)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -156,7 +151,7 @@ public class WxReplyController {
         if (wxReplyService.deleteRule(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -166,7 +161,7 @@ public class WxReplyController {
         if (wxReplyService.forceDeleteRule(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -176,7 +171,7 @@ public class WxReplyController {
         if (wxReplyService.deleteRuleBatch(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -186,7 +181,7 @@ public class WxReplyController {
         if (wxReplyService.forceDeleteRuleBatch(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -196,7 +191,7 @@ public class WxReplyController {
         if (wxReplyService.deleteKeyword(keyword)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -206,7 +201,7 @@ public class WxReplyController {
         if (wxReplyService.forceDeleteKeyword(keyword)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -216,7 +211,7 @@ public class WxReplyController {
         if (wxReplyService.updateRule(replyRule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -227,7 +222,7 @@ public class WxReplyController {
         if (wxReplyService.updateKeywordBatch(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -237,7 +232,7 @@ public class WxReplyController {
         if (wxReplyService.singleRuleFlag(rule)) {
             return ResultUtil.success();
         } else {
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
 
     }

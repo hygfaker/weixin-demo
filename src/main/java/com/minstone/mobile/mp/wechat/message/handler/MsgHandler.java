@@ -2,7 +2,7 @@ package com.minstone.mobile.mp.wechat.message.handler;
 
 import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;
-import com.minstone.mobile.mp.wechat.kefu.IWxKfSessionService;
+import com.minstone.mobile.mp.wechat.kefu.service.IWxKfSessionService;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;

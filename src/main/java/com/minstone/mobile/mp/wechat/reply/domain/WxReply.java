@@ -1,11 +1,9 @@
 package com.minstone.mobile.mp.wechat.reply.domain;
 
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

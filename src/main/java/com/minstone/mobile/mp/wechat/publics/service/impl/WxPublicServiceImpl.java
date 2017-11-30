@@ -3,12 +3,14 @@ package com.minstone.mobile.mp.wechat.publics.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.*;
+import com.minstone.mobile.mp.common.constants.CommonStateEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicImgDao;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicImg;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
@@ -63,18 +65,18 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (wxPublicImgDao.insert(wxPublicImg) > 0) {
             // 保存公众号信息
             wxPublic.setImgCode(imgCode);
-            // 默认设置为不删除标志
-            wxPublic.setDelFlag(CommonFlagEnum.NOT_DELETE.getDelFlag());
+            // 默认设置为正常状态
+            wxPublic.setDelFlag(CommonStateEnum.NOT_DELETE.getState());
             // 生成公众号主键
             String publicCode = IdGen.uuid();
             wxPublic.setPublicCode(publicCode);
             if (wxPublicDao.insert(wxPublic) > 0) {
                 return wxPublic;
             } else {
-                throw new CommonException(ResultEnum.SAVE_PUBLIC_ERROR);
+                throw new CommonException(CommonResultEnum.SAVE_PUBLIC_ERROR);
             }
         } else {
-            throw new CommonException(ResultEnum.UPDATE_IMG_ERROR);
+            throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
         }
     }
 
@@ -94,7 +96,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (checkPublicCodes.size() > 0) {
             return wxPublicDao.deleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -114,7 +116,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (resultList.size() == 0) {
             return wxPublicDao.deleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -135,7 +137,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (checkPublicCode != null) {
             return wxPublicDao.forceDeleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -156,7 +158,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (resultList.size() == 0) {
             return wxPublicDao.forceDeleteBatch(wxPublic.getPublicCodes()) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -183,13 +185,13 @@ public class WxPublicServiceImpl implements IWxPublicService {
                     // 更新公众号信息
                     return wxPublicDao.updateByPrimaryKeySelective(wxPublic) > 0 ? true : false;
                 } else {
-                    throw new CommonException(ResultEnum.UPDATE_IMG_ERROR);
+                    throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
                 }
             } else {
-                throw new CommonException(ResultEnum.PUBLIC_IMG_NOTFOUND);
+                throw new CommonException(CommonResultEnum.PUBLIC_IMG_NOTFOUND);
             }
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
@@ -219,14 +221,13 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (selectResult != null) {
             return selectResult;
         } else {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
     }
 
     /**
      * 分页获取公众号信息
      *
-     * @param wxPublic    公众号实体
      * @param currentPage 当前页
      * @param pageSize    每页显示的数量
      * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
@@ -238,10 +239,10 @@ public class WxPublicServiceImpl implements IWxPublicService {
 
 //        ValidatorUtil.mustParam(wxPublic,validator,"publicCode");
         if (currentPage < 0) {
-            throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
+            throw new CommonException((CommonResultEnum.PARAME_LIMITE_POSITIVE));
         }
         if (pageSize < 0) {
-            throw new CommonException((ResultEnum.PARAME_LIMITE_POSITIVE));
+            throw new CommonException((CommonResultEnum.PARAME_LIMITE_POSITIVE));
         }
         // 检查公众号是否存在
 //        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
@@ -252,7 +253,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         return page;
 
 //        } else {
-//            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+//            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
 //
 //        }
     }

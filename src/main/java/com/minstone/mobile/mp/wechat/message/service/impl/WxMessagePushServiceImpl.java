@@ -3,14 +3,14 @@ package com.minstone.mobile.mp.wechat.message.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
-import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessagePushRecordDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessagePushService;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessagePushDao;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -76,7 +76,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         // 判断数据库是否存在名称相同的的定点推送消息
         WxMessagePush checkResult = wxMessagePushDao.select(wxMessagePush);
         if (checkResult != null){
-            throw new CommonException(ResultEnum.LOCATION_PUSH_EXISTED);
+            throw new CommonException(CommonResultEnum.LOCATION_PUSH_EXISTED);
         }
 
         // 构造 wxMessagePush 实体消息
@@ -88,7 +88,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         if (wxMessagePushDao.insertSelective(wxMessagePush) > 0) {
             return wxMessagePush;
         } else {
-            throw new CommonException(ResultEnum.SAVE_LOCATION_PUSH_ERROR);
+            throw new CommonException(CommonResultEnum.SAVE_LOCATION_PUSH_ERROR);
         }
     }
 
@@ -105,7 +105,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.delete(wxMessagePush) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.LOCATION_PUSH_NOTFOUND);
+            throw new CommonException(CommonResultEnum.LOCATION_PUSH_NOTFOUND);
         }
     }
 
@@ -122,7 +122,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.forceDelete(wxMessagePush) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.LOCATION_PUSH_NOTFOUND);
+            throw new CommonException(CommonResultEnum.LOCATION_PUSH_NOTFOUND);
         }
 
     }
@@ -168,7 +168,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.updateByPrimaryKey(wxMessagePush) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.LOCATION_PUSH_NOTFOUND);
+            throw new CommonException(CommonResultEnum.LOCATION_PUSH_NOTFOUND);
         }
 
     }
@@ -186,7 +186,7 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         if (wxMessagePushDao.select(wxMessagePush) != null) {
             return wxMessagePushDao.updateFlag(wxMessagePush) > 0 ? true : false;
         } else {
-            throw new CommonException(ResultEnum.LOCATION_PUSH_NOTFOUND);
+            throw new CommonException(CommonResultEnum.LOCATION_PUSH_NOTFOUND);
         }
     }
 
@@ -202,16 +202,16 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
     public PageInfo<WxMessagePush> getPage(WxMessagePush wxMessagePush, int currentPage, int pageSize) throws
             WxErrorException {
         if (currentPage < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         if (pageSize < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
 
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxMessagePush.getPublicCode());
         if (checkPublicCode.size() == 0) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             PageHelper.startPage(currentPage, pageSize);
             List<WxMessagePush> list = wxMessagePushDao.selectAll(wxMessagePush);
@@ -281,10 +281,10 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         // 灵活获取记录列表，所以不进行参数校验。（不传获取全部）
 
         if (currentPage < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         if (pageSize < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
 
         PageHelper.startPage(currentPage, pageSize);
@@ -330,10 +330,10 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
     @Override
     public PageInfo<Map<String,Integer>> getRecordByDate(String pushCode,String startDate, String endDate,int currentPage,int pageSize) throws WxErrorException{
         if (currentPage < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         if (pageSize < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
 
         int len = startDate.length();

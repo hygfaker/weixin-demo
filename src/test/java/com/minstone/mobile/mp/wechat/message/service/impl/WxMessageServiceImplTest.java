@@ -1,7 +1,7 @@
 package com.minstone.mobile.mp.wechat.message.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 

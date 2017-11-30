@@ -3,22 +3,18 @@ package com.minstone.mobile.mp.wechat.message.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
-import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessageDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
-import com.minstone.mobile.mp.wechat.message.dto.MessageDto;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -86,7 +82,7 @@ public class WxMessageServiceImpl implements IWxMessageService {
         ValidatorUtil.mustParam(message, validator, "msgCode");
         WxMessage selectResult = messageDao.selectByPrimaryKey(message.getMsgCode());
         if (selectResult == null) {
-            throw new CommonException(ResultEnum.MESSAGE_NOTFOUND);
+            throw new CommonException(CommonResultEnum.MESSAGE_NOTFOUND);
         }
         return selectResult;
     }
@@ -101,18 +97,16 @@ public class WxMessageServiceImpl implements IWxMessageService {
     @Override
     public PageInfo<WxMessage> getPage(WxMessage message, int currentPage, int pageSize) throws WxErrorException {
         if (currentPage < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         if (pageSize < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         ValidatorUtil.mustParam(message, validator, "publicCode");
         message.setDayLimit(message.getDayLimit()!=null ? message.getDayLimit() : 5);
         List<WxMessage> messageList = messageDao.selectAll(message);
 
         // 获取 messageList中的
-
-
         PageHelper.startPage(currentPage, pageSize);
         PageInfo<WxMessage> pageInfo = new PageInfo<>(messageList);
         return pageInfo;
@@ -130,7 +124,10 @@ public class WxMessageServiceImpl implements IWxMessageService {
         ValidatorUtil.mustParam(message, validator, "msgCode", "replyContent");
         WxMessage selectResult = messageDao.selectByPrimaryKey(message.getMsgCode());
         if (selectResult == null){
-            throw new CommonException(ResultEnum.MESSAGE_NOTFOUND);
+            throw new CommonException(CommonResultEnum.MESSAGE_NOTFOUND);
+        }
+        if (selectResult.getMsgFlag() == 1){
+            throw new CommonException(CommonResultEnum.MESSAGE_NO_REPEAT);
         }
         // 设置为已回复
         message.setMsgFlag(1);

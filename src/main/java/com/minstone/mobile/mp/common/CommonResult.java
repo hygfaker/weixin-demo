@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 /**
  * Created by huangyg on 2017/8/7.
  */
-public class CommonResult<T> {
+public class CommonResult {
     //    描述
     private String desc;
     //    状态码
@@ -13,7 +13,7 @@ public class CommonResult<T> {
     //    服务器响应时间
     private String time;
     //    返回数据
-    private T data;
+    private Object data;
     //    分页信息
     private CommonPage pager;
 
@@ -43,11 +43,11 @@ public class CommonResult<T> {
         this.time = time;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

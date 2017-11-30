@@ -1,7 +1,7 @@
 package com.minstone.mobile.mp.wechat.user.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
-import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -10,7 +10,6 @@ import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class WxTagController {
         if (this.wxService.getUserTagService().tagDelete(tagid)){
             return ResultUtil.success();
         }else{
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -52,7 +51,7 @@ public class WxTagController {
         if (this.wxService.getUserTagService().tagUpdate(tagID,name)){
             return ResultUtil.success();
         }else{
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -69,7 +68,7 @@ public class WxTagController {
         if (this.wxService.getUserTagService().batchTagging(tagID,openids)){
             return ResultUtil.success();
         }else{
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 
@@ -79,7 +78,7 @@ public class WxTagController {
         if (this.wxService.getUserTagService().batchUntagging(tagID,openids)){
             return ResultUtil.success();
         }else{
-            return ResultUtil.failure(ResultEnum.SERVER_ERROR);
+            return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
 

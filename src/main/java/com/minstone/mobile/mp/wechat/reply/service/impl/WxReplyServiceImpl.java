@@ -3,18 +3,18 @@ package com.minstone.mobile.mp.wechat.reply.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.reply.service.IWxReplyService;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyKeywordDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyRuleDao;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
-import com.minstone.mobile.mp.common.ResultEnum;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,11 +135,11 @@ public class WxReplyServiceImpl implements IWxReplyService {
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             List<WxReply> selectList = wxReplyDao.selectByPublicCodeAndReplyType(reply);
             if (selectList.size() == 0) {
-                throw new CommonException(ResultEnum.REPLY_TYPE_NOTFOUND);
+                throw new CommonException(CommonResultEnum.REPLY_TYPE_NOTFOUND);
             } else {
                 logger.info("获取成功：List<WxReply> = " + selectList);
                 return selectList;
@@ -163,19 +163,19 @@ public class WxReplyServiceImpl implements IWxReplyService {
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
         if (checkPublicCode.size() == 0) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             List<WxReply> selectList = wxReplyDao.selectByPublicCodeAndReplyType(reply);
             if (selectList.size() > 0) {
                 if (wxReplyDao.updateContent(reply) < 1) {
-                    throw new CommonException(ResultEnum.UPDATE_REPLY_CONTENT_ERROR);
+                    throw new CommonException(CommonResultEnum.UPDATE_REPLY_CONTENT_ERROR);
                 }
                 logger.info("更新公众号信息成功");
                 return selectList.get(0);
             } else {
                 reply.setReplyCode(IdGen.uuid());
                 if (wxReplyDao.insert(reply) < 1) {
-                    throw new CommonException(ResultEnum.SAVE_REPLY_CONTENT_ERROR);
+                    throw new CommonException(CommonResultEnum.SAVE_REPLY_CONTENT_ERROR);
                 }
                 logger.info("保存公众号信息成功");
                 return reply;
@@ -198,7 +198,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         ValidatorUtil.mustParam(reply, validator, "publicCode", "replyType", "replyFlag");
         WxReply selectResult = this.getReplyByPublicCodeAndReplyType(reply);
         if (selectResult == null) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             return wxReplyDao.updateReplyFlag(reply) > 0 ? true : false;
         }
@@ -340,15 +340,15 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public PageInfo<WxReplyRule> getRulePage(WxReplyRule rule, int currentPage, int pageSize) throws WxErrorException {
 
         if (currentPage < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         if (pageSize < 0) {
-            throw new CommonException(ResultEnum.PARAME_LIMITE_POSITIVE);
+            throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         // 检查公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(rule.getPublicCode());
         if (checkPublicCode.size() == 0) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             PageHelper.startPage(currentPage, pageSize);
             List<WxReplyRule> list = wxReplyRuleDao.selectAll(rule);
@@ -372,7 +372,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         if (selectResult.size() > 0) {
             return selectResult.get(0);
         } else {
-            throw new CommonException(ResultEnum.NOTFOUND_ERROR);
+            throw new CommonException(CommonResultEnum.NOTFOUND_ERROR);
         }
     }
 
@@ -392,7 +392,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         if (selectResult.size() > 0) {
             return selectResult;
         } else {
-            throw new CommonException(ResultEnum.NOTFOUND_ERROR);
+            throw new CommonException(CommonResultEnum.NOTFOUND_ERROR);
         }
     }
 
@@ -411,7 +411,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         if (selectResult.size() > 0) {
             return selectResult;
         } else {
-            throw new CommonException(ResultEnum.NOTFOUND_ERROR);
+            throw new CommonException(CommonResultEnum.NOTFOUND_ERROR);
         }
     }
 
@@ -453,7 +453,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         // 查询公众号是否存在
         List<String> checkPublicCode = wxPublicDao.selectPublicCode(replyRule.getPublicCode());
         if (checkPublicCode.size() == 0) {
-            throw new CommonException(ResultEnum.PUBLIC_NOTFOUND);
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
         // 查询关键词是否存在
         List<String> existKeywords = wxReplyKeywordDao.checkKeywords(replyRule);
@@ -465,7 +465,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
             keyword.setRuleCode(ruleCode);
             // 设置默认值
             if (existKeywords.contains(keyword.getKeyword())){
-                throw new CommonException(ResultEnum.KEYWORD_HAS_EXISTED,keyword.getKeyword());
+                throw new CommonException(CommonResultEnum.KEYWORD_HAS_EXISTED,keyword.getKeyword());
             }
             keyword.setDelFlag(0);
         }
@@ -588,7 +588,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         List<WxReplyKeyword> keywords = replyRule.getKeywords();
 
         if (keywords.size() < 0) {
-            throw new CommonException(ResultEnum.KEYWORDS_PARAME_ERROR);
+            throw new CommonException(CommonResultEnum.KEYWORDS_PARAME_ERROR);
         }
         //  记录需要更新的 keyword 的列表
         ArrayList<WxReplyKeyword> updateList = new ArrayList<>();

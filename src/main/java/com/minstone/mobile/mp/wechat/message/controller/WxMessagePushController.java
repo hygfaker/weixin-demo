@@ -1,16 +1,13 @@
 package com.minstone.mobile.mp.wechat.message.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
-import com.minstone.mobile.mp.common.ResultEnum;
-import com.minstone.mobile.mp.utils.ValidatorUtil;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.message.service.impl.WxMessagePushServiceImpl;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * @author huangyg
@@ -57,7 +54,7 @@ public class WxMessagePushController {
      */
     @GetMapping("/delete")
     public CommonResult delete(WxMessagePush wxMessagePush) throws WxErrorException{
-        return wxMessagePushService.delete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        return wxMessagePushService.delete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
     }
 
     /**
@@ -68,7 +65,7 @@ public class WxMessagePushController {
      */
     @GetMapping("/forceDelete")
     public CommonResult forceDelete(WxMessagePush wxMessagePush) throws WxErrorException{
-        return wxMessagePushService.forceDelete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        return wxMessagePushService.forceDelete(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
     }
 
     /**
@@ -79,7 +76,7 @@ public class WxMessagePushController {
      */
     @GetMapping("/deleteBatch")
     public CommonResult deleteBatch(WxMessagePush wxMessagePush) throws WxErrorException{
-        return wxMessagePushService.deleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        return wxMessagePushService.deleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
     }
 
     /**
@@ -90,7 +87,7 @@ public class WxMessagePushController {
      */
     @GetMapping("/forceDeleteBatch")
     public CommonResult forceDeleteBatch( WxMessagePush wxMessagePush) throws WxErrorException{
-        return wxMessagePushService.forceDeleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(ResultEnum.SERVER_ERROR);
+        return wxMessagePushService.forceDeleteBatch(wxMessagePush) ? ResultUtil.success() : ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
 
     }
 

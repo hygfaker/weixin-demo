@@ -1,9 +1,12 @@
 package com.minstone.mobile.mp.config;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.handler.*;
-import com.minstone.mobile.mp.wechat.kefu.KfSessionHandler;
+import com.minstone.mobile.mp.wechat.kefu.handler.KfSessionHandler;
 import com.minstone.mobile.mp.wechat.menu.handler.MenuHandler;
 import com.minstone.mobile.mp.wechat.message.handler.LocationHandler;
 import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
@@ -19,12 +22,17 @@ import me.chanjar.weixin.mp.constant.WxMpEventConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -72,6 +80,27 @@ public class WechatMpConfiguration {
         pageHelper.setProperties(properties);
         return pageHelper;
     }
+
+//    @Bean
+//    public HttpMessageConverters fastJsonHttpMessageConverters(){
+//        // 1.需要先定义一个vonvert转换消息的对象
+//        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+//
+//        // 2.添加fastjson的配置信息，比如：是否格式化返回的json数据
+//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+//        fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect,
+//                SerializerFeature.WriteMapNullValue,
+//                SerializerFeature.WriteNullStringAsEmpty
+//                );
+//
+//        // 3.在conver中添加配置信息
+//        fastConverter.setFastJsonConfig(fastJsonConfig);
+//
+//        HttpMessageConverter<?> converter = fastConverter;
+//        // 4.将vonver添加到converters当中
+//        return new HttpMessageConverters(converter);
+//    }
+
 
     @Bean
     public LocalValidatorFactoryBean localValidatorFactoryBean(){
@@ -121,9 +150,8 @@ public class WechatMpConfiguration {
     @Bean
     public WxMpMessageRouter router(WxMpService wxMpService) {
         final WxMpMessageRouter newRouter = new WxMpMessageRouter(wxMpService);
-
         // 记录所有事件的日志 （异步执行）
-        newRouter.rule().handler(this.logHandler).next();
+//        newRouter.rule().handler(this.logHandler).next();
 
         // 接收客服会话管理事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
@@ -142,11 +170,11 @@ public class WechatMpConfiguration {
                 .event(WxMpEventConstants.POI_CHECK_NOTIFY)
                 .handler(this.storeCheckNotifyHandler).end();
 
-        // 自定义菜单事件
+        // 自定义菜单点击事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.BUTTON_CLICK).handler(this.getMenuHandler()).end();
 
-        // 点击菜单连接事件
+        // 菜单链接事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.BUTTON_VIEW).handler(this.getMenuHandler()).end();
 

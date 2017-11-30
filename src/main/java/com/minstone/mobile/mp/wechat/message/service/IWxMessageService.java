@@ -3,7 +3,6 @@ package com.minstone.mobile.mp.wechat.message.service;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import com.minstone.mobile.mp.wechat.message.dto.MessageDto;
 /**
  * @author huangyg
  * @description
@@ -79,14 +78,11 @@ public interface IWxMessageService {
      */
     public PageInfo<WxMessage> getPage(WxMessage message, int currentPage, int pageSize) throws WxErrorException;
 
-
-
     /**
      * 4-1. 回复消息
      * @param message 消息实体
      * @return void
      * @author huangyg
      */
-
     public boolean replyMessage(WxMessage message);
 }

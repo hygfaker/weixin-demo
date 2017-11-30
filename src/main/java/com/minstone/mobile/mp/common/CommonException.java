@@ -1,5 +1,6 @@
 package com.minstone.mobile.mp.common;
 
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +20,14 @@ public class CommonException extends RuntimeException {
         logger.error(this.msg);
     }
 
-    public CommonException(ResultEnum resultEnum) {
+    public CommonException(CommonResultEnum resultEnum) {
         super(resultEnum.getMsg());
         this.code = resultEnum.getCode();
         this.msg = resultEnum.getMsg();
         logger.error(this.msg);
     }
 
-    public CommonException(ResultEnum resultEnum,String msg) {
+    public CommonException(CommonResultEnum resultEnum, String msg) {
         super(msg + resultEnum.getMsg());
         this.code = resultEnum.getCode();
         this.msg = msg + resultEnum.getMsg();

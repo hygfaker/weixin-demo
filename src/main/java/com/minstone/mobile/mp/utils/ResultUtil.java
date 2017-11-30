@@ -1,14 +1,16 @@
 package com.minstone.mobile.mp.utils;
 
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.minstone.mobile.mp.common.CommonResult;
-import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by huangyg on 2017/8/7.
@@ -38,12 +40,12 @@ public final class ResultUtil {
      */
     public static CommonResult success(Object data, CommonResult.CommonPage pager){
         CommonResult result = new CommonResult();
-        result.setStatus(ResultEnum.SUCCESS.getCode());
-        result.setDesc(ResultEnum.SUCCESS.getMsg());
+        result.setStatus(CommonResultEnum.SUCCESS.getCode());
+        result.setDesc(CommonResultEnum.SUCCESS.getMsg());
         result.setTime(DateUtil.getResultStringDate());
         result.setData(data);
         result.setPager(pager);
-        logger.info("返回结果：" + result.toString());
+        logger.info("返回结果：" + result);
         logger.info("============================ end ===============================");
         return result;
     }
@@ -55,11 +57,11 @@ public final class ResultUtil {
      */
     public static CommonResult success(Object object){
         CommonResult result = new CommonResult();
-        result.setStatus(ResultEnum.SUCCESS.getCode());
-        result.setDesc(ResultEnum.SUCCESS.getMsg());
+        result.setStatus(CommonResultEnum.SUCCESS.getCode());
+        result.setDesc(CommonResultEnum.SUCCESS.getMsg());
         result.setTime(DateUtil.getResultStringDate());
         result.setData(object);
-        logger.info("返回结果：" + result.toString());
+        logger.info("返回结果：" + JsonUtil.toJson(result));
         logger.info("============================ end ===============================");
 
         return result;
@@ -70,12 +72,12 @@ public final class ResultUtil {
      * @param resultEnums 公司规范，操作失败的信息实体
      * @return
      */
-    public static CommonResult failure(ResultEnum resultEnums){
+    public static CommonResult failure(CommonResultEnum resultEnums){
         CommonResult result = new CommonResult();
         result.setStatus(resultEnums.getCode());
         result.setTime(DateUtil.getResultStringDate());
         result.setDesc(resultEnums.getMsg());
-        logger.info("返回结果：" + result.toString());
+        logger.info("返回结果：" + JsonUtil.toJson(result));
         logger.info("============================ end ===============================");
 
         return result;
@@ -87,7 +89,7 @@ public final class ResultUtil {
      * @param msg 返回的具体信息
      * @return
      */
-    public static CommonResult failure(ResultEnum resultEnums, String msg){
+    public static CommonResult failure(CommonResultEnum resultEnums, String msg){
         CommonResult result = failure(resultEnums);
         result.setDesc(msg);
         return result;
@@ -104,7 +106,7 @@ public final class ResultUtil {
         result.setStatus(code);
         result.setTime(DateUtil.getResultStringDate());
         result.setDesc(msg);
-        logger.info("返回结果：" + result.toString());
+        logger.info("返回结果：" + JsonUtil.toJson(result));
         logger.info("============================ end ===============================");
         return result;
     }
@@ -125,23 +127,6 @@ public final class ResultUtil {
         List data = pageInfo.getList();
         return success(data,pager);
     }
-
-//    /**
-//     * DAO 操作统一在这里处理：对返回的数据做结果判断
-//     * @mustParam result dao操作返回结果
-//     * @return
-//     */
-//    public static CommonResult returnResult(Integer result){
-//        if (result > 0){
-//            return success();
-//        } else if (result == 0 || result == -1){     // 0表示 update 时候失败 ， -1表示 select 的时候没找到资源
-//            return failure(ResultEnum.NOTFOUND_ERROR);
-//        } else if (result == ResultEnum.PUBLIC_NOTFOUND.getCode()){
-//            return failure(ResultEnum.NOTFOUND_ERROR);
-//        } else{
-//            return failure(ResultEnum.SERVER_ERROR);
-//        }
-//    }
 
 
 

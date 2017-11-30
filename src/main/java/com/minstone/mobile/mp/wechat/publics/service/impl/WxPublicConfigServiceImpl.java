@@ -1,9 +1,9 @@
 package com.minstone.mobile.mp.wechat.publics.service.impl;
 
 import com.minstone.mobile.mp.common.CommonException;
-import com.minstone.mobile.mp.common.ResultEnum;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicConfigDao;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicConfigService;
@@ -58,8 +58,8 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
         if (publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode())!=null){
             return publicConfigDao.updateByPrimaryKeySelective(publicConfig) > 0 ? true : false;
         }else{
-            log.error(ResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
-            throw new CommonException(ResultEnum.PUBLIC_CONFIG_NOTFOUND);
+            log.error(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
+            throw new CommonException(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND);
         }
     }
 
@@ -74,8 +74,8 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
         ValidatorUtil.orParam(publicConfig, validator, "configCode","publicCode");
         WxPublicConfig result = publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode());
         if (result == null){
-            log.error(ResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
-            throw new CommonException(ResultEnum.PUBLIC_CONFIG_NOTFOUND);
+            log.error(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
+            throw new CommonException(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND);
         }
         return result;
     }

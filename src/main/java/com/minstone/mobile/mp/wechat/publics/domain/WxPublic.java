@@ -1,13 +1,9 @@
 package com.minstone.mobile.mp.wechat.publics.domain;
 
-import com.minstone.mobile.mp.utils.code.IdGen;
+import com.minstone.mobile.mp.utils.IdGen;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 public class WxPublic {
 

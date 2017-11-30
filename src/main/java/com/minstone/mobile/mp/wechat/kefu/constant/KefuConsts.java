@@ -7,7 +7,4 @@ package com.minstone.mobile.mp.wechat.kefu.constant;
  */
 public class KefuConsts {
     public static final String KEFU_KEY = "MP_YY_KF_V_1008611";
-
-    public KefuConsts() {
-    }
 }
