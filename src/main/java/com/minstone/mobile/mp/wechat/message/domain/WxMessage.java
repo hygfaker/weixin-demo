@@ -1,6 +1,5 @@
 package com.minstone.mobile.mp.wechat.message.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.IdGen;
 import lombok.Data;
@@ -82,7 +81,6 @@ public class WxMessage {
     /**
      * 头像 url
      */
-    @JsonProperty(value = "img_url")
     private String imgUrl;
     /**
      *  昵称

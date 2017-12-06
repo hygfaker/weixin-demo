@@ -31,7 +31,7 @@ public class WxMessageController {
     private WxMpService mpService;
 
     @GetMapping("getPage")
-    public CommonResult getPage(WxMessage message, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam(value = "pageSize", defaultValue = "1") int pageSize) throws WxErrorException {
+    public CommonResult getPage(WxMessage message, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws WxErrorException {
         PageInfo<WxMessage> pageInfo = messageService.getPage(message, currentPage, pageSize);
         List<String> userCodeList = new ArrayList<String>();
         for (WxMessage temp : pageInfo.getList()) {
