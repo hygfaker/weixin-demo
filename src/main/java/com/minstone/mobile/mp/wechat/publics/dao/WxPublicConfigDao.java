@@ -2,18 +2,19 @@ package com.minstone.mobile.mp.wechat.publics.dao;
 
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Mapper
 @Component
 public interface WxPublicConfigDao {
-    int deleteByPrimaryKey(String configCode);
+    int deleteByPrimaryKey(@Param("configCode") String configCode);
 
     int insert(WxPublicConfig record);
 
     int insertSelective(WxPublicConfig record);
 
-    WxPublicConfig selectByPrimaryKey(String configCode);
+    WxPublicConfig selectByPrimaryKey(@Param("configCode") String configCode,@Param("publicCode") String publicCode);
 
     int updateByPrimaryKeySelective(WxPublicConfig record);
 

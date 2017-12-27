@@ -55,7 +55,7 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
     @Override
     public boolean update(WxPublicConfig publicConfig) throws WxErrorException {
         ValidatorUtil.mustParam(publicConfig, validator,  "configCode");
-        if (publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode())!=null){
+        if (publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode(),null) !=null){
             return publicConfigDao.updateByPrimaryKeySelective(publicConfig) > 0 ? true : false;
         }else{
             log.error(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
@@ -71,8 +71,8 @@ public class WxPublicConfigServiceImpl implements IWxPublicConfigService {
      */
     @Override
     public WxPublicConfig get(WxPublicConfig publicConfig) throws WxErrorException {
-        ValidatorUtil.orParam(publicConfig, validator, "configCode","publicCode");
-        WxPublicConfig result = publicConfigDao.selectByPrimaryKey(publicConfig.getConfigCode());
+        ValidatorUtil.mustParam(publicConfig, validator, "publicCode");
+        WxPublicConfig result = publicConfigDao.selectByPrimaryKey(null,publicConfig.getPublicCode());
         if (result == null){
             log.error(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND.getMsg());
             throw new CommonException(CommonResultEnum.PUBLIC_CONFIG_NOTFOUND);

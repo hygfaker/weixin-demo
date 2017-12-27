@@ -40,7 +40,7 @@ public class WxKefuController {
 
     // 添加客服
     @PostMapping("/add")
-    public CommonResult kfAccountAdd(@ModelAttribute WxMpKfAccountRequest account) throws WxErrorException{
+    public CommonResult kfAccountAdd(WxMpKfAccountRequest account) throws WxErrorException{
         return ResultUtil.success(this.service.getKefuService().kfAccountAdd(account));
 
     }
@@ -67,7 +67,7 @@ public class WxKefuController {
 
     // 更新客服信息
     @PostMapping("/update")
-    public CommonResult kfAccountUpdate(@ModelAttribute WxMpKfAccountRequest account) throws WxErrorException{
+    public CommonResult kfAccountUpdate(WxMpKfAccountRequest account) throws WxErrorException{
         return ResultUtil.success(this.service.getKefuService().kfAccountUpdate(account));
 
     }
