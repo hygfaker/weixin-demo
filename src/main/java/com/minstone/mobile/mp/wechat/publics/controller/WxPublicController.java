@@ -133,7 +133,7 @@ public class WxPublicController {
 
     // 分页获取公众号列表
     @GetMapping("/getPage")
-    public CommonResult getPage(@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException, IOException {
+    public CommonResult getPage(@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) throws WxErrorException, IOException {
         PageInfo page = wxPublicService.getPage(currentPage,pageSize);
         return ResultUtil.pageFormat(page);
     }

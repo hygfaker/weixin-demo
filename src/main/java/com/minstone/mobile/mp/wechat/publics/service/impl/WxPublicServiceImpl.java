@@ -237,25 +237,16 @@ public class WxPublicServiceImpl implements IWxPublicService {
     @Override
     public PageInfo<WxPublic> getPage(int currentPage, int pageSize) throws WxErrorException, IOException {
 
-//        ValidatorUtil.mustParam(wxPublic,validator,"publicCode");
         if (currentPage < 0) {
             throw new CommonException((CommonResultEnum.PARAME_LIMITE_POSITIVE));
         }
         if (pageSize < 0) {
             throw new CommonException((CommonResultEnum.PARAME_LIMITE_POSITIVE));
         }
-        // 检查公众号是否存在
-//        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
-//        if (checkPublicCodes.size() > 0) {
         PageHelper.startPage(currentPage, pageSize);
         List<WxPublic> list = wxPublicDao.selectAll();
         PageInfo<WxPublic> page = new PageInfo<>(list);
         return page;
-
-//        } else {
-//            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-//
-//        }
     }
 
 
@@ -282,7 +273,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
     }
 
     @Override
-    public WxPublic selectByOpenId(String openId){
+    public WxPublic selectByOpenId(String openId) {
         return wxPublicDao.selectByOpenId(openId);
     }
 }

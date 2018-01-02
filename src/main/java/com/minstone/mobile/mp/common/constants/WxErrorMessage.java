@@ -319,10 +319,40 @@ public class WxErrorMessage {
                 errmsg="日期范围错误";
                 break;
             case 65400:
-                errmsg="无法使用客服";
+                errmsg="API不可用，即没有开通/升级到新版客服功能";
                 break;
             case 65401:
                 errmsg="该客服账号不存在";
+                break;
+            case 65403:
+                errmsg="客服昵称不合法";
+                break;
+            case 65404:
+                errmsg="客服帐号不合法。格式为：帐号前缀@公众号微信号，帐号前缀最多10个字符，必须是英文、数字字符或者下划线，后缀为公众号微信号，长度不超过30个字符";
+                break;
+            case 65405:
+                errmsg="帐号数目已达到上限，不能继续添加";
+                break;
+            case 65406:
+                errmsg="已经存在的客服帐号";
+                break;
+            case 65407:
+                errmsg="邀请对象已经是本公众号客服";
+                break;
+            case 65408:
+                errmsg="本公众号已发送邀请给该微信号";
+                break;
+            case 65409:
+                errmsg="无效的微信号";
+                break;
+            case 65410:
+                errmsg="邀请对象绑定公众号客服数量达到上限（目前每个微信号最多可以绑定5个公众号客服帐号）";
+                break;
+            case 65411:
+                errmsg="该帐号已经有一个等待确认的邀请，不能重复邀请";
+                break;
+            case 65412:
+                errmsg="该帐号已经绑定微信号，不能进行邀请";
                 break;
             case 65402:
                 errmsg="该客服账号没有绑定到微信公众号，请选择其他客服账号";

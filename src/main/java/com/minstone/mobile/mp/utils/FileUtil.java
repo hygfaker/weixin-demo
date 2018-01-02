@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,6 +16,27 @@ public class FileUtil {
 
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
+    /**
+     * 将MultipartFile 转化成 File，该方法会生成临时文件
+     * @param multipartFile
+     * @return java.io.File
+     * @author huangyg
+     */
+    public static File convert(MultipartFile multipartFile) throws IOException {
+        File convFile = new File(multipartFile.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(multipartFile.getBytes());
+        fos.close();
+        return convFile;
+    }
+
+    /**
+     * 将MultipartFile 转化成 File，该方法会生成临时文件
+     * @param multipartFile
+     * @return java.io.File
+     * @author huangyg
+     */
     public static File transfer(MultipartFile multipartFile) throws IOException{
         // 获取上传文件后缀名
         String originFileName = multipartFile.getOriginalFilename();
@@ -47,6 +69,7 @@ public class FileUtil {
         inputStream.close();
         return buffer;
     }
+
 
 
 }

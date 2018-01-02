@@ -78,6 +78,24 @@ public enum CommonResultEnum {
     UPDATE_REPLY_CONTENT_ERROR(500,"更新公众号回复内容出错"),
 
     /**
+     * 500,"客服账号参数缺失"
+     */
+    KEFU_ACCOUNT_ERROR(500,"客服账号参数缺失"),
+    /**
+     * 500,"更新客服头像出错"
+     */
+    KEFU_HEADIMG_ERROR(500,"更新客服头像出错"),
+    /**
+     * 500,"需要绑定的客服微信号参数缺失"
+     */
+    KEFU_INVITE_ERROR(500,"需要绑定的客服微信号参数缺失"),
+    /**
+     * 500,"客服昵称参数缺失"
+     */
+    KEFU_NICKNAME_ERROR(500,"客服昵称参数缺失"),
+
+
+    /**
      * 500,"保存公众号回复内容出错"
      */
     SAVE_REPLY_CONTENT_ERROR(500,"保存公众号回复内容出错"),
