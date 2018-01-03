@@ -18,6 +18,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.rmi.runtime.Log;
 import sun.tools.jconsole.Worker;
 
 import java.io.File;
@@ -36,7 +37,8 @@ public class WxKefuController {
 
     // 获取客服列表
     @GetMapping("/getPage")
-    public CommonResult getPage(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) throws WxErrorException {
+    public CommonResult getPage(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) throws WxErrorException {
 
         // pageHelper 只能用于有数据库的查询列表，由于该接口直接从微信获取数据，所以这里手动构造分页数据。
         WxMpKfList list = this.service.getKefuService().kfList();
@@ -179,9 +181,95 @@ public class WxKefuController {
     }
 
     // 获取某个时间区间内聊天记录，两者不能超过24小时
-    @PostMapping("/chatRecord")
+    @GetMapping("/chatRecord")
+    public CommonResult test(String startTime,
+                             @RequestParam(value = "endTime", required = false) String endTime,
+                             @RequestParam(value = "account", required = false) String account,
+                             @RequestParam(value = "userName", required = false) String userName,
+                             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                             @RequestParam(value = "msgid", required = false, defaultValue = "1") Long msgid,
+                             @RequestParam(value = "number", required = false, defaultValue = "10000") Integer number) throws WxErrorException {
+
+        Date start = DateUtil.dateToUnixTimestamp(startTime);
+        Date end = null;
+        if (endTime == null) {
+            end = new Date(start.getTime() + (1000 * 60 * 60 * 24));
+        } else {
+            end = DateUtil.dateToUnixTimestamp(endTime);
+        }
+        // 修改微信接口返回的数据
+        WxMpKfMsgList msgList = this.service.getKefuService().kfMsgList(start, end, msgid, number);
+        List<WxMpKfMsgRecord> recordList = msgList.getRecords();
+
+        if (recordList.size() == 0) {
+            return ResultUtil.success();
+        }
+
+        // 将 openid 转化成用户名称
+        List<String> openidList = new ArrayList<>();
+        for (WxMpKfMsgRecord record : recordList) {
+            if (!openidList.contains(record.getOpenid())) {
+                openidList.add(record.getOpenid());
+            }
+        }
+
+        // 获取用户信息，这里需要根据 openid 获取昵称
+        List<WxMpUser> userList = this.service.getUserService().userInfoList(openidList);
+
+        List<WxMpKfMsgRecord> result = new ArrayList<>();
+        List<WxMpKfMsgRecord> result0 = new ArrayList<>();
+        List<WxMpKfMsgRecord> result1 = new ArrayList<>();
+        List<WxMpKfMsgRecord> result2 = new ArrayList<>();
+
+        for (WxMpKfMsgRecord record : recordList) {
+            // 修改微信接口返回的数据，将 openid -> nickname
+            String nickName = record.getOpenid();
+            for (WxMpUser user : userList) {
+                if (record.getOpenid().equals(user.getOpenId())) {
+                    nickName = user.getNickname();
+                }
+            }
+            record.setOpenid(nickName);
+            // 记录某个客服的聊天记录
+            if (account != null && record.getWorker().equals(account)) {
+                // 记录某个客服和用户的聊天记录
+                result1.add(record);
+                if (userName != null && record.getOpenid().equals(userName)) {
+                    result2.add(record);
+                }
+            }
+
+            result0.add(record);
+        }
+
+        result = result1.size() > 0 ? (result2.size() > 0 ? result2 : result1) : result0;
+
+        // 分页处理
+        PageInfo<WxMpKfMsgRecord> page = new PageInfo<>(result);
+
+        if (currentPage > page.getSize()) {
+            currentPage = page.getSize();
+            pageSize = 1;
+        }
+        if (pageSize > page.getSize()) {
+            currentPage = 1;
+            pageSize = page.getSize();
+        }
+
+        page.setPageSize(pageSize);
+        page.setPageNum(currentPage);
+        page.setPages((int) Math.ceil((double) page.getSize() / pageSize));// 向上取整
+        page.setList(result.subList((currentPage - 1) * pageSize, currentPage * pageSize));
+        return ResultUtil.pageFormat(page);
+    }
+
+    @GetMapping("/test")
     public CommonResult intervalChatRecord(String startTime,
                                            @RequestParam(value = "endTime", required = false) String endTime,
+                                           @RequestParam(value = "account", required = false) String account,
+                                           @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                            @RequestParam(value = "msgid", required = false, defaultValue = "1") Long msgid,
                                            @RequestParam(value = "number", required = false, defaultValue = "10000") Integer number) throws WxErrorException {
 
@@ -197,8 +285,8 @@ public class WxKefuController {
         WxMpKfMsgList msgList = this.service.getKefuService().kfMsgList(start, end, msgid, number);
         List<WxMpKfMsgRecord> recordList = msgList.getRecords();
 
-        if (recordList.size() == 0){
-            return ResultUtil.success("客服记录为空");
+        if (recordList.size() == 0) {
+            return ResultUtil.success();
         }
 
         // 将 openid 转化成用户名称
@@ -208,6 +296,7 @@ public class WxKefuController {
                 openidList.add(record.getOpenid());
             }
         }
+        // 获取用户信息，这里需要根据 openid 获取昵称
         List<WxMpUser> userList = this.service.getUserService().userInfoList(openidList);
 
         // 返回结果
@@ -215,31 +304,30 @@ public class WxKefuController {
         // 遍历原始 recordList 数组 - start
         for (WxMpKfMsgRecord record : recordList) {
             String nickName = record.getOpenid();
-
             for (WxMpUser user : userList) {
                 if (record.getOpenid().equals(user.getOpenId())) {
                     nickName = user.getNickname();
                 }
             }
-            if (resultMap.containsKey(record.getWorker())) {
-                if (resultMap.get(record.getWorker()).containsKey(nickName)) {
-                    resultMap.get(record.getWorker()).get(nickName).add(record);
+            if (account == null || record.getWorker().equals(account)) {
+                record.setOpenid(nickName);
+                if (resultMap.containsKey(record.getWorker())) {
+                    if (resultMap.get(record.getWorker()).containsKey(nickName)) {
+                        resultMap.get(record.getWorker()).get(nickName).add(record);
+                    } else {
+                        List<WxMpKfMsgRecord> tempOpenidList = new ArrayList<>();
+                        tempOpenidList.add(record);
+                        resultMap.get(record.getWorker()).put(nickName, tempOpenidList);
+                    }
                 } else {
                     List<WxMpKfMsgRecord> tempOpenidList = new ArrayList<>();
                     tempOpenidList.add(record);
-                    resultMap.get(record.getWorker()).put(nickName,tempOpenidList);
+                    Map<String, List<WxMpKfMsgRecord>> openidMap = new HashMap<>();
+                    openidMap.put(nickName, tempOpenidList);
+                    resultMap.put(record.getWorker(), openidMap);
                 }
-            } else {
-                List<WxMpKfMsgRecord> tempOpenidList = new ArrayList<>();
-                tempOpenidList.add(record);
-                Map<String, List<WxMpKfMsgRecord>> openidMap = new HashMap<>();
-                openidMap.put(nickName, tempOpenidList);
-                resultMap.put(record.getWorker(), openidMap);
             }
         }
         return ResultUtil.success(resultMap);
-
     }
-
-
 }

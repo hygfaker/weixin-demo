@@ -55,8 +55,11 @@ public class WxExceptionHandler {
         } else if (e instanceof WxErrorException) { // 微信框架的异常
 
             WxErrorException exception = (WxErrorException) e;
-
             String msg = WxErrorMessage.errorMsg(exception.getError().getErrorCode());
+
+            if (exception.getError().getErrorMsg()!=null){
+                msg = exception.getError().getErrorMsg();
+            }
             if ("unknown".equals(msg)) {
                 msg = exception.getError().getErrorMsg();
             }
