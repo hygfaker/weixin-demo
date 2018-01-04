@@ -247,6 +247,9 @@ public class WxErrorMessage {
             case 45010:
                 errmsg="创建菜单个数超过限制";
                 break;
+            case 45011:
+                errmsg="API 调用太频繁，请稍候再试";
+                break;
             case 45015:
                 errmsg="回复时间超过限制";
                 break;
