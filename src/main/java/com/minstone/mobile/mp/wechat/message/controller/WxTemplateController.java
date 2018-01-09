@@ -8,6 +8,7 @@ import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfMsgRecord;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplate;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateIndustry;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
@@ -52,8 +53,28 @@ public class WxTemplateController {
         }
         PageHelper.startPage(currentPage,pageSize);
         List<WxMpTemplate> resultList = this.wxService.getTemplateMsgService().getAllPrivateTemplate();
-        PageInfo<WxMpTemplate> pageInfo = new PageInfo<>(resultList);
-        return ResultUtil.pageFormat(pageInfo);
+
+        // 分页处理
+        PageInfo<WxMpTemplate> page = new PageInfo<>(resultList);
+        int totalPages = (int) Math.ceil((double) page.getSize() / pageSize);
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        if (pageSize > page.getSize()) {
+            currentPage = 1;
+            pageSize = page.getSize();
+        }
+
+        page.setPageNum(currentPage);
+        page.setPages(totalPages);// 向上取整
+        int endIndex = (currentPage * pageSize) < page.getSize() ? (currentPage * pageSize) : page.getSize();
+
+        int currentPageSize = (endIndex == pageSize) ? pageSize : (page.getSize() - (currentPage - 1) * pageSize);
+        page.setPageSize(currentPageSize);
+
+        page.setList(resultList.subList((currentPage - 1) * pageSize, endIndex));
+        return ResultUtil.pageFormat(page);
     }
 
     // 删除模板

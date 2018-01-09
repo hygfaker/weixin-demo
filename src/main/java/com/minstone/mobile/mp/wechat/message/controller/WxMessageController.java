@@ -1,5 +1,6 @@
 package com.minstone.mobile.mp.wechat.message.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
@@ -31,7 +32,11 @@ public class WxMessageController {
     private WxMpService mpService;
 
     @GetMapping("getPage")
-    public CommonResult getPage(WxMessage message, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws WxErrorException {
+    public CommonResult getPage(WxMessage message,
+                                @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) throws WxErrorException {
+
+        PageHelper.startPage(currentPage,pageSize);
         PageInfo<WxMessage> pageInfo = messageService.getPage(message, currentPage, pageSize);
         List<String> userCodeList = new ArrayList<String>();
         for (WxMessage temp : pageInfo.getList()) {

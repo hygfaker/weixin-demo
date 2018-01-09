@@ -131,7 +131,7 @@ public class WxMessageServiceImpl implements IWxMessageService {
         }
         // 设置为已回复
         message.setMsgFlag(1);
-        return messageDao.updateByPrimaryKeySelective(message) > 0 ? true : false;
+        return messageDao.updateByPrimaryKeySelective(message) > 0;
     }
 
 

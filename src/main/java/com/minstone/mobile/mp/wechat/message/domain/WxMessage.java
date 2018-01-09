@@ -91,6 +91,7 @@ public class WxMessage {
     /**
      * 时间限制，默认为5天内
      */
+
     private Integer dayLimit;
 
     /**
