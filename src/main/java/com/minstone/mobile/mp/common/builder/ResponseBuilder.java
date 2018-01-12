@@ -8,14 +8,22 @@ import me.chanjar.weixin.mp.bean.message.*;
  * @author Binary Wang(https://github.com/binarywang)
  */
 public class ResponseBuilder extends AbstractBuilder {
-    public WxMpXmlOutMessage build(String content, String title, String introduction, WxMpXmlMessage wxMessage, WxMpService service) {
-        WxMpXmlOutVideoMessage m = WxMpXmlOutMessage
+    public WxMpXmlOutMessage vedioBuild(String content, String title, String introduction, WxMpXmlMessage wxMessage) {
+        WxMpXmlOutMessage m = WxMpXmlOutMessage
                 .VIDEO()
                 .title(title)
                 .description(introduction)
                 .mediaId(content)
                 .fromUser(wxMessage.getToUser())
                 .toUser(wxMessage.getFromUser())
+                .build();
+        return m;
+    }
+    public WxMpXmlOutMessage textBuild(String content, WxMpXmlMessage wxMessage) {
+        WxMpXmlOutMessage m = WxMpXmlOutMessage
+                .TEXT()
+                .content(content)
+                .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
                 .build();
         return m;
     }
@@ -62,7 +70,6 @@ public class ResponseBuilder extends AbstractBuilder {
                     .toUser(wxMessage.getFromUser())
                     .build();
         }
-
         return m;
     }
 
