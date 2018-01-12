@@ -85,7 +85,9 @@ public class WechatController {
             // 明文传输的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
 
+//            WxMpXmlOutMessage outMessage = this.router.route(inMessage);
             WxMpXmlOutMessage outMessage = this.route(inMessage);
+
 
             if (outMessage == null) {
                 return "";
@@ -106,10 +108,7 @@ public class WechatController {
             wxConfigProvider.setToken(wxPublic.getToken());
             wxConfigProvider.setAesKey(wxPublic.getAeskey());
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxConfigProvider, timestamp,nonce, msgSignature);
-
-            // 路由在 WechatMpConfiguration 类里面配置
-            WxMpXmlOutMessage outMessage = this.router.route(inMessage);
-//            WxMpXmlOutMessage outMessage = this.route(inMessage);
+            WxMpXmlOutMessage outMessage = this.route(inMessage);
             if (outMessage == null) {
                 return "";
             }
@@ -125,26 +124,12 @@ public class WechatController {
         return out;
     }
 
-
     private WxMpXmlOutMessage route(WxMpXmlMessage message) {
-        try {// 路由规则
-             this.router.rule()
-                    .msgType(WxConsts.EVT_SUBSCRIBE)
-                    .handler(new SubscribeHandler()) // 关注时回复（已完成）
-                    .end()
-                    .rule()
-                    .msgType(WxConsts.MASS_MSG_NEWS)
-                    .handler(new SendAllHandler())  // 群发图文消息
-                    .end()
-                    .rule()
-                    .handler(new MsgHandler())  // 兜底路由规则，一般放到最后
-                    .end();
-            // 将消息交给路由器
+        try {
             return this.router.route(message);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }
-
         return null;
     }
 

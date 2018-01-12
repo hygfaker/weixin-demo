@@ -122,7 +122,9 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @GetMapping("/getPage")
-    public CommonResult getPage(WxMessagePush wxMessagePush,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException{
+    public CommonResult getPage(WxMessagePush wxMessagePush,
+                                @RequestParam(value = "currentPage",defaultValue = "1") int currentPage,
+                                @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) throws WxErrorException{
         return ResultUtil.pageFormat(wxMessagePushService.getPage(wxMessagePush,currentPage,pageSize));
     }
 
@@ -146,7 +148,11 @@ public class WxMessagePushController {
      * @author huangyg
      */
     @GetMapping("/getRecordByDate")
-    public CommonResult getRecordByDate(@RequestParam String pushCode,@RequestParam String startDate,@RequestParam String endDate,@RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException{
+    public CommonResult getRecordByDate(@RequestParam String pushCode,
+                                        @RequestParam String startDate,
+                                        @RequestParam String endDate,
+                                        @RequestParam(value = "currentPage",defaultValue = "1") int currentPage,
+                                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) throws WxErrorException{
         return ResultUtil.pageFormat(wxMessagePushService.getRecordByDate(pushCode,startDate,endDate,currentPage,pageSize));
     }
 }

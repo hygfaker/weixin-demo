@@ -20,7 +20,7 @@ public class SendAllHandler extends AbstractHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         // 判断消息是否为群发图文消息
-        if (wxMpXmlMessage.getMsgType().equals(WxConsts.MASS_MSG_NEWS)){
+        if (wxMpXmlMessage.getMsgType().equals(WxConsts.MassMsgType.MPNEWS)){
 
         }
         return null;

@@ -1,6 +1,5 @@
 package com.minstone.mobile.mp.wechat.kefu.handler;
 
-import com.minstone.mobile.mp.common.builder.TextBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -37,34 +36,35 @@ public class KfSessionHandler extends AbstractHandler {
          *   <Encrypt><![CDATA[5coE4lJBIBKqJ6a6vsg0QnlDhQeat7hb1d4OnOrWrdcUiEeMCHvPl5TGeIlw7RlzEkohssMmvppvA6XPi+f9625ud158CE5FQQuHx4MbhCCrRVavAmq0ooLVsYlXK3pTQWPImGiG0cdwMkcOL0qLgLzQQN+nypPYUUV7X9gHJbs24yUiPSoIkBDbkxf48+pDOEAeCKKCr+za7OtTzrPZo1Exmohb9QkyELLJTmQ3Gts9d7vqOJ+RWvk8c8A8rZiI5gjqDexcp50EFlzYhfFkXOjkH1Z1nGekOLXZP1mh/NU9SrL+ZxtgCelRGT8ctMuK8MZJM9hPJc8MXjIbmn318363I9eW9DAsdz3IZmtRGZZz06cZptLJVIhc85W6xAGAI7RgaG+c3/dV+QlNvBbPPzl5x4lALwEW9nLTLfqC61dWohAWzIUU6LPvSks62IQGK6Whbw9MVqKj8X5avSn1+w==]]></Encrypt>
          *</xml>
          */
-        if (WxMpEventConstants.CustomerService.KF_CREATE_SESSION.equals(wxMessage.getEvent())){
-            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
-            kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
-            kefuMessage.setToUser(wxMessage.getFromUser());
-            kefuMessage.setContent(wxMessage.getKfAccount() + " 为您服务");
-            try {
-                logger.info("-- " + wxMessage.getKfAccount() + " 为您服务 --");
-                wxMpService.getKefuService().sendKefuMessage(kefuMessage);
-            } catch (WxErrorException e) {
-                logger.error(e.toString());
-            } finally {
-                return null;
-            }
-        }
-        if (WxMpEventConstants.CustomerService.KF_CLOSE_SESSION.equals(wxMessage.getEvent())){
-            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
-            kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
-            kefuMessage.setToUser(wxMessage.getFromUser());
-            kefuMessage.setContent(wxMessage.getKfAccount() + " 服务结束");
-            try {
-                logger.info("-- " + wxMessage.getKfAccount() + " 服务结束 --");
-                wxMpService.getKefuService().sendKefuMessage(kefuMessage);
-            } catch (WxErrorException e) {
-                logger.error(e.toString());
-            } finally {
-                return null;
-            }
-        }
+//        todo - 目前会话创建成功和关闭不需要提示语，以后如果需求改了，可以打开下面两个 if 的注释。
+//        if (WxMpEventConstants.CustomerService.KF_CREATE_SESSION.equals(wxMessage.getEvent())){
+//            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
+//            kefuMessage.setMsgType(WxConsts.KefuMsgType.TEXT);
+//            kefuMessage.setToUser(wxMessage.getFromUser());
+//            kefuMessage.setContent(wxMessage.getKfAccount() + " 会话开启，服务开始");
+//            try {
+//                logger.info("-- " + wxMessage.getKfAccount() + " 会话开启，服务开始");
+//                wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+//            } catch (WxErrorException e) {
+//                logger.error(e.toString());
+//            } finally {
+//                return null;
+//            }
+//        }
+//        if (WxMpEventConstants.CustomerService.KF_CLOSE_SESSION.equals(wxMessage.getEvent())){
+//            WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
+//            kefuMessage.setMsgType(WxConsts.KefuMsgType.TEXT);
+//            kefuMessage.setToUser(wxMessage.getFromUser());
+//            kefuMessage.setContent(wxMessage.getKfAccount() + " 结束会话，服务结束");
+//            try {
+//                logger.info("-- " + wxMessage.getKfAccount() + " 结束会话，服务结束");
+//                wxMpService.getKefuService().sendKefuMessage(kefuMessage);
+//            } catch (WxErrorException e) {
+//                logger.error(e.toString());
+//            } finally {
+//                return null;
+//            }
+//        }
 
 
         return null;

@@ -48,7 +48,7 @@ public class WxKfSessionServiceImpl implements IWxKfSessionService {
         List<WxMpKfInfo> kfInfoList = mpService.getKefuService().kfOnlineList().getKfOnlineList();
 
         WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
-        kefuMessage.setMsgType(WxConsts.CUSTOM_MSG_TEXT);
+        kefuMessage.setMsgType(wxMessage.getMsgType());
         kefuMessage.setToUser(wxMessage.getFromUser());
 
         String content = null;
@@ -58,8 +58,9 @@ public class WxKfSessionServiceImpl implements IWxKfSessionService {
             log.info("微信用户的 openid = {}, 在线客服的 account = {}", wxMessage.getFromUser(), kfInfo.getAccount());
             // 创建会话成功，是-》回复客服接入欢迎语，否-》回复客服不在线内容
             if (mpService.getKefuService().kfSessionCreate(wxMessage.getFromUser(), kfInfo.getAccount())) {
-                log.info("创建会话成功，回复的内容为 ： {}", content);
                 content = publicConfigService.get(publicConfig).getKefuOnlineMessage();
+                log.info("创建会话成功，回复的内容为 ： {}", content);
+                kefuMessage.setContent(content);
                 return kefuMessage;
             }
         }

@@ -71,12 +71,6 @@ public class WxMessageServiceImplTest {
         log.info(String.valueOf(pageInfo.getList().size()));
     }
 
-    @Test
-    public void replyMessage() throws Exception {
-        WxMessage message = new WxMessage();
-        message.setReplyContent("客服正忙，请稍后再咨询");
-        message.setMsgCode("65f199720fbd4d2a864405ebbc50d173");
-        assertNotEquals(false,messageService.replyMessage(message));
-    }
+
 
 }

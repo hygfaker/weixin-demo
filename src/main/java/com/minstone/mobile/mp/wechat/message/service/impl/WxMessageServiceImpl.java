@@ -8,7 +8,9 @@ import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessageDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +105,7 @@ public class WxMessageServiceImpl implements IWxMessageService {
             throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         ValidatorUtil.mustParam(message, validator, "publicCode");
-        message.setDayLimit(message.getDayLimit()!=null ? message.getDayLimit() : 5);
+        message.setDayLimit(message.getDayLimit()!=null ? message.getDayLimit() : 2);
         List<WxMessage> messageList = messageDao.selectAll(message);
 
         // 获取 messageList中的
@@ -112,23 +114,15 @@ public class WxMessageServiceImpl implements IWxMessageService {
         return pageInfo;
     }
 
-
     /**
-     * 4-1. 回复消息（其实就是更新数据）
+     * 4-1. 更新数据
      *
-     * @return void
+     * @return boolean
      * @author huangyg
      */
     @Override
-    public boolean replyMessage(WxMessage message) {
+    public boolean updateMessage(WxMessage message) {
         ValidatorUtil.mustParam(message, validator, "msgCode", "replyContent");
-        WxMessage selectResult = messageDao.selectByPrimaryKey(message.getMsgCode());
-        if (selectResult == null){
-            throw new CommonException(CommonResultEnum.MESSAGE_NOTFOUND);
-        }
-        if (selectResult.getMsgFlag() == 1){
-            throw new CommonException(CommonResultEnum.MESSAGE_NO_REPEAT);
-        }
         // 设置为已回复
         message.setMsgFlag(1);
         return messageDao.updateByPrimaryKeySelective(message) > 0;

@@ -1,7 +1,6 @@
 package com.minstone.mobile.mp.common.handler;
 
-import com.minstone.mobile.mp.common.builder.TextBuilder;
-import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
+import com.minstone.mobile.mp.common.builder.ResponseBuilder;
 import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.service.impl.WxReplyServiceImpl;
@@ -14,7 +13,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -57,7 +55,7 @@ public class SubscribeHandler extends AbstractHandler {
              */
             String publicCode = wxPublicService.getPublicCodeByOpenId(wxMessage.getFromUser());
             String content = wxReplyService.getFollow(new WxReply(publicCode)).getContent();
-            return new TextBuilder().build(content, wxMessage, weixinService);
+            return new ResponseBuilder().build(content, wxMessage, weixinService);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }

@@ -1,13 +1,12 @@
 package com.minstone.mobile.mp.wechat.message.handler;
 
-import com.minstone.mobile.mp.common.builder.TextBuilder;
+import com.minstone.mobile.mp.common.builder.ResponseBuilder;
 import com.minstone.mobile.mp.common.handler.AbstractHandler;
 import com.minstone.mobile.mp.utils.LocationUtil;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessagePushRecord;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessagePushService;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +51,7 @@ public class LocationHandler extends AbstractHandler {
             // 将用户和数据保存到数据记录表中
             messagePushService.addRecord(new WxMessagePushRecord(wxMessage.getFromUser(), toPush.getPushCode()));
             try {
-                return new TextBuilder().build(toPush.getContent(), wxMessage, null);
+                return new ResponseBuilder().build(toPush.getContent(), wxMessage, null);
             } catch (Exception e) {
                 this.logger.error("位置消息接收处理失败", e);
                 return null;

@@ -78,11 +78,14 @@ public interface IWxMessageService {
      */
     public PageInfo<WxMessage> getPage(WxMessage message, int currentPage, int pageSize) throws WxErrorException;
 
+
     /**
-     * 4-1. 回复消息
+     * 4-1. 更新时间
      * @param message 消息实体
-     * @return void
+     * @return boolean
      * @author huangyg
      */
-    public boolean replyMessage(WxMessage message);
+    public boolean updateMessage(WxMessage message);
+
+
 }

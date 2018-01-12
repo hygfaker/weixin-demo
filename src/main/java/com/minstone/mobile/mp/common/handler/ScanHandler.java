@@ -19,7 +19,7 @@ public class ScanHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        if (!wxMpXmlMessage.getMsgType().equals(WxConsts.EVT_SCAN)){
+        if (!wxMpXmlMessage.getMsgType().equals(WxConsts.EventType.SCAN)){
             return null;
         }
 
