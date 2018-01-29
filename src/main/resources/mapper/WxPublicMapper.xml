@@ -71,8 +71,8 @@
     AND 1=1
   </select>
 
-    <select id="selectPublicCode" parameterType="java.lang.String" resultType="java.lang.String">
-    SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
+    <select id="selectPublicCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM MP_YY_PUBLIC
     where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
     AND DEL_FLAG = 0
     AND

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
@@ -133,8 +134,8 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public List<WxReply> getInfo(WxReply reply) throws WxErrorException {
         ValidatorUtil.mustParam(reply, validator, "publicCode", "replyType");
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
-        if (checkPublicCode.size() == 0) {
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(reply.getPublicCode());
+        if (checkPublic == null) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             List<WxReply> selectList = wxReplyDao.selectByPublicCodeAndReplyType(reply);
@@ -161,8 +162,8 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public WxReply addContent(WxReply reply) throws WxErrorException {
         ValidatorUtil.mustParam(reply, validator, "publicCode", "content");
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(reply.getPublicCode());
-        if (checkPublicCode.size() == 0) {
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(reply.getPublicCode());
+        if (checkPublic == null) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             List<WxReply> selectList = wxReplyDao.selectByPublicCodeAndReplyType(reply);
@@ -171,7 +172,9 @@ public class WxReplyServiceImpl implements IWxReplyService {
                     throw new CommonException(CommonResultEnum.UPDATE_REPLY_CONTENT_ERROR);
                 }
                 logger.info("更新公众号信息成功");
-                return selectList.get(0);
+                WxReply result = selectList.get(0);
+                result.setContent(reply.getContent());
+                return result;
             } else {
                 reply.setReplyCode(IdGen.uuid());
                 if (wxReplyDao.insert(reply) < 1) {
@@ -346,13 +349,17 @@ public class WxReplyServiceImpl implements IWxReplyService {
             throw new CommonException(CommonResultEnum.PARAME_LIMITE_POSITIVE);
         }
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(rule.getPublicCode());
-        if (checkPublicCode.size() == 0) {
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(rule.getPublicCode());
+        if (checkPublic == null) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
+            // pagehelper + mybatis 做多表分页时候，分页计算的是两张表结果的总查询数，正确应该是左表的查询数
             PageHelper.startPage(currentPage, pageSize);
-            List<WxReplyRule> list = wxReplyRuleDao.selectAll(rule);
-            PageInfo<WxReplyRule> page = new PageInfo<>(list);
+            List<WxReplyRule> ruleList = wxReplyRuleDao.selectRule(rule);
+            PageInfo<WxReplyRule> page = new PageInfo<>(ruleList);
+            // 获取 index
+            List<WxReplyRule> ruleKeyworldList = wxReplyRuleDao.selectAll(rule.getPublicCode(),page.getStartRow()-1,page.getEndRow());
+            page.setList(ruleKeyworldList);
             return page;
         }
     }
@@ -451,8 +458,8 @@ public class WxReplyServiceImpl implements IWxReplyService {
     @Override
     public String addRule(WxReplyRule replyRule) throws WxErrorException, CommonException {
         // 查询公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(replyRule.getPublicCode());
-        if (checkPublicCode.size() == 0) {
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(replyRule.getPublicCode());
+        if (checkPublic == null ) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
         // 查询关键词是否存在

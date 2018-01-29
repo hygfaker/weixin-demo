@@ -51,7 +51,7 @@ public class LocationHandler extends AbstractHandler {
             // 将用户和数据保存到数据记录表中
             messagePushService.addRecord(new WxMessagePushRecord(wxMessage.getFromUser(), toPush.getPushCode()));
             try {
-                return new ResponseBuilder().build(toPush.getContent(), wxMessage, null);
+                return new ResponseBuilder().textBuild(toPush.getContent(), wxMessage);
             } catch (Exception e) {
                 this.logger.error("位置消息接收处理失败", e);
                 return null;

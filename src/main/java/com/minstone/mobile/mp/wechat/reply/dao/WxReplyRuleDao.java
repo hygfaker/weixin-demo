@@ -67,12 +67,21 @@ public interface WxReplyRuleDao {
      * @return
      */
     int updateRuleFlag(WxReplyRule record);
+
     /**
-     * 查找公众号下的关键词规则列表
+     * 查找规则
      * @param record 公众号规则实体
      * @return
      */
-    List<WxReplyRule> selectAll(WxReplyRule record);
+    List<WxReplyRule> selectRule(WxReplyRule record);
+    /**
+     * 查找公众号下的关键词规则列表
+     * @param publicCode 公众号
+     * @param startIndex 开始下标
+     * @param endIndex   结束下标
+     * @return
+     */
+    List<WxReplyRule> selectAll(@Param("publicCode")String publicCode, @Param("startIndex")int startIndex,@Param("endIndex")int endIndex);
     /**
      * 根据主键查找关键词规则列表
      * @param record 公众号规则实体

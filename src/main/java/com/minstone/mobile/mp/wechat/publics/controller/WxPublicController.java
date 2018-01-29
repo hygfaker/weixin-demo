@@ -120,14 +120,16 @@ public class WxPublicController {
     @GetMapping("/get")
     public CommonResult get(WxPublic wxPublic) throws WxErrorException, IOException {
 
-        WxPublic selectWxPublic = wxPublicService.get(wxPublic);
         // 切换公众号
+        WxPublic selectWxPublic = wxPublicService.get(wxPublic);
+
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(selectWxPublic.getAppId());
         wxConfigProvider.setSecret(selectWxPublic.getAppSerct());
         wxConfigProvider.setToken(selectWxPublic.getToken());
         wxConfigProvider.setAesKey(selectWxPublic.getAeskey());
         service.setWxMpConfigStorage(wxConfigProvider);
+
         return ResultUtil.success(selectWxPublic);
     }
 

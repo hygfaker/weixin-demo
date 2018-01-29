@@ -13,6 +13,7 @@ import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicImg;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import java.util.List;
  * @description 公众号管理操作 dao 层的 service
  * @since 2017/8/13
  */
-@Service
+@Service("publicService")
 @Transactional
 public class WxPublicServiceImpl implements IWxPublicService {
     //todo 切换公众号
@@ -91,9 +92,9 @@ public class WxPublicServiceImpl implements IWxPublicService {
     public boolean delete(WxPublic wxPublic) throws WxErrorException, IOException {
         ValidatorUtil.mustParam(wxPublic, validator, "publicCode");
         // 校验公众号是否存在
-        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
-        if (checkPublicCodes.size() > 0) {
+        if (checkPublic != null) {
             return wxPublicDao.deleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
@@ -132,9 +133,9 @@ public class WxPublicServiceImpl implements IWxPublicService {
         ValidatorUtil.mustParam(wxPublic, validator, "publicCode");
 
         // 删除公众号图片
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
-        if (checkPublicCode != null) {
+        if (checkPublic != null) {
             return wxPublicDao.forceDeleteByPrimaryKey(wxPublic.getPublicCode()) > 0 ? true : false;
         } else {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
@@ -175,9 +176,9 @@ public class WxPublicServiceImpl implements IWxPublicService {
     public boolean update(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException {
         ValidatorUtil.mustParam(wxPublic, validator, "publicCode");
         // 校验公众号是否存在
-        List<String> checkPublicCodes = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
-        if (checkPublicCodes.size() > 0) {
+        if (checkPublic != null) {
             String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(wxPublic.getPublicCode());
             if (imgCode != null) {
                 WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
@@ -218,6 +219,24 @@ public class WxPublicServiceImpl implements IWxPublicService {
     public WxPublic get(WxPublic wxPublic) throws WxErrorException {
         // TODO: 2017/11/2 校验 wxpublic 参数中的 publicCodes 数组
         WxPublic selectResult = wxPublicDao.selectByPrimaryKey(wxPublic);
+        if (selectResult != null) {
+            return selectResult;
+        } else {
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+        }
+    }
+
+    /**
+     * 获取某个公众号信息
+     *
+     * @param publicCode 公众号
+     * @author huangyg
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public WxPublic get(String publicCode) throws WxErrorException {
+        // TODO: 2017/11/2 校验 wxpublic 参数中的 publicCodes 数组
+        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
         if (selectResult != null) {
             return selectResult;
         } else {
@@ -270,6 +289,16 @@ public class WxPublicServiceImpl implements IWxPublicService {
     public String getPublicCodeByOpenId(String openId) throws WxErrorException {
         List<String> publicCodes = wxPublicDao.selectPublicCodeByOpenId(openId);
         return publicCodes.size() > 0 ? publicCodes.get(0).toString() : null;
+    }
+
+    @Override
+    public WxMpInMemoryConfigStorage switchPublic(WxPublic wxPublic) throws WxErrorException{
+        WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
+        wxConfigProvider.setAppId(wxPublic.getAppId());
+        wxConfigProvider.setSecret(wxPublic.getAppSerct());
+        wxConfigProvider.setToken(wxPublic.getToken());
+        wxConfigProvider.setAesKey(wxPublic.getAeskey());
+        return wxConfigProvider;
     }
 
     @Override

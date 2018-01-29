@@ -13,6 +13,7 @@ import com.minstone.mobile.mp.wechat.message.domain.WxMessagePush;
 import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessagePushDao;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,8 +210,8 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
         }
 
         // 检查公众号是否存在
-        List<String> checkPublicCode = wxPublicDao.selectPublicCode(wxMessagePush.getPublicCode());
-        if (checkPublicCode.size() == 0) {
+        WxPublic checkPublic = wxPublicDao.selectPublicCode(wxMessagePush.getPublicCode());
+        if (checkPublic == null) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         } else {
             PageHelper.startPage(currentPage, pageSize);

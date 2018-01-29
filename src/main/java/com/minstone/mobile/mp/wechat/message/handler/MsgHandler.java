@@ -85,25 +85,34 @@ public class MsgHandler extends AbstractHandler {
                 }
             }
 
-            logger.info("===== 5. 记录到消息列表 =====");
-            WxMessage message = new WxMessage(publicCode, wxMessage);
-            messageService.add(message);
-
-            logger.info("===== 1. 是否开启消息转发客服 =====");
+            logger.info("===== 5. 是否开启消息转发客服 =====");
             if (publicConfigService.get(publicConfig).getKefuUseFlag() == 1) {
-                logger.info("===== 2. 获取在线客服、创建会话、回复客服不在线内容或者回复欢迎语 =====");
+                logger.info("===== 6. 获取在线客服、创建会话、回复客服不在线内容或者回复欢迎语 =====");
                 WxMpKefuMessage kefuMessage = wxKfSessionService.createSession(wxMessage, publicConfig, wxMpService);
                 // 发送客服在线/不在线信息
                 wxMpService.getKefuService().sendKefuMessage(kefuMessage);
-                wxMessage.setMsgType(WxConsts.KefuMsgType.TRANSFER_CUSTOMER_SERVICE);
-                wxMessage.setKfAccount(kefuMessage.getKfAccount());
-                return new ResponseBuilder().build(null, wxMessage, wxMpService);
-//                return null;
-            } else if (normalReply.getReplyFlag() == 1) {
-                // 回复非关键词设置的内容
-                logger.info("===== 3. 回复非关键词设置内容 =====");
-                return new ResponseBuilder().build(normalReply.getContent(), wxMessage, wxMpService);
+
+                // 能够获取客服，说明创建会话成功，创建成功后需要将消息转发至客服系统中的指定客服
+                if (kefuMessage.getKfAccount() != null){
+                    wxMessage.setMsgType(WxConsts.KefuMsgType.TRANSFER_CUSTOMER_SERVICE);
+                    wxMessage.setKfAccount(kefuMessage.getKfAccount());
+                    return new ResponseBuilder().build(null, wxMessage, wxMpService);
+                }
+                logger.info("===== 记录到消息列表 =====");
+                WxMessage message = new WxMessage(publicCode, wxMessage);
+                messageService.add(message);
+
+            } else {
+                logger.info("===== 记录到消息列表 =====");
+                WxMessage message = new WxMessage(publicCode, wxMessage);
+                messageService.add(message);
+                if (normalReply.getReplyFlag() == 1){
+                    // 回复非关键词设置的内容
+                    logger.info("===== 3. 回复非关键词设置内容 =====");
+                    return new ResponseBuilder().build(normalReply.getContent(), wxMessage, wxMpService);
+                }
             }
+
         } else {
 
             logger.info("===== 4. 记录到消息列表 =====");

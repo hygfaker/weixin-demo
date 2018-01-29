@@ -97,9 +97,8 @@ public class WechatController {
             /*
             * 解密过程：根据用户消息中的 ToUserName 从数据库中 MP_YY_PUBLIC表找到对应的 publicCode，然后获取对应的 app_id、app_serct、token、aeskey
             * */
-            WxPublic wxPublic = new WxPublic();
             String openId = WxMpXmlMessage.fromXml(requestBody).getToUser();
-            wxPublic = publicService.selectByOpenId(openId);
+            WxPublic wxPublic = publicService.selectByOpenId(openId);
             WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
             wxConfigProvider.setAppId(wxPublic.getAppId());
             wxConfigProvider.setSecret(wxPublic.getAppSerct());

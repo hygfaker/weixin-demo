@@ -6,6 +6,7 @@ import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.FileUtil;
+import com.minstone.mobile.mp.utils.PagerUtil;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -43,25 +44,7 @@ public class WxKefuController {
 
         // pageHelper 只能用于有数据库的查询列表，由于该接口直接从微信获取数据，所以这里手动构造分页数据。
         WxMpKfList list = this.service.getKefuService().kfList();
-        PageInfo<WxMpKfInfo> page = new PageInfo<>(list.getKfList());
-        int totalPages = (int) Math.ceil((double) page.getSize() / pageSize);
-        if (currentPage > totalPages) {
-            currentPage = totalPages;
-        }
-
-        if (pageSize > page.getSize()) {
-            currentPage = 1;
-            pageSize = page.getSize();
-        }
-
-        page.setPageNum(currentPage);
-        page.setPages(totalPages);// 向上取整
-        int endIndex = (currentPage * pageSize) < page.getSize() ? (currentPage * pageSize) : page.getSize();
-
-        int currentPageSize = (endIndex == pageSize) ? pageSize : (page.getSize() - (currentPage - 1) * pageSize);
-        page.setPageSize(currentPageSize);
-
-        page.setList(list.getKfList().subList((currentPage - 1) * pageSize, endIndex));
+        PageInfo<WxMpKfMsgRecord> page = PagerUtil.lowPager(currentPage,pageSize,list.getKfList());
         return ResultUtil.pageFormat(page);
     }
 
@@ -298,26 +281,10 @@ public class WxKefuController {
 
         result = result1.size() > 0 ? (result2.size() > 0 ? result2 : result1) : result0;
 
+
         // 分页处理
-        PageInfo<WxMpKfMsgRecord> page = new PageInfo<>(result);
-        int totalPages = (int) Math.ceil((double) page.getSize() / pageSize);
-        if (currentPage > totalPages) {
-            currentPage = totalPages;
-        }
+        PageInfo<WxMpKfMsgRecord> page = PagerUtil.lowPager(currentPage,pageSize,result);
 
-        if (pageSize > page.getSize()) {
-            currentPage = 1;
-            pageSize = page.getSize();
-        }
-
-        page.setPageNum(currentPage);
-        page.setPages(totalPages);// 向上取整
-        int endIndex = (currentPage * pageSize) < page.getSize() ? (currentPage * pageSize) : page.getSize();
-
-        int currentPageSize = (endIndex == pageSize) ? pageSize : (page.getSize() - (currentPage - 1) * pageSize);
-        page.setPageSize(currentPageSize);
-
-        page.setList(result.subList((currentPage - 1) * pageSize, endIndex));
         return ResultUtil.pageFormat(page);
     }
 }

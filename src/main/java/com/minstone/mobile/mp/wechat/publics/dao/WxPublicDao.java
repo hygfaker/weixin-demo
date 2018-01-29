@@ -35,7 +35,7 @@ public interface WxPublicDao<T> {
     List<WxPublic> selectAll();
 
     // 查询参数为单个的时候可以使用实体
-    List<String> selectPublicCode(String publicCode);
+    WxPublic selectPublicCode(String publicCode);
 
     List<String> selectPublicCodeByOpenId(String openId);
 

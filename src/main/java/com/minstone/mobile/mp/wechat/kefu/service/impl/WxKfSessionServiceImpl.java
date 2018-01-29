@@ -51,6 +51,7 @@ public class WxKfSessionServiceImpl implements IWxKfSessionService {
         kefuMessage.setMsgType(wxMessage.getMsgType());
         kefuMessage.setToUser(wxMessage.getFromUser());
 
+
         String content = null;
         // 获取在线客服列表，否-》回复客服不在线内容
         if (kfInfoList.size() > 0) {
@@ -61,6 +62,7 @@ public class WxKfSessionServiceImpl implements IWxKfSessionService {
                 content = publicConfigService.get(publicConfig).getKefuOnlineMessage();
                 log.info("创建会话成功，回复的内容为 ： {}", content);
                 kefuMessage.setContent(content);
+                kefuMessage.setKfAccount(kfInfo.getAccount());
                 return kefuMessage;
             }
         }

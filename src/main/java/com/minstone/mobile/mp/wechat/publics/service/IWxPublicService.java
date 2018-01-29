@@ -3,6 +3,7 @@ package com.minstone.mobile.mp.wechat.publics.service;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,6 +100,14 @@ public interface IWxPublicService {
     public WxPublic get(WxPublic wxPublic) throws WxErrorException, IOException;
 
     /**
+     * 获取某个公众号信息
+     * @param publicCode 公众号
+     *
+     * @author huangyg
+     */
+    public WxPublic get(String publicCode) throws WxErrorException, IOException;
+
+    /**
      * 分页获取公众号信息
      * @param 
      * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
@@ -115,8 +124,15 @@ public interface IWxPublicService {
      * @return java.lang.String
      * @author huangyg
      */
-
     public String getPublicCodeByOpenId(String openId) throws WxErrorException;
+
+    /**
+     * 切换公众号
+     * @param wxPublic 公众号实体
+     * @return void
+     * @author huangyg
+     */
+    public WxMpInMemoryConfigStorage switchPublic(WxPublic wxPublic) throws WxErrorException;
 
     public WxPublic selectByOpenId(String openId);
 

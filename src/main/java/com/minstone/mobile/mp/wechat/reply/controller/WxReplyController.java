@@ -110,9 +110,18 @@ public class WxReplyController {
 
     /************ 关键词回复 ************/
 
+    //    3-0. 获取关键词回复开关
+    @GetMapping("/getRuleFlag")
+    public CommonResult getRuleFlag(WxReply reply) throws WxErrorException {
+        reply.setReplyType(2);
+        return ResultUtil.success(wxReplyService.getInfo(reply).get(0));
+    }
+
     //    3-1. 获取关键词规则列表（分页）
     @GetMapping("/getRulePage")
-    public CommonResult getRulePage(WxReplyRule rule, @RequestParam(value = "currentPage",defaultValue = "1") int currentPage, @RequestParam(value = "pageSize",defaultValue = "20") int pageSize) throws WxErrorException {
+    public CommonResult getRulePage(WxReplyRule rule,
+                                    @RequestParam(value = "currentPage",defaultValue = "1") int currentPage,
+                                    @RequestParam(value = "pageSize",defaultValue = "5") int pageSize) throws WxErrorException {
         PageInfo page = wxReplyService.getRulePage(rule, currentPage, pageSize);
         return ResultUtil.pageFormat(page);
     }

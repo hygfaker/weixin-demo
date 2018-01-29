@@ -24,14 +24,6 @@ public class WxReplyRule {
     }
 
 
-    public String[] getRuleCodes() {
-        return ruleCodes;
-    }
-
-    public void setRuleCodes(String[] ruleCodes) {
-        this.ruleCodes = ruleCodes;
-    }
-
     /**
      * 关键词，作为参数使用
      */
@@ -64,6 +56,16 @@ public class WxReplyRule {
     @NotEmpty(message = "【content】参数缺失（且内容不为空）")
     private String content;
 
+    @Valid
+    @NotEmpty(message = "【keywords】参数内容不能为空")
+    @NotNull(message = "【keywords】 参数缺失")
+    private List<WxReplyKeyword> keywords;
+
+    /**
+     * 匹配模式
+     */
+    private Integer matchFlag;
+
     private String creator;
 
     private String createDate;
@@ -74,17 +76,14 @@ public class WxReplyRule {
 
     private Integer delFlag;
 
-    @Valid
-    @NotEmpty(message = "【keywords】参数内容不能为空")
-    @NotNull(message = "【keywords】 参数缺失")
-    private List<WxReplyKeyword> keywords;
 
+    public String[] getRuleCodes() {
+        return ruleCodes;
+    }
 
-
-    /**
-     * 匹配模式
-     */
-    private Integer matchFlag;
+    public void setRuleCodes(String[] ruleCodes) {
+        this.ruleCodes = ruleCodes;
+    }
 
     public Integer getMatchFlag() {
         return matchFlag;
