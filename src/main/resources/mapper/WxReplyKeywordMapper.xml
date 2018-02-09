@@ -94,9 +94,11 @@
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
   </update>
 
-    <delete id="forceDeleteByRuleCode">
+    <delete id="forceDeleteByRuleCode" parameterType="java.lang.String">
     delete from MP_YY_REP_KEYWORD
     where RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+    and DEL_FLAG = 0
+    and 1=1
   </delete>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword">

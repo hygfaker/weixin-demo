@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.*;
 import com.minstone.mobile.mp.common.constants.CommonStateEnum;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
+import com.minstone.mobile.mp.utils.FileUtil;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Validator;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,10 +59,24 @@ public class WxPublicServiceImpl implements IWxPublicService {
      */
     @Override
     public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException {
-        // TODO: 2017/11/7 对 wxpublic 实体进行参数校验
+
+        ValidatorUtil.mustParam(wxPublic, validator, "publicName", "publicNickName","appId","appSecret","token","aeskey","url");
+
+        // 记录公众号信息
+        if (wxPublicDao.insert(wxPublic) > 0) {
+            return wxPublic;
+        } else {
+            throw new CommonException(CommonResultEnum.SAVE_PUBLIC_ERROR);
+        }
+
+        // 记录图片信息
+
+
+
         // 生成图片的主键
         String imgCode = IdGen.uuid();
         WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
+
         // 保存公众号图片导数据库
         if (wxPublicImgDao.insert(wxPublicImg) > 0) {
             // 保存公众号信息
@@ -79,6 +94,8 @@ public class WxPublicServiceImpl implements IWxPublicService {
         } else {
             throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
         }
+
+
     }
 
     /**
@@ -269,6 +286,76 @@ public class WxPublicServiceImpl implements IWxPublicService {
     }
 
 
+    /**
+     * 当文件上传
+     *
+     * @param publicCode 公众号
+     * @param file       文件
+     * @author huangyg
+     */
+    @Override
+    public boolean upload(String publicCode, MultipartFile file) throws WxErrorException, IOException {
+        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
+        if (selectResult == null) {
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+        }
+        if (file == null) {
+            throw new CommonException(CommonResultEnum.IMG_NOT_NULL);
+        }
+        try {
+            String uploadDir = FileUtil.uploadPath();
+            executeUpload(uploadDir,file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private void executeUpload(String uploadDir, MultipartFile file) throws IOException {
+        // 获取 uuid+文件格式名字
+        try {
+            String fileName = FileUtil.UUIDName(file);
+            File serverFile = new File(uploadDir + fileName);
+            file.transferTo(serverFile);
+            logger.info("upload url:{}", uploadDir + fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 批量上传文件
+     *
+     * @param publicCode 公众号
+     * @param files      文件
+     * @author huangyg
+     */
+    @Override
+    public boolean uploads(String publicCode, MultipartFile[] files) throws WxErrorException, IOException {
+        String uploadDir = FileUtil.uploadPath();
+        try {
+            for(MultipartFile file : files){
+                executeUpload(uploadDir,file);
+            }
+            return true;
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
     public static <T> List<T> checkContains(T[] t1, T[] t2) {
         List<T> checkList = Arrays.asList(t1);
         List<T> resultList = new ArrayList<T>();
@@ -292,7 +379,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
     }
 
     @Override
-    public WxMpInMemoryConfigStorage switchPublic(WxPublic wxPublic) throws WxErrorException{
+    public WxMpInMemoryConfigStorage switchPublic(WxPublic wxPublic) throws WxErrorException {
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(wxPublic.getAppId());
         wxConfigProvider.setSecret(wxPublic.getAppSerct());

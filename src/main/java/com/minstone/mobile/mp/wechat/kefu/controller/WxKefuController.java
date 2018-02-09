@@ -11,7 +11,6 @@ import com.minstone.mobile.mp.utils.ResultUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.request.WxMpKfAccountRequest;
-import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfInfo;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfList;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfMsgList;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfMsgRecord;
@@ -19,10 +18,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
-import sun.tools.jconsole.Worker;
-
-import javax.xml.transform.Result;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;

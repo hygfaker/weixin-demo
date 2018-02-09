@@ -7,6 +7,7 @@ import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,24 @@ public interface IWxPublicService {
      * @author huangyg
      */
     public PageInfo<WxPublic> getPage(int currentPage,int pageSize) throws WxErrorException, IOException;
+
+    /**
+     * 上传单个文件
+     * @param publicCode 公众号
+     * @param file 头像
+     *
+     * @author huangyg
+     */
+    public boolean upload(String publicCode,MultipartFile file) throws WxErrorException, IOException;
+
+    /**
+     * 批量上传文件
+     *
+     * @param publicCode 公众号
+     * @param files      文件
+     * @author huangyg
+     */
+    public boolean uploads(String publicCode, MultipartFile[] files) throws WxErrorException, IOException ;
 
 
     public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;

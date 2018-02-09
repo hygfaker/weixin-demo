@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.publics.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -70,6 +72,8 @@ public class WxPublicController {
         if (wxPublicService.delete(wxPublic)) {
             return ResultUtil.success();
         } else {
+
+
             return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
@@ -116,6 +120,26 @@ public class WxPublicController {
         }
     }
 
+    // 单文件上传
+    @PostMapping("/upload")
+    public CommonResult upload(String publicCode, @RequestParam MultipartFile file) throws WxErrorException, IOException {
+        return ResultUtil.success(wxPublicService.upload(publicCode,file));
+    }
+
+    // 批量文件上传
+    @PostMapping("/uploads")
+    public CommonResult batchupload(String publicCode,@RequestParam MultipartFile[] files) throws WxErrorException, IOException {
+        return ResultUtil.success(wxPublicService.uploads(publicCode,files));
+    }
+
+    // 显示图片
+    @RequestMapping("/file")
+    public String file(){
+
+        return"/file";
+
+    }
+
     // 获取公众号的时候会切换公众号，此时相当于改变 accessToken
     @GetMapping("/get")
     public CommonResult get(WxPublic wxPublic) throws WxErrorException, IOException {
@@ -141,6 +165,13 @@ public class WxPublicController {
     }
 
     // 测试
+//    @GetMapping("/icon")
+//    public CommonResult test2(String imgCode, Integer imgType) throws WxErrorException,IOException{
+//        byte[] result = wxPublicService.icon(imgCode,imgType);
+//        return ResultUtil.success(result);
+//    }
+
+    // 测试
     @GetMapping("/test")
     public CommonResult test(WxPublic wxPublic) throws WxErrorException,IOException{
         List<String> result = wxPublicService.test(wxPublic);
@@ -148,11 +179,11 @@ public class WxPublicController {
     }
 
     // 下载公众号图标
+    @GetMapping("/icon")
     public void downloadIcon(String imgCode, Integer imgType, HttpServletResponse response) throws WxErrorException, IOException {
 
         if (imgType != 0 && imgType != 1) {
-//            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR,"imgType 参数错误");
-            return;
+            throw new CommonException(CommonResultEnum.IMG_NOT_NULL);
         }
 
         byte[] bs = wxPublicService.icon(imgCode, imgType);

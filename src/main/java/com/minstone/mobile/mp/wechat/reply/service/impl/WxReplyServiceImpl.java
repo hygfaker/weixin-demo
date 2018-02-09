@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,9 +98,9 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public void initData() throws WxErrorException {
 
         String publicCode = IdGen.uuid();
-        WxReply followReply = new WxReply(publicCode,"谢谢关注",0);
-        WxReply  normalReply = new WxReply(publicCode,"非关键词回复",1);
-        WxReply keywordReply = new WxReply(publicCode,"关键词回复",2);
+        WxReply followReply = new WxReply(publicCode, "谢谢关注", 0);
+        WxReply normalReply = new WxReply(publicCode, "非关键词回复", 1);
+        WxReply keywordReply = new WxReply(publicCode, "关键词回复", 2);
 
         addNormal(normalReply);
         addFollow(followReply);
@@ -115,7 +116,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
         rule.setContent("关键词初始化回复内容");
         rule.setDelFlag(0);
         List<WxReplyKeyword> list = new ArrayList<>();
-        list.add(new WxReplyKeyword(IdGen.uuid(), ruleCode,"初始化关键词",1,0));
+        list.add(new WxReplyKeyword(IdGen.uuid(), ruleCode, "初始化关键词", 1, 0));
         rule.setKeywords(list);
         addRule(rule);
     }
@@ -358,7 +359,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
             List<WxReplyRule> ruleList = wxReplyRuleDao.selectRule(rule);
             PageInfo<WxReplyRule> page = new PageInfo<>(ruleList);
             // 获取 index
-            List<WxReplyRule> ruleKeyworldList = wxReplyRuleDao.selectAll(rule.getPublicCode(),page.getStartRow()-1,page.getEndRow());
+            List<WxReplyRule> ruleKeyworldList = wxReplyRuleDao.selectAll(rule.getPublicCode(), page.getStartRow() - 1, page.getEndRow());
             page.setList(ruleKeyworldList);
             return page;
         }
@@ -430,8 +431,8 @@ public class WxReplyServiceImpl implements IWxReplyService {
      * @author huangyg
      */
     @Override
-    public boolean keywordsUseFlag(String publicCode,Integer replyType) throws WxErrorException, CommonException {
-        return wxReplyDao.selectUseFlagByPublicCode(publicCode,replyType)==1 || false ;
+    public boolean keywordsUseFlag(String publicCode, Integer replyType) throws WxErrorException, CommonException {
+        return wxReplyDao.selectUseFlagByPublicCode(publicCode, replyType) == 1 || false;
     }
 
     /**
@@ -459,7 +460,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public String addRule(WxReplyRule replyRule) throws WxErrorException, CommonException {
         // 查询公众号是否存在
         WxPublic checkPublic = wxPublicDao.selectPublicCode(replyRule.getPublicCode());
-        if (checkPublic == null ) {
+        if (checkPublic == null) {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
         // 查询关键词是否存在
@@ -471,8 +472,8 @@ public class WxReplyServiceImpl implements IWxReplyService {
             keyword.setKeywordCode(IdGen.uuid());
             keyword.setRuleCode(ruleCode);
             // 设置默认值
-            if (existKeywords.contains(keyword.getKeyword())){
-                throw new CommonException(CommonResultEnum.KEYWORD_HAS_EXISTED,keyword.getKeyword());
+            if (existKeywords.contains(keyword.getKeyword())) {
+                throw new CommonException(CommonResultEnum.KEYWORD_HAS_EXISTED, keyword.getKeyword());
             }
             keyword.setDelFlag(0);
         }
@@ -505,7 +506,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean deleteRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.mustParam(rule,validator,"ruleCode");
+        ValidatorUtil.mustParam(rule, validator, "ruleCode");
         return wxReplyRuleDao.deleteByPrimaryKey(rule) > 0 ? true : false;
     }
 
@@ -519,7 +520,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean forceDeleteRule(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.mustParam(rule,validator,"ruleCode");
+        ValidatorUtil.mustParam(rule, validator, "ruleCode");
         return wxReplyRuleDao.forceDeleteByPrimaryKey(rule) > 0 ? true : false;
     }
 
@@ -562,7 +563,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean deleteKeyword(WxReplyKeyword keyword) throws WxErrorException, CommonException {
-        ValidatorUtil.mustParam(keyword,validator,"keywordCode");
+        ValidatorUtil.mustParam(keyword, validator, "keywordCode");
         return wxReplyKeywordDao.deleteByPrimaryKey(keyword) > 0 ? true : false;
     }
 
@@ -577,10 +578,9 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean forceDeleteKeyword(WxReplyKeyword keyword) throws WxErrorException, CommonException {
-        ValidatorUtil.mustParam(keyword,validator,"keywordCode");
+        ValidatorUtil.mustParam(keyword, validator, "keywordCode");
         return wxReplyKeywordDao.forceDeleteByPrimaryKey(keyword) > 0 ? true : false;
     }
-
 
     /**
      * 3-6. 修改关键词规则
@@ -597,32 +597,32 @@ public class WxReplyServiceImpl implements IWxReplyService {
         if (keywords.size() < 0) {
             throw new CommonException(CommonResultEnum.KEYWORDS_PARAME_ERROR);
         }
-        //  记录需要更新的 keyword 的列表
-        ArrayList<WxReplyKeyword> updateList = new ArrayList<>();
-        //  记录需要插入的 keyword 的列表
-        ArrayList<WxReplyKeyword> insertList = new ArrayList<>();
+
+        // 由于列表是批量操作，更新的时候，直接删除旧的数据，插入新的数据。
+
+
         //  遍历参数中的关键词列表，构造更新和插入的新的关键词列表
         for (WxReplyKeyword replyKeyword : keywords) {
             // 为所有关键词设置code
             replyKeyword.setRuleCode(replyRule.getRuleCode());
             // 如果传入参数，有 keyword，则是更新，插入更新列表，反之插入保存列表
-            if (replyKeyword.getKeywordCode() != null) {
-                updateList.add(replyKeyword);
-            } else {
+            if (replyKeyword.getKeywordCode() == null) {
                 replyKeyword.setKeywordCode(IdGen.uuid());
                 // 默认不删除
                 replyKeyword.setDelFlag(0);
-                insertList.add(replyKeyword);
             }
         }
-        if (updateList.size() > 0 && wxReplyKeywordDao.updateBatch(updateList) < 0) {
-            logger.error("批量更新关键词时出错");
-            return false;
+
+        if (keywords.size() < 0) {
+            throw new CommonException(CommonResultEnum.UPDATE_KEYWORD_ERROR);
         }
 
-        if (insertList.size() > 0 && wxReplyKeywordDao.insertBatch(insertList) < 0) {
-            logger.error("批量插入关键词时出错");
-            return false;
+        if (wxReplyKeywordDao.forceDeleteByRuleCode(replyRule.getRuleCode()) < 0) {
+            throw new CommonException(CommonResultEnum.SERVER_ERROR);
+        }
+
+        if (wxReplyKeywordDao.insertBatch(keywords) < 0) {
+            throw new CommonException(CommonResultEnum.UPDATE_KEYWORD_ERROR);
         }
 
         return wxReplyRuleDao.updateByPrimaryKeySelective(replyRule) > 0 ? true : false;
@@ -657,7 +657,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
      */
     @Override
     public boolean singleRuleFlag(WxReplyRule rule) throws WxErrorException, CommonException {
-        ValidatorUtil.mustParam(rule,validator,"ruleCode","useFlag");
+        ValidatorUtil.mustParam(rule, validator, "ruleCode", "useFlag");
         if (wxReplyRuleDao.updateRuleFlag(rule) < 0) {
             logger.error("开启/关闭关键词规则开关出错");
             return false;
@@ -668,6 +668,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
     }
 
     // TODO: 2017/11/8 mapper 还没完善 
+
     /**
      * 4-1. 根据公众号、关键词获取回复消息
      *

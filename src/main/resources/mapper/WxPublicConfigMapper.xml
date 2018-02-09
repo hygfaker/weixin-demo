@@ -113,7 +113,7 @@
                 KEFU_ONLINE_MESSAGE = #{kefuOnlineMessage,jdbcType=VARCHAR},
             </if>
         </set>
-        where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+        where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig">
     update MP_YY_PUB_CONFIG
@@ -123,6 +123,6 @@
       PUSH_USE_FLAG = #{pushUseFlag,jdbcType=INTEGER},
       KEFU_OFFLINE_MESSAGE = #{kefuOfflineMessage,jdbcType=VARCHAR},
       KEFU_ONLINE_MESSAGE = #{kefuOnlineMessage,jdbcType=VARCHAR}
-    where CONFIG_CODE = #{configCode,jdbcType=VARCHAR}
+    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
   </update>
 </mapper>

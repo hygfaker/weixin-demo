@@ -1,12 +1,11 @@
 package com.minstone.mobile.mp.utils;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.UUID;
 
 /**
  * spring 上传文件采用 MultipartFile 对象，而微信 sdk 是使用 File 对象，所以必须先把 MultipartFile -> File 对象，
@@ -17,7 +16,7 @@ public class FileUtil {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     /**
-     * 将MultipartFile 转化成 File，该方法会生成临时文件
+     * 将MultipartFile 转化成 File，该方法不会生成临时文件
      * @param multipartFile
      * @return java.io.File
      * @author huangyg
@@ -69,6 +68,39 @@ public class FileUtil {
         inputStream.close();
         return buffer;
     }
+
+    /**
+     * 获取上传路径
+     *
+     * @return java.lang.String
+     * @author huangyg
+     */
+    public static String uploadPath(){
+        String uploadDir = "";
+        try {
+            uploadDir= ResourceUtils.getURL("classpath:").getPath() + "static" + File.separator + "upload"
+                    + File.separator;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return uploadDir;
+    }
+
+    /**
+     * 获取文件 uuid + suffix名字
+     *
+     * @return java.lang.String
+     * @author huangyg
+     */
+    public static String UUIDName(MultipartFile file){
+        // 获取 uuid+文件格式名字
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+        String UUIDName = UUID.randomUUID() + suffix;
+        return UUIDName;
+    }
+
+
+
 
 
 

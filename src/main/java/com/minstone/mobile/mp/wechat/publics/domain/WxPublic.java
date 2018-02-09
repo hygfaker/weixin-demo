@@ -27,7 +27,7 @@ public class WxPublic {
         this.setPublicName((String) reqMap.get("publicName"));
         this.setPublicNickname((String) reqMap.get("publicNickname"));
         this.setAppId((String) reqMap.get("appId"));
-        this.setAppSerct((String) reqMap.get("appSerct"));
+        this.setAppSecret((String) reqMap.get("appSecret"));
         this.setToken((String) reqMap.get("token"));
         this.setAeskey((String) reqMap.get("aeskey"));
         this.setUrl((String) reqMap.get("url"));
@@ -57,8 +57,8 @@ public class WxPublic {
     @NotEmpty(message = "【appId】参数缺失（且内容不为空）")
     private String appId;
 
-    @NotEmpty(message = "【appSerct】参数缺失（且内容不为空）")
-    private String appSerct;
+    @NotEmpty(message = "【appSecret】参数缺失（且内容不为空）")
+    private String appSecret;
 
     @NotEmpty(message = "【token】参数缺失（且内容不为空）")
     private String token;
@@ -123,12 +123,12 @@ public class WxPublic {
         this.appId = appId == null ? null : appId.trim();
     }
 
-    public String getAppSerct() {
-        return appSerct;
+    public String getAppSecret() {
+        return appSecret;
     }
 
-    public void setAppSerct(String appSerct) {
-        this.appSerct = appSerct == null ? null : appSerct.trim();
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret == null ? null : appSecret.trim();
     }
 
     public String getToken() {
@@ -228,7 +228,7 @@ public class WxPublic {
                 ", publicName='" + publicName + '\'' +
                 ", publicNickname='" + publicNickname + '\'' +
                 ", appId='" + appId + '\'' +
-                ", appSerct='" + appSerct + '\'' +
+                ", appSecret='" + appSecret + '\'' +
                 ", token='" + token + '\'' +
                 ", aeskey='" + aeskey + '\'' +
                 ", url='" + url + '\'' +

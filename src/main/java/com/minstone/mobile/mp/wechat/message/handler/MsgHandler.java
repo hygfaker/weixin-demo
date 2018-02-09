@@ -79,8 +79,8 @@ public class MsgHandler extends AbstractHandler {
                         WxMpKefuMessage kefuMessage = wxKfSessionService.createSession(wxMessage, publicConfig, wxMpService);
                         // 发送客服在线/不在线信息
                         wxMpService.getKefuService().sendKefuMessage(kefuMessage);
-                        wxMessage.setKfAccount(kefuMessage.getKfAccount());
-                        return new ResponseBuilder().build(null, wxMessage, wxMpService);
+//                        wxMessage.setKfAccount(kefuMessage.getKfAccount());
+//                        return new ResponseBuilder().build(null, wxMessage, wxMpService);
                     }
                 }
             }

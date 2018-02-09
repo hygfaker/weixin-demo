@@ -221,13 +221,15 @@
         SELECT r.*
         FROM MP_YY_REP_RULE r
         WHERE r.PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-          ORDER BY
+        AND DEL_FLAG = 0
+        AND 1=1
+        ORDER BY
         r.CREATE_DATE DESC
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT r.*,k.KEYWORD_CODE,k.KEYWORD,k.MATCH_FLAG,k.DEL_FLAG DELFLAG,k.RULE_CODE RULECODE
-        FROM (SELECT * FROM MP_YY_REP_RULE  WHERE PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR} ORDER BY CREATE_DATE DESC limit #{startIndex,jdbcType=INTEGER},#{endIndex,jdbcType=INTEGER}) r
+        FROM (SELECT * FROM MP_YY_REP_RULE  WHERE PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR} AND DEL_FLAG = 0 ORDER BY CREATE_DATE DESC limit #{startIndex,jdbcType=INTEGER},#{endIndex,jdbcType=INTEGER}) r
         LEFT JOIN
         MP_YY_REP_KEYWORD k
         ON (r.RULE_CODE = k.RULE_CODE)

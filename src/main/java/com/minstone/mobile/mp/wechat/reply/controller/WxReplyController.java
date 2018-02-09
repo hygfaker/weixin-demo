@@ -216,7 +216,7 @@ public class WxReplyController {
 
     //    3-6. 修改关键词规则
     @PostMapping("/updateRule")
-    public CommonResult updateRule(@RequestBody @Valid WxReplyRule replyRule) throws WxErrorException,CommonException {
+    public CommonResult updateRule(@RequestBody WxReplyRule replyRule) throws WxErrorException,CommonException {
         if (wxReplyService.updateRule(replyRule)) {
             return ResultUtil.success();
         } else {
@@ -240,6 +240,7 @@ public class WxReplyController {
     public CommonResult singleRuleFlag(WxReplyRule rule) throws WxErrorException,CommonException {
         if (wxReplyService.singleRuleFlag(rule)) {
             return ResultUtil.success();
+
         } else {
             return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }

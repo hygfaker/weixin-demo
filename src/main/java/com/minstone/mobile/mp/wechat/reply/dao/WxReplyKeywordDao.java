@@ -52,7 +52,7 @@ public interface WxReplyKeywordDao {
      * @param ruleCode 关键词规则主键
      * @return
      */
-    int forceDeleteByRuleCode(WxReplyKeyword keyword);
+    int forceDeleteByRuleCode(String ruleCode);
 
     /**
      * 逻辑删除关键词信息

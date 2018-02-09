@@ -45,6 +45,16 @@ public enum CommonResultEnum {
      * 500,"保存公众号信息失败"
      */
     SAVE_PUBLIC_ERROR(500,"保存公众号信息失败"),
+
+    /**
+     * 500,"保存公众号信息失败"
+     */
+    ICON_TYPE_ERROR(500,"图标信息有误，imgType ：0 表示头像，1 表示二维码"),
+
+    /**
+     * 500,"头像或二维码图片为空"
+     */
+    IMG_NOT_NULL(500,"头像或二维码图片不能为空"),
     /**
      * 500,"强制删除公众号图片信息出错"
      */
@@ -53,6 +63,10 @@ public enum CommonResultEnum {
      * 500,"更新图片失败"
      */
     UPDATE_IMG_ERROR(500,"更新图片失败"),
+    /**
+     * 500,"更新关键词失败"
+     */
+    UPDATE_KEYWORD_ERROR(500,"更新关键词失败"),
     /**
      * 400,"该参数必须大于0"
      */
@@ -65,6 +79,11 @@ public enum CommonResultEnum {
      * 400,"参数有误"
      */
     PARAME_ERROR(400,"参数有误"),
+
+    /**
+     * 400,"参数有误"
+     */
+    KEYWORD_PARAME_ERROR(400,"传入参数有误，关键词不能为空"),
 
     /**
      * 400,"该公众号暂时没有回复内容"

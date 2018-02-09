@@ -9,6 +9,8 @@ import com.minstone.mobile.mp.wechat.message.handler.LocationHandler;
 import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
@@ -17,6 +19,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.constant.WxMpEventConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,6 +38,7 @@ import java.util.Properties;
 @Configuration
 @ConditionalOnClass(WxMpService.class)
 @EnableConfigurationProperties(WechatMpProperties.class)
+@Log4j
 public class WechatMpConfiguration {
     @Autowired
     protected LogHandler logHandler;
@@ -58,6 +62,7 @@ public class WechatMpConfiguration {
     private SubscribeHandler subscribeHandler;
     @Autowired
     private IWxPublicService publicService;
+
 
     //配置mybatis的分页插件pageHelper
     @Bean

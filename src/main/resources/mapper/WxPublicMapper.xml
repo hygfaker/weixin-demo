@@ -8,7 +8,7 @@
         <result column="PUBLIC_NAME" jdbcType="VARCHAR" property="publicName"/>
         <result column="PUBLIC_NICKNAME" jdbcType="VARCHAR" property="publicNickname"/>
         <result column="APP_ID" jdbcType="VARCHAR" property="appId"/>
-        <result column="APP_SERCT" jdbcType="VARCHAR" property="appSerct"/>
+        <result column="APP_SECRET" jdbcType="VARCHAR" property="appSerct"/>
         <result column="TOKEN" jdbcType="VARCHAR" property="token"/>
         <result column="AESKEY" jdbcType="VARCHAR" property="aeskey"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
@@ -27,7 +27,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SERCT, TOKEN, AESKEY,
+    PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SECRET, TOKEN, AESKEY,
     URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE, IMG_CODE
   </sql>
 
@@ -127,7 +127,7 @@
 
     <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
     insert into MP_YY_PUBLIC (PUBLIC_CODE, OPEN_ID, PUBLIC_NAME,
-    PUBLIC_NICKNAME, APP_ID, APP_SERCT,
+    PUBLIC_NICKNAME, APP_ID, APP_SECRET,
     TOKEN, AESKEY, URL,
     CREATOR, CREATE_DATE, MODIFY_DATE,
     MODIFYER, DEL_FLAG, SYSTEM_CODE,
@@ -159,7 +159,7 @@
                 APP_ID,
             </if>
             <if test="appSerct != null">
-                APP_SERCT,
+                APP_SECRET,
             </if>
             <if test="token != null">
                 TOKEN,
@@ -260,7 +260,7 @@
                 APP_ID = #{appId,jdbcType=VARCHAR},
             </if>
             <if test="appSerct != null">
-                APP_SERCT = #{appSerct,jdbcType=VARCHAR},
+                APP_SECRET = #{appSerct,jdbcType=VARCHAR},
             </if>
             <if test="token != null">
                 TOKEN = #{token,jdbcType=VARCHAR},

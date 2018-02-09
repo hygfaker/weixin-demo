@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WxMpApplication {
 
     private static Logger logger = LoggerFactory.getLogger(WxMpApplication.class);
-
-
     public static void main(String[] args) {
         SpringApplication.run(WxMpApplication.class, args);
         logger.info("========================= 微信运营管理启动成功 =========================");
