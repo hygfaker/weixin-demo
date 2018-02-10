@@ -350,7 +350,7 @@ public class WxUserController {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }
         // 判断是否需要切换公众号
-        if (!checkPublic.getAppSerct().equals(new WxMpInMemoryConfigStorage().getSecret())) {
+        if (!checkPublic.getAppSecret().equals(new WxMpInMemoryConfigStorage().getSecret())) {
             WxMpInMemoryConfigStorage config = publicService.switchPublic(checkPublic);
             wxService.setWxMpConfigStorage(config);
         }

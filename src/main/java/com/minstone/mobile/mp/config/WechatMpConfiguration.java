@@ -99,10 +99,10 @@ public class WechatMpConfiguration {
 //    }
 
 
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean(){
-        return new LocalValidatorFactoryBean();
-    }
+//    @Bean
+//    public LocalValidatorFactoryBean localValidatorFactoryBean(){
+//        return new LocalValidatorFactoryBean();
+//    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -124,7 +124,7 @@ public class WechatMpConfiguration {
         }
 
         configStorage.setAppId(wxPublic.getAppId());
-        configStorage.setSecret(wxPublic.getAppSerct());
+        configStorage.setSecret(wxPublic.getAppSecret());
         configStorage.setToken(wxPublic.getToken());
         configStorage.setAesKey(wxPublic.getAeskey());
         return configStorage;

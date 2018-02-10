@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minstone.mobile.mp.wechat.publics.dao.WxPublicFileInfoDao">
+    <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
+        <id column="PUB_FILE_CODE" jdbcType="VARCHAR" property="pubFileCode"/>
+        <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode"/>
+        <result column="URL" jdbcType="VARCHAR" property="url"/>
+        <result column="SUFFIX" jdbcType="VARCHAR" property="suffix"/>
+        <result column="TYPE" jdbcType="INTEGER" property="type"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="SIGNATURE" jdbcType="VARCHAR" property="signature"/>
+        <result column="SIZE" jdbcType="DOUBLE" property="size"/>
+        <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag"/>
+        <result column="CREATOR" jdbcType="VARCHAR" property="creator"/>
+        <result column="CREATE_DATE" jdbcType="VARCHAR" property="createDate"/>
+        <result column="MODIFY_DATE" jdbcType="VARCHAR" property="modifyDate"/>
+        <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    PUB_FILE_CODE, PUBLIC_CODE, URL, SUFFIX, TYPE, PATH, NAME, SIGNATURE, SIZE, DEL_FLAG, 
+    CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from MP_YY_PUB_FILE_INFO
+        where PUB_FILE_CODE = #{pubFileCode,jdbcType=VARCHAR}
+        and
+        1=1
+    </select>
+
+    <select id="selectByPublicCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from MP_YY_PUB_FILE_INFO
+        where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        and
+        1=1
+    </select>
+
+    <delete id="forceDeleteByPrimaryKey" parameterType="java.lang.String">
+      delete from MP_YY_PUB_FILE_INFO
+     where PUB_FILE_CODE = #{pubFileCode,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update MP_YY_PUB_FILE_INFO
+        set DEL_FLAG = 1
+        where PUB_FILE_CODE = #{pubFileCode,jdbcType=VARCHAR}
+        and
+        1=1
+  </delete>
+
+    <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
+    insert into MP_YY_PUB_FILE_INFO (PUB_FILE_CODE, PUBLIC_CODE, URL, 
+      SUFFIX, TYPE, PATH, 
+      NAME, SIGNATURE, SIZE, 
+      DEL_FLAG, CREATOR, CREATE_DATE, 
+      MODIFY_DATE, MODIFYER)
+    values (#{pubFileCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{size,jdbcType=DOUBLE}, 
+      #{delFlag,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
+        insert into MP_YY_PUB_FILE_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pubFileCode != null">
+                PUB_FILE_CODE,
+            </if>
+            <if test="publicCode != null">
+                PUBLIC_CODE,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="suffix != null">
+                SUFFIX,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="path != null">
+                PATH,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="signature != null">
+                SIGNATURE,
+            </if>
+            <if test="size != null">
+                SIZE,
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pubFileCode != null">
+                #{pubFileCode,jdbcType=VARCHAR},
+            </if>
+            <if test="publicCode != null">
+                #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="suffix != null">
+                #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                #{size,jdbcType=DOUBLE},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
+        update MP_YY_PUB_FILE_INFO
+        <set>
+            <if test="publicCode != null">
+                PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="suffix != null">
+                SUFFIX = #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                TYPE = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                PATH = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                SIGNATURE = #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                SIZE = #{size,jdbcType=DOUBLE},
+            </if>
+            <if test="delFlag != null">
+                DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PUB_FILE_CODE = #{pubFileCode,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
+    update MP_YY_PUB_FILE_INFO
+    set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      SUFFIX = #{suffix,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      PATH = #{path,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      SIGNATURE = #{signature,jdbcType=VARCHAR},
+      SIZE = #{size,jdbcType=DOUBLE},
+      DEL_FLAG = #{delFlag,jdbcType=INTEGER},
+      CREATOR = #{creator,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=VARCHAR},
+      MODIFY_DATE = #{modifyDate,jdbcType=VARCHAR},
+      MODIFYER = #{modifyer,jdbcType=VARCHAR}
+    where PUB_FILE_CODE = #{pubFileCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

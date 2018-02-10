@@ -5,6 +5,8 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
@@ -75,7 +77,7 @@ public class FileUtil {
      * @return java.lang.String
      * @author huangyg
      */
-    public static String uploadPath(){
+    public static String uploadPath()  {
         String uploadDir = "";
         try {
             uploadDir= ResourceUtils.getURL("classpath:").getPath() + "static" + File.separator + "upload"
@@ -83,25 +85,77 @@ public class FileUtil {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
         return uploadDir;
     }
 
     /**
-     * 获取文件 uuid + suffix名字
+     * 获取文件 md5加密 + suffix名字
      *
      * @return java.lang.String
      * @author huangyg
      */
-    public static String UUIDName(MultipartFile file){
+    public static String MD5Name(MultipartFile file) throws IOException {
         // 获取 uuid+文件格式名字
-        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
-        String UUIDName = UUID.randomUUID() + suffix;
-        return UUIDName;
+        String suffix = getFileType(file.getOriginalFilename());
+        String md5name = getMD5(file) + suffix;
+        logger.info("md5加密后的名字：" + md5name);
+        return md5name;
+    }
+
+    /**
+     * 获取文件类型
+     */
+    public static String getFileType(String fileName) {
+        return fileName.substring(fileName.lastIndexOf('.'));
     }
 
 
+    public static byte[] getByte(File file){
+        // 得到文件长度
+        byte[] b = new byte[(int) file.length()];
+        try {
+            InputStream in = new FileInputStream(file);
+            try {
+                in.read(b);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return b;
+    }
 
+    public static String getMD5(byte[] bytes) {
+        // 16进制字符
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+            byte[] strTemp = bytes;
+        MessageDigest mdTemp = null;
+        try {
+            mdTemp = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        mdTemp.update(strTemp);
+            byte[] md = mdTemp.digest();
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            // 移位 输出字符串
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
 
+    }
+
+    public static String getMD5(MultipartFile file) throws IOException {
+        return getMD5(file.getBytes());
+    }
 
 }

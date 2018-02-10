@@ -120,17 +120,6 @@ public class WxPublicController {
         }
     }
 
-    // 单文件上传
-    @PostMapping("/upload")
-    public CommonResult upload(String publicCode, @RequestParam MultipartFile file) throws WxErrorException, IOException {
-        return ResultUtil.success(wxPublicService.upload(publicCode,file));
-    }
-
-    // 批量文件上传
-    @PostMapping("/uploads")
-    public CommonResult batchupload(String publicCode,@RequestParam MultipartFile[] files) throws WxErrorException, IOException {
-        return ResultUtil.success(wxPublicService.uploads(publicCode,files));
-    }
 
     // 显示图片
     @RequestMapping("/file")
@@ -149,7 +138,7 @@ public class WxPublicController {
 
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(selectWxPublic.getAppId());
-        wxConfigProvider.setSecret(selectWxPublic.getAppSerct());
+        wxConfigProvider.setSecret(selectWxPublic.getAppSecret());
         wxConfigProvider.setToken(selectWxPublic.getToken());
         wxConfigProvider.setAesKey(selectWxPublic.getAeskey());
         service.setWxMpConfigStorage(wxConfigProvider);

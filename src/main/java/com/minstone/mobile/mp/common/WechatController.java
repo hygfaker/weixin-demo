@@ -101,7 +101,7 @@ public class WechatController {
             WxPublic wxPublic = publicService.selectByOpenId(openId);
             WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
             wxConfigProvider.setAppId(wxPublic.getAppId());
-            wxConfigProvider.setSecret(wxPublic.getAppSerct());
+            wxConfigProvider.setSecret(wxPublic.getAppSecret());
             wxConfigProvider.setToken(wxPublic.getToken());
             wxConfigProvider.setAesKey(wxPublic.getAeskey());
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxConfigProvider, timestamp,nonce, msgSignature);

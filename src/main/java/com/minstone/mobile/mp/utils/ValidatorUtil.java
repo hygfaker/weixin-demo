@@ -1,7 +1,6 @@
 package com.minstone.mobile.mp.utils;
 
 import org.springframework.stereotype.Component;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.*;
 import java.util.Arrays;

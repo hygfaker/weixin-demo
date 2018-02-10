@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public interface IWxPublicService {
      */
 //    public void add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
-    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
+    public String add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException, NoSuchAlgorithmException;
     /**
      * 逻辑删除某个公众号
      * @param wxPublic 公众号实体
@@ -115,24 +116,6 @@ public interface IWxPublicService {
      * @author huangyg
      */
     public PageInfo<WxPublic> getPage(int currentPage,int pageSize) throws WxErrorException, IOException;
-
-    /**
-     * 上传单个文件
-     * @param publicCode 公众号
-     * @param file 头像
-     *
-     * @author huangyg
-     */
-    public boolean upload(String publicCode,MultipartFile file) throws WxErrorException, IOException;
-
-    /**
-     * 批量上传文件
-     *
-     * @param publicCode 公众号
-     * @param files      文件
-     * @author huangyg
-     */
-    public boolean uploads(String publicCode, MultipartFile[] files) throws WxErrorException, IOException ;
 
 
     public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;
