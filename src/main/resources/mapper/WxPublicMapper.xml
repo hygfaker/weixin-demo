@@ -19,6 +19,8 @@
         <result column="DEL_FLAG" jdbcType="INTEGER" property="delFlag"/>
         <result column="SYSTEM_CODE" jdbcType="VARCHAR" property="systemCode"/>
         <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>
+        <result column="HEAD_URL" jdbcType="VARCHAR" property="headUrl"/>
+        <result column="QRCODE_URL" jdbcType="VARCHAR" property="qrcodeUrl"/>
         <!--<association property="publicImg" javaTyWxPublicImgcImg">-->
         <!--<id column="IMG_CODE" jdbcType="VARCHAR" property="imgCode"/>-->
         <!--<result column="HEADIMG" jdbcType="LONGVARBINARY" property="headimg" />-->
@@ -28,7 +30,7 @@
 
     <sql id="Base_Column_List">
     PUBLIC_CODE, OPEN_ID, PUBLIC_NAME, PUBLIC_NICKNAME, APP_ID, APP_SECRET, TOKEN, AESKEY,
-    URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE, IMG_CODE
+    URL, CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER, DEL_FLAG, SYSTEM_CODE, IMG_CODE,HEAD_URL,QRCODE_URL
   </sql>
 
     <select id="selectImgCodeByPrimaryKey" parameterType="java.lang.String" resultType="java.lang.String">
@@ -72,12 +74,12 @@
   </select>
 
     <select id="selectPublicCode" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT * FROM MP_YY_PUBLIC
-    where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-    AND DEL_FLAG = 0
-    AND
-    1=1
-  </select>
+        SELECT * FROM MP_YY_PUBLIC
+        where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+        AND DEL_FLAG = 0
+        AND
+        1=1
+    </select>
 
     <select id="selectPublicCodeByOpenId" parameterType="java.lang.String" resultType="java.lang.String">
     SELECT PUBLIC_CODE FROM MP_YY_PUBLIC
@@ -131,13 +133,13 @@
     TOKEN, AESKEY, URL,
     CREATOR, CREATE_DATE, MODIFY_DATE,
     MODIFYER, DEL_FLAG, SYSTEM_CODE,
-    IMG_CODE)
+    IMG_CODE,HEAD_URL,QRCODE_URL)
     values (#{publicCode,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{publicName,jdbcType=VARCHAR},
-    #{publicNickname,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSerct,jdbcType=VARCHAR},
+    #{publicNickname,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSecret,jdbcType=VARCHAR},
     #{token,jdbcType=VARCHAR}, #{aeskey,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
     #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{modifyDate,jdbcType=VARCHAR},
     #{modifyer,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, #{systemCode,jdbcType=VARCHAR},
-    #{imgCode,jdbcType=VARCHAR})
+    #{imgCode,jdbcType=VARCHAR}, #{headUrl,jdbcType=VARCHAR}, #{qrcodeUrl,jdbcType=VARCHAR})
   </insert>
 
     <insert id="insertSelective" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublic">
@@ -158,7 +160,7 @@
             <if test="appId != null">
                 APP_ID,
             </if>
-            <if test="appSerct != null">
+            <if test="appSecret != null">
                 APP_SECRET,
             </if>
             <if test="token != null">
@@ -191,6 +193,12 @@
             <if test="imgCode != null">
                 IMG_CODE,
             </if>
+            <if test="headUrl != null">
+                HEAD_URL,
+            </if>
+            <if test="qrcodeUrl != null">
+                QRCODE_URL,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="publicCode != null">
@@ -208,8 +216,8 @@
             <if test="appId != null">
                 #{appId,jdbcType=VARCHAR},
             </if>
-            <if test="appSerct != null">
-                #{appSerct,jdbcType=VARCHAR},
+            <if test="appSecret != null">
+                #{appSecret,jdbcType=VARCHAR},
             </if>
             <if test="token != null">
                 #{token,jdbcType=VARCHAR},
@@ -241,6 +249,12 @@
             <if test="imgCode != null">
                 #{imgCode,jdbcType=VARCHAR},
             </if>
+            <if test="headUrl != null">
+                #{HEAD_URL,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcodeUrl != null">
+                #{QRCODE_URL,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -259,8 +273,8 @@
             <if test="appId != null">
                 APP_ID = #{appId,jdbcType=VARCHAR},
             </if>
-            <if test="appSerct != null">
-                APP_SECRET = #{appSerct,jdbcType=VARCHAR},
+            <if test="appSecret != null">
+                APP_SECRET = #{appSecret,jdbcType=VARCHAR},
             </if>
             <if test="token != null">
                 TOKEN = #{token,jdbcType=VARCHAR},
@@ -291,6 +305,12 @@
             </if>
             <if test="imgCode != null">
                 IMG_CODE = #{imgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="headUrl != null">
+                #{HEAD_URL,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcodeUrl != null">
+                #{QRCODE_URL,jdbcType=VARCHAR},
             </if>
         </set>
         where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}

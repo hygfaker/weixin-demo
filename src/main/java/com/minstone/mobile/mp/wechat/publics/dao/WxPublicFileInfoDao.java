@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.publics.dao;
 
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public interface WxPublicFileInfoDao {
     /**
      * 根据公众号获取信息
      */
-    List<WxPublicFileInfo> selectByPublicCode(String publicCode);
+    List<WxPublicFileInfo> selectByPublicCode(@Param("publicCode")String publicCode,@Param("type") Integer type);
 
     /**
      * 根据信息选择性更新

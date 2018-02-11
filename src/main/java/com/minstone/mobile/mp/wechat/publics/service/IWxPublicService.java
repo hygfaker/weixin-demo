@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.publics.service;
 
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public interface IWxPublicService {
      */
 //    public void add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
-    public String add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException, NoSuchAlgorithmException;
+    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException, NoSuchAlgorithmException;
     /**
      * 逻辑删除某个公众号
      * @param wxPublic 公众号实体
@@ -116,6 +117,17 @@ public interface IWxPublicService {
      * @author huangyg
      */
     public PageInfo<WxPublic> getPage(int currentPage,int pageSize) throws WxErrorException, IOException;
+
+
+//    /**
+//     * 获取图片 url
+//     * @param publicCode 公众号主键
+//     * @param type 类型
+//     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
+//     * @author huangyg
+//     */
+//    @Deprecated
+//    public List<WxPublicFileInfo> getUrl(String publicCode, int type) throws WxErrorException,IOException ;
 
 
     public List<String> test(WxPublic wxPublic) throws WxErrorException,IOException ;

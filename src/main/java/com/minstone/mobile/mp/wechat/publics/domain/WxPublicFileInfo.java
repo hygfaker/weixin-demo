@@ -13,10 +13,6 @@ public class WxPublicFileInfo {
      */
     private String publicCode;
     /**
-     * 文件显示的 url
-     */
-    private String url;
-    /**
      * 文件的类型
      */
     private String suffix;
@@ -75,14 +71,6 @@ public class WxPublicFileInfo {
 
     public void setPublicCode(String publicCode) {
         this.publicCode = publicCode == null ? null : publicCode.trim();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
     }
 
     public String getSuffix() {

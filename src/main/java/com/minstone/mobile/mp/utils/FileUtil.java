@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.utils;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,9 @@ import java.util.UUID;
  * Created by huangyg on 2017/8/26.
  */
 public class FileUtil {
+
+    @Value("${public_upload_path}")
+    private String path;
 
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
@@ -80,14 +84,24 @@ public class FileUtil {
     public static String uploadPath()  {
         String uploadDir = "";
         try {
-            uploadDir= ResourceUtils.getURL("classpath:").getPath() + "static" + File.separator + "upload"
-                    + File.separator;
+            uploadDir= ResourceUtils.getURL("classpath:").getPath() ;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         return uploadDir;
     }
+
+    /**
+     * 获取上传的 url
+     *
+     * @return java.lang.String
+     * @author huangyg
+     */
+    public static String getUrl(String dir,String path,String name )  {
+        return  dir + path + File.separator + name;
+    }
+
 
     /**
      * 获取文件 md5加密 + suffix名字

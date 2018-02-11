@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
         <id column="PUB_FILE_CODE" jdbcType="VARCHAR" property="pubFileCode"/>
         <result column="PUBLIC_CODE" jdbcType="VARCHAR" property="publicCode"/>
-        <result column="URL" jdbcType="VARCHAR" property="url"/>
         <result column="SUFFIX" jdbcType="VARCHAR" property="suffix"/>
         <result column="TYPE" jdbcType="INTEGER" property="type"/>
         <result column="PATH" jdbcType="VARCHAR" property="path"/>
@@ -18,7 +17,7 @@
         <result column="MODIFYER" jdbcType="VARCHAR" property="modifyer"/>
     </resultMap>
     <sql id="Base_Column_List">
-    PUB_FILE_CODE, PUBLIC_CODE, URL, SUFFIX, TYPE, PATH, NAME, SIGNATURE, SIZE, DEL_FLAG, 
+    PUB_FILE_CODE, PUBLIC_CODE, SUFFIX, TYPE, PATH, NAME, SIGNATURE, SIZE, DEL_FLAG,
     CREATOR, CREATE_DATE, MODIFY_DATE, MODIFYER
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -30,12 +29,19 @@
         1=1
     </select>
 
-    <select id="selectByPublicCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByPublicCode" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from MP_YY_PUB_FILE_INFO
-        where PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
-        and
+        WHERE
+        <if test="publicCode != null">
+            PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR}
+            AND
+        </if>
+        <if test="type != null">
+            TYPE = #{type,jdbcType=INTEGER}
+            and
+        </if>
         1=1
     </select>
 
@@ -53,12 +59,12 @@
   </delete>
 
     <insert id="insert" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
-    insert into MP_YY_PUB_FILE_INFO (PUB_FILE_CODE, PUBLIC_CODE, URL, 
+    insert into MP_YY_PUB_FILE_INFO (PUB_FILE_CODE, PUBLIC_CODE,
       SUFFIX, TYPE, PATH, 
       NAME, SIGNATURE, SIZE, 
       DEL_FLAG, CREATOR, CREATE_DATE, 
       MODIFY_DATE, MODIFYER)
-    values (#{pubFileCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+    values (#{pubFileCode,jdbcType=VARCHAR}, #{publicCode,jdbcType=VARCHAR},
       #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{size,jdbcType=DOUBLE}, 
       #{delFlag,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, 
@@ -72,9 +78,6 @@
             </if>
             <if test="publicCode != null">
                 PUBLIC_CODE,
-            </if>
-            <if test="url != null">
-                URL,
             </if>
             <if test="suffix != null">
                 SUFFIX,
@@ -116,9 +119,6 @@
             </if>
             <if test="publicCode != null">
                 #{publicCode,jdbcType=VARCHAR},
-            </if>
-            <if test="url != null">
-                #{url,jdbcType=VARCHAR},
             </if>
             <if test="suffix != null">
                 #{suffix,jdbcType=VARCHAR},
@@ -162,9 +162,6 @@
             <if test="publicCode != null">
                 PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
             </if>
-            <if test="url != null">
-                URL = #{url,jdbcType=VARCHAR},
-            </if>
             <if test="suffix != null">
                 SUFFIX = #{suffix,jdbcType=VARCHAR},
             </if>
@@ -204,7 +201,6 @@
     <update id="updateByPrimaryKey" parameterType="com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo">
     update MP_YY_PUB_FILE_INFO
     set PUBLIC_CODE = #{publicCode,jdbcType=VARCHAR},
-      URL = #{url,jdbcType=VARCHAR},
       SUFFIX = #{suffix,jdbcType=VARCHAR},
       TYPE = #{type,jdbcType=INTEGER},
       PATH = #{path,jdbcType=VARCHAR},

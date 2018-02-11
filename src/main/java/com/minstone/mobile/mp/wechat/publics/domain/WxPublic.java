@@ -83,6 +83,26 @@ public class WxPublic {
     @NotEmpty(message = "【publicNickname】参数缺失（且内容不为空）")
     private String imgCode;
 
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
+    }
+
+    private String headUrl;
+
+    private String qrcodeUrl;
+
     public String getPublicCode() {
         return publicCode;
     }

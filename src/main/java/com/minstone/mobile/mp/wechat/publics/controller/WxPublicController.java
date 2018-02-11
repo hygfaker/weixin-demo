@@ -6,6 +6,7 @@ import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.utils.ResultUtil;
+import com.minstone.mobile.mp.wechat.publics.domain.WxPublicFileInfo;
 import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
@@ -153,12 +154,6 @@ public class WxPublicController {
         return ResultUtil.pageFormat(page);
     }
 
-    // 测试
-//    @GetMapping("/icon")
-//    public CommonResult test2(String imgCode, Integer imgType) throws WxErrorException,IOException{
-//        byte[] result = wxPublicService.icon(imgCode,imgType);
-//        return ResultUtil.success(result);
-//    }
 
     // 测试
     @GetMapping("/test")

@@ -33,15 +33,18 @@ public interface WxPublicDao<T> {
     int updateByPrimaryKeySelective(WxPublic record);
 
     List<WxPublic> selectAll();
-
-    // 查询参数为单个的时候可以使用实体
+    /**
+     * 根据公众号获取信息
+     */
     WxPublic selectPublicCode(String publicCode);
 
     List<String> selectPublicCodeByOpenId(String openId);
-
-    // 查询参数为数组的时候，不能用实体，mapper 里面读取不到属性
+    /**
+     * 查询参数为数组的时候，不能用实体，mapper 里面读取不到属性
+     */
     List<String> selectPublicCodes(String[] publicCodes);
-
-    // 根据 openid 获取公众号实体
+    /**
+     * 根据 openid 获取公众号实体
+     */
     WxPublic selectByOpenId(String openId);
 }

@@ -3,8 +3,8 @@ package com.minstone.mobile.mp.wechat.publics.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.minstone.mobile.mp.common.*;
-import com.minstone.mobile.mp.common.constants.CommonStateEnum;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
+import com.minstone.mobile.mp.utils.DateUtil;
 import com.minstone.mobile.mp.utils.FileUtil;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicFileInfoDao;
@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,6 @@ import javax.validation.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +47,9 @@ public class WxPublicServiceImpl implements IWxPublicService {
     @Autowired
     private WxPublicImgDao wxPublicImgDao;
 
+    @Value("${public_upload_path}")
+    private String path;
+
     @Autowired
     private WxPublicFileInfoDao wxPublicFileInfoDao;
 
@@ -63,45 +66,41 @@ public class WxPublicServiceImpl implements IWxPublicService {
      * @author huangyg
      */
     @Override
-    public String add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws IOException, CommonException {
+    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws IOException, CommonException {
 
-        ValidatorUtil.mustParam(wxPublic, validator, "publicName", "publicNickName", "appId", "appSecret", "token", "aeskey", "url");
-
-        // 判断公众号是否已经存在
-        WxPublic insertPublic = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
-        if (insertPublic != null){
-            throw  new CommonException(CommonResultEnum.PUBLIC_EXIST);
-        }
-
-        // 记录图片信息
-        if (upload(wxPublic.getPublicCode(), publicQrcode, 0) <= 0) {
-            throw new CommonException(CommonResultEnum.QRCODE_ERROR);
-        }
-        if (upload(wxPublic.getPublicCode(), publicHeadImg, 1) <= 0) {
-            throw new CommonException(CommonResultEnum.HEAD_ERROR);
-        }
+        ValidatorUtil.mustParam(wxPublic, validator, "publicName", "publicNickname", "appId", "appSecret", "token", "aeskey", "url");
 
         // 记录图片到数据库
         String imgCode = IdGen.uuid();
         WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
 
-        if (wxPublicImgDao.insert(wxPublicImg) > 0) {
-            // 保存公众号信息
-            wxPublic.setImgCode(imgCode);
-            // 默认设置为正常状态
-            wxPublic.setDelFlag(CommonStateEnum.NOT_DELETE.getState());
-            wxPublic.setPublicCode(IdGen.uuid());
-        } else {
+        if (wxPublicImgDao.insert(wxPublicImg) < 1) {
             throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
         }
 
         // 记录公众号信息
-        if (wxPublicDao.insert(wxPublic) > 0) {
-            return wxPublic.getPublicCode();
-        } else {
+        String publicCode = IdGen.uuid();
+        wxPublic.setImgCode(imgCode);
+        wxPublic.setDelFlag(0);
+        wxPublic.setPublicCode(publicCode);
+
+        // 记录图片信息
+        String qrcodeUrl = upload(publicCode, publicQrcode, 0);
+        String headUrl = upload(publicCode, publicHeadImg, 1);
+        if (qrcodeUrl == null) {
+            throw new CommonException(CommonResultEnum.QRCODE_ERROR);
+        }
+        if (headUrl == null) {
+            throw new CommonException(CommonResultEnum.HEAD_ERROR);
+        }
+
+        wxPublic.setQrcodeUrl(qrcodeUrl);
+        wxPublic.setHeadUrl(headUrl);
+        if (wxPublicDao.insert(wxPublic) < 1) {
             throw new CommonException(CommonResultEnum.SAVE_PUBLIC_ERROR);
         }
 
+        return wxPublic;
     }
 
     /**
@@ -219,7 +218,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
         }
     }
 
-    //todo 下载图片文件
+    // 获取
     public byte[] icon(String imgCode, Integer imgType) throws WxErrorException, IOException {
         byte[] bs = null;
         if (imgType == 0) {
@@ -230,6 +229,18 @@ public class WxPublicServiceImpl implements IWxPublicService {
         }
         return bs;
     }
+
+//    // 下载图片文件
+//    public byte[] icon(String imgCode, Integer imgType) throws WxErrorException, IOException {
+//        byte[] bs = null;
+//        if (imgType == 0) {
+//            bs = wxPublicImgDao.selectHeadimgByImgCode(imgCode);
+//        }
+//        if (imgType == 1) {
+//            bs = wxPublicImgDao.selectQrcodeByImgCode(imgCode);
+//        }
+//        return bs;
+//    }
 
     /**
      * 获取某个公众号信息
@@ -291,6 +302,25 @@ public class WxPublicServiceImpl implements IWxPublicService {
         return page;
     }
 
+//    /**
+//     * 获取图片 url
+//     *
+//     * @param publicCode 公众号主键
+//     * @param type       类型
+//     * @return com.github.pagehelper.PageInfo<com.minstone.mobile.mp.wechat.publics.reply.WxPublic> 分页内容
+//     * @author huangyg
+//     */
+//    @Deprecated
+//    @Override
+//    public List<WxPublicFileInfo> getUrl(String publicCode, int type) throws WxErrorException, IOException {
+//        // 判断 publicCode 是否存在
+//        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
+//        if (selectResult == null) {
+//            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+//        }
+//        return wxPublicFileInfoDao.selectByPublicCode(publicCode,type);
+//    }
+
 
     /**
      * 当文件上传
@@ -300,11 +330,8 @@ public class WxPublicServiceImpl implements IWxPublicService {
      * @author huangyg
      */
 //    @Override
-    private int upload(String publicCode, MultipartFile file, int type ) throws IOException {
-        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
-        if (selectResult == null) {
-            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-        }
+    private String upload(String publicCode, MultipartFile file, int type) throws IOException {
+
         if (file == null) {
             throw new CommonException(CommonResultEnum.IMG_NOT_NULL);
         }
@@ -312,13 +339,13 @@ public class WxPublicServiceImpl implements IWxPublicService {
         return executeUpload(uploadDir, file, type, publicCode);
     }
 
-    private int executeUpload(String uploadDir, MultipartFile file, int type, String publicCode) throws IOException {
+    private String executeUpload(String uploadDir, MultipartFile file, int type, String publicCode) throws IOException {
 
         // 获取文件的 md5name
         String md5Name = FileUtil.MD5Name(file);
 
         // 存在数据，判断是否重复
-        List<WxPublicFileInfo> publicFileInfos = wxPublicFileInfoDao.selectByPublicCode(publicCode);
+        List<WxPublicFileInfo> publicFileInfos = wxPublicFileInfoDao.selectByPublicCode(publicCode, type);
         if (publicFileInfos.size() > 0) {
             for (WxPublicFileInfo temp : publicFileInfos) {
                 if (temp.getSignature().equals(md5Name)) {
@@ -332,21 +359,28 @@ public class WxPublicServiceImpl implements IWxPublicService {
         insertInfo.setPublicCode(publicCode);
         insertInfo.setSuffix(FileUtil.getFileType(file.getOriginalFilename()));
         insertInfo.setType(type);
-        insertInfo.setPath(uploadDir);
+        insertInfo.setPath(path);
         insertInfo.setName(file.getOriginalFilename());
         insertInfo.setSignature(md5Name);
         insertInfo.setSize((double) file.getSize());
         insertInfo.setDelFlag(0);
-        insertInfo.setCreateDate(new Date().toString());
-        insertInfo.setUrl(uploadDir + md5Name);
-
-        File serverFile = new File(uploadDir + md5Name);
-        file.transferTo(serverFile);
+        insertInfo.setCreateDate(DateUtil.getStringDate());
 
         log.info("upload url: " + uploadDir + md5Name);
 
+        File serverFile = new File(uploadDir + md5Name);
+        if (!serverFile.getParentFile().exists()) {
+            serverFile.getParentFile().mkdirs();
+        }
+        file.transferTo(serverFile);
+
+
         // 保存信息
-        return wxPublicFileInfoDao.insert(insertInfo);
+        if (wxPublicFileInfoDao.insert(insertInfo) > 0) {
+            return uploadDir + md5Name;
+        } else {
+            return "";
+        }
     }
 
 
