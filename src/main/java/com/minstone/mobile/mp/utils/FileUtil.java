@@ -16,8 +16,7 @@ import java.util.UUID;
  */
 public class FileUtil {
 
-    @Value("${public_upload_path}")
-    private String path;
+
 
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(FileUtil.class);
 

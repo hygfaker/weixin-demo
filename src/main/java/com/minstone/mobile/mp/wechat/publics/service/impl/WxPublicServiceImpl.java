@@ -40,7 +40,6 @@ import java.util.List;
 @Transactional
 @Log4j
 public class WxPublicServiceImpl implements IWxPublicService {
-    //todo 切换公众号
     @Autowired
     private WxPublicDao wxPublicDao;
 
@@ -335,7 +334,8 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (file == null) {
             throw new CommonException(CommonResultEnum.IMG_NOT_NULL);
         }
-        String uploadDir = FileUtil.uploadPath();
+        String uploadDir = FileUtil.uploadPath() + path;
+//        String uploadDir = this.path;
         return executeUpload(uploadDir, file, type, publicCode);
     }
 
