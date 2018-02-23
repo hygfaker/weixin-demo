@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 
 import java.io.*;
@@ -65,7 +66,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
      * @author huangyg
      */
     @Override
-    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws IOException, CommonException {
+    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode,HttpServletRequest request) throws IOException, CommonException {
 
         ValidatorUtil.mustParam(wxPublic, validator, "publicName", "publicNickname", "appId", "appSecret", "token", "aeskey", "url");
 
@@ -85,13 +86,20 @@ public class WxPublicServiceImpl implements IWxPublicService {
 
         // 记录图片信息
         String qrcodeUrl = upload(publicCode, publicQrcode, 0);
+
         String headUrl = upload(publicCode, publicHeadImg, 1);
+
+
         if (qrcodeUrl == null) {
             throw new CommonException(CommonResultEnum.QRCODE_ERROR);
         }
         if (headUrl == null) {
             throw new CommonException(CommonResultEnum.HEAD_ERROR);
         }
+
+        String requestUrl = request.getRequestURL().substring(0, request.getRequestURL().length() - request.getServletPath().length());
+        qrcodeUrl = requestUrl + qrcodeUrl;
+        headUrl = requestUrl + headUrl;
 
         wxPublic.setQrcodeUrl(qrcodeUrl);
         wxPublic.setHeadUrl(headUrl);
@@ -217,6 +225,42 @@ public class WxPublicServiceImpl implements IWxPublicService {
         }
     }
 
+    /**
+     * 获取某个公众号信息
+     *
+     * @param publicCode 公众号实体
+     * @param request    请求实体
+     * @author huangyg
+     */
+    @Override
+    public WxPublic get(String publicCode, HttpServletRequest request) throws WxErrorException, IOException {
+
+        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
+
+        if (selectResult != null) {
+            return selectResult;
+        } else {
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+        }
+
+    }
+
+    /**
+     * 获取某个公众号信息
+     *
+     * @param publicCode 公众号
+     * @author huangyg
+     */
+    @Override
+    public WxPublic get(String publicCode) throws WxErrorException, IOException {
+        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
+        if (selectResult != null) {
+            return selectResult;
+        } else {
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+        }
+    }
+
     // 获取
     public byte[] icon(String imgCode, Integer imgType) throws WxErrorException, IOException {
         byte[] bs = null;
@@ -241,41 +285,6 @@ public class WxPublicServiceImpl implements IWxPublicService {
 //        return bs;
 //    }
 
-    /**
-     * 获取某个公众号信息
-     *
-     * @param wxPublic 公众号实体
-     * @author huangyg
-     */
-    @Transactional(readOnly = true)
-    @Override
-    public WxPublic get(WxPublic wxPublic) throws WxErrorException {
-        // TODO: 2017/11/2 校验 wxpublic 参数中的 publicCodes 数组
-        WxPublic selectResult = wxPublicDao.selectByPrimaryKey(wxPublic);
-        if (selectResult != null) {
-            return selectResult;
-        } else {
-            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-        }
-    }
-
-    /**
-     * 获取某个公众号信息
-     *
-     * @param publicCode 公众号
-     * @author huangyg
-     */
-    @Transactional(readOnly = true)
-    @Override
-    public WxPublic get(String publicCode) throws WxErrorException {
-        // TODO: 2017/11/2 校验 wxpublic 参数中的 publicCodes 数组
-        WxPublic selectResult = wxPublicDao.selectPublicCode(publicCode);
-        if (selectResult != null) {
-            return selectResult;
-        } else {
-            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-        }
-    }
 
     /**
      * 分页获取公众号信息
@@ -334,8 +343,8 @@ public class WxPublicServiceImpl implements IWxPublicService {
         if (file == null) {
             throw new CommonException(CommonResultEnum.IMG_NOT_NULL);
         }
-        String uploadDir = FileUtil.uploadPath() + path;
-//        String uploadDir = this.path;
+//        String uploadDir = FileUtil.uploadPath() + path;
+        String uploadDir = this.path + File.separator;
         return executeUpload(uploadDir, file, type, publicCode);
     }
 
@@ -377,7 +386,7 @@ public class WxPublicServiceImpl implements IWxPublicService {
 
         // 保存信息
         if (wxPublicFileInfoDao.insert(insertInfo) > 0) {
-            return uploadDir + md5Name;
+            return File.separator + md5Name;
         } else {
             return "";
         }

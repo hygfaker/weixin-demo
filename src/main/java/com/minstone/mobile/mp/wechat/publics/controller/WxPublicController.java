@@ -14,6 +14,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,8 +64,8 @@ public class WxPublicController {
 
     // 添加公众号
     @PostMapping("/add")
-    public CommonResult add(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
-        return ResultUtil.success(wxPublicService.add(wxPublic, publicHeadImg, publicQrcode));
+    public CommonResult add(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode,HttpServletRequest request) throws WxErrorException, IOException {
+        return ResultUtil.success(wxPublicService.add(wxPublic, publicHeadImg, publicQrcode,request));
     }
 
     // 逻辑删除公众号
@@ -132,10 +133,10 @@ public class WxPublicController {
 
     // 获取公众号的时候会切换公众号，此时相当于改变 accessToken
     @GetMapping("/get")
-    public CommonResult get(WxPublic wxPublic) throws WxErrorException, IOException {
+    public CommonResult get(WxPublic wxPublic, HttpServletRequest request) throws WxErrorException, IOException {
 
         // 切换公众号
-        WxPublic selectWxPublic = wxPublicService.get(wxPublic);
+        WxPublic selectWxPublic = wxPublicService.get(wxPublic.getPublicCode(),request);
 
         WxMpInMemoryConfigStorage wxConfigProvider = new WxMpInMemoryConfigStorage();
         wxConfigProvider.setAppId(selectWxPublic.getAppId());

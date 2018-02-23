@@ -47,7 +47,7 @@ public interface IWxPublicService {
      */
 //    public void add(Map<String, Object> reqMap, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException;
 
-    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode) throws WxErrorException, IOException, NoSuchAlgorithmException;
+    public WxPublic add(WxPublic wxPublic, MultipartFile publicHeadImg, MultipartFile publicQrcode,HttpServletRequest request) throws WxErrorException, IOException, NoSuchAlgorithmException;
     /**
      * 逻辑删除某个公众号
      * @param wxPublic 公众号实体
@@ -96,16 +96,15 @@ public interface IWxPublicService {
 
     /**
      * 获取某个公众号信息
-     * @param wxPublic 公众号实体
-     *
+     * @param publicCode 公众号
+     * @param request 请求实体
      * @author huangyg
      */
-    public WxPublic get(WxPublic wxPublic) throws WxErrorException, IOException;
+    public WxPublic get(String publicCode,HttpServletRequest request) throws WxErrorException, IOException;
 
     /**
      * 获取某个公众号信息
      * @param publicCode 公众号
-     *
      * @author huangyg
      */
     public WxPublic get(String publicCode) throws WxErrorException, IOException;
