@@ -25,11 +25,11 @@ public final class ResultUtil {
     }
 
     /**
-     * 操作成功返回,如：更新成功，删除成功等
+     * 操作成功返回,如：更新成功，删除成功等，不需要返回 data 字段的内容
      * @return
      */
     public static CommonResult success(){
-        return success(new int[0]);
+        return success(null);
     }
 
     /**

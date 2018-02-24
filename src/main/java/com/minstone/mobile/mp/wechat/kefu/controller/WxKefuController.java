@@ -106,11 +106,7 @@ public class WxKefuController {
         return ResultUtil.success(this.service.getKefuService().kfAccountDel(account));
 
     }
-//    // 更新客服信息
-//    @PostMapping("/update")
-//    public CommonResult kfAccountUpdate(WxMpKfAccountRequest account,@RequestParam("file") MultipartFile multfile) throws WxErrorException{
-//        return ResultUtil.success(this.service.getKefuService().kfAccountUpdate(account));
-//    }
+
     // 更新客服信息
     @PostMapping("/update")
     public CommonResult test(WxMpKfAccountRequest account, @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {

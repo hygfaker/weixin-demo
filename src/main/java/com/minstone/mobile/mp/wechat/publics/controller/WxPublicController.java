@@ -74,8 +74,6 @@ public class WxPublicController {
         if (wxPublicService.delete(wxPublic)) {
             return ResultUtil.success();
         } else {
-
-
             return ResultUtil.failure(CommonResultEnum.SERVER_ERROR);
         }
     }
@@ -114,7 +112,7 @@ public class WxPublicController {
 
     // 编辑公众号
     @PostMapping("/update")
-    public CommonResult update(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode) throws WxErrorException, IOException {
+    public CommonResult update(WxPublic wxPublic, @RequestParam(required = false) MultipartFile publicHeadImg, @RequestParam(required = false) MultipartFile publicQrcode) throws WxErrorException, IOException {
         if (wxPublicService.update(wxPublic,publicHeadImg,publicQrcode)){
             return ResultUtil.success();
         }else {

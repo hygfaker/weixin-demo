@@ -1,0 +1,60 @@
+{
+  "接口风格": "style",
+  "公共接口": {
+    "验证码": "public-captcha",
+    "登录": "public-login",
+    "注销": "public-logout",
+    "上传文件": "public-file-upload"
+  },
+  "后台管理": {
+    "系统日志": "admin-logs-admin",
+    "用户日志": "admin-logs-account",
+    "获取组件列表信息": "admin-components-list",
+    "创建组件": "admin-components-create",
+    "获取组件详情": "admin-components-details",
+    "更新组件信息": "admin-components-update",
+    "删除组件": "admin-components-delete",
+    "上线组件": "admin-components-online",
+    "下线组件": "admin-components-offline",
+    "发布组件新版本": "admin-components-versions-create",
+    "下线版本": "admin-components-version-offline",
+    "获取组件版本列表信息": "admin-components-versions-list",
+    "上线版本": "admin-components-version-online"
+  },
+  "组件中心": {
+    "组件版本列表": "components-versions",
+    "获取组件列表信息": "components-details",
+    "获取组件详细信息": "components-list"
+  },
+  "在线编译": {
+    "获取应用列表": "account-apps-list",
+    "创建应用": "account-apps-create",
+    "获取应用详情": "account-apps-details",
+    "删除应用": "account-apps-details",
+    "更新应用信息": "account-apps-update",
+    "获取应用证书信息": "account-apps-certs",
+    "获取一键创建证书数据": "account-apps-certs-recommend",
+    "在线创建Android证书": "account-apps-certs-android-create",
+    "更新Android证书信息": "account-apps-certs-android-update",
+    "删除应用的Android证书信息": "account-apps-certs-android-delete",
+    "更新iOS证书信息": "account-apps-ios-update",
+    "删除iOS证书信息": "account-apps-ios-delete",
+    "获取编译状态列表": "account-apps-compile-records-list",
+    "编译应用": "account-apps-compile",
+    "获取编译状态": "account-apps-compile-details",
+    "用户组件": {
+      "获取自定义组件列表": "account-components-list",
+      "创建用户自定义组件": "account-components-create",
+      "获取用户自定义组件详情": "account-components-details",
+      "删除用户自定义组件": "account-components-delete",
+      "更新自定义组件信息": "account-components-update",
+      "发布自定义组件版本": "account-components-versions-create",
+      "上线版本": "account-components-versions-online",
+      "下线版本": "account-components-versions-offline",
+      "添加组件到应用": "account-add-component-to-app",
+      "获取组件版本列表信息": "account-component-versions-list",
+      "移除应用已添加的组件": "account-remove-component-from-app",
+      "获取应用已添加的组件": "account-components-in-app"
+    }
+  }
+}

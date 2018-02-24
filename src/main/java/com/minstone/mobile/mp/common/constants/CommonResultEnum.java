@@ -58,6 +58,11 @@ public enum CommonResultEnum {
     HEAD_ERROR(500,"上传头像失败"),
 
     /**
+     * 500,"更新公众号信息失败"
+     */
+    UPDATE_PUBLIC_ERROR(500,"更新公众号信息失败"),
+
+    /**
      * 500,"上传二维码失败"
      */
     QRCODE_ERROR(500,"上传二维码失败"),

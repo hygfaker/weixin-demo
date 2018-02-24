@@ -208,18 +208,25 @@ public class WxPublicServiceImpl implements IWxPublicService {
         WxPublic checkPublic = wxPublicDao.selectPublicCode(wxPublic.getPublicCode());
         // 公众号存在于数据库的情况下
         if (checkPublic != null) {
-            String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(wxPublic.getPublicCode());
-            if (imgCode != null) {
-                WxPublicImg wxPublicImg = new WxPublicImg(imgCode, publicHeadImg.getBytes(), publicQrcode.getBytes());
-                if (wxPublicImgDao.updateByPrimaryKeySelective(wxPublicImg) > 0) {
-                    // 更新公众号信息
-                    return wxPublicDao.updateByPrimaryKeySelective(wxPublic) > 0 ? true : false;
+            if (publicHeadImg != null || publicQrcode != null){
+                String imgCode = wxPublicDao.selectImgCodeByPrimaryKey(wxPublic.getPublicCode());
+                if (imgCode != null ) {
+                    WxPublicImg wxPublicImg = new WxPublicImg(imgCode);
+                    if (publicHeadImg != null){
+                        wxPublicImg.setHeadimg(publicHeadImg.getBytes());
+                    }
+                    if (publicQrcode != null) {
+                        wxPublicImg.setQrcode(publicQrcode.getBytes());
+                    }
+                    if (wxPublicImgDao.updateByPrimaryKeySelective(wxPublicImg) < 1) {
+                        throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
+                    }
                 } else {
-                    throw new CommonException(CommonResultEnum.UPDATE_IMG_ERROR);
+                    throw new CommonException(CommonResultEnum.PUBLIC_IMG_NOTFOUND);
                 }
-            } else {
-                throw new CommonException(CommonResultEnum.PUBLIC_IMG_NOTFOUND);
             }
+            // 更新公众号信息
+            return wxPublicDao.updateByPrimaryKeySelective(wxPublic) > 0 ? true : false;
         } else {
             throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
         }

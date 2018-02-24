@@ -54,12 +54,13 @@ public class WxMenuController{
      *
      */
     @GetMapping("/delete")
-    public void menuDelete(@RequestParam(value = "menuID",required = false) String menuID) throws WxErrorException {
+    public CommonResult menuDelete(@RequestParam(value = "menuID",required = false) String menuID) throws WxErrorException {
         if (menuID == null){
             this.wxService.getMenuService().menuDelete();
         }else {
             this.wxService.getMenuService().menuDelete(menuID);
         }
+        return ResultUtil.success();
     }
 
     /**
@@ -69,8 +70,8 @@ public class WxMenuController{
      * </pre>
      */
     @GetMapping("/get")
-    public WxMpMenu menuGet() throws WxErrorException {
-        return this.wxService.getMenuService().menuGet();
+    public CommonResult menuGet() throws WxErrorException {
+        return ResultUtil.success(this.wxService.getMenuService().menuGet());
     }
 
     /**
@@ -82,8 +83,8 @@ public class WxMenuController{
      * @param openID 可以是粉丝的OpenID，也可以是粉丝的微信号。
      */
     @GetMapping("/tryMatch")
-    public WxMenu menuTryMatch(@RequestParam("openID") String openID) throws WxErrorException {
-        return this.wxService.getMenuService().menuTryMatch(openID);
+    public CommonResult menuTryMatch(@RequestParam("openID") String openID) throws WxErrorException {
+        return ResultUtil.success(this.wxService.getMenuService().menuTryMatch(openID));
     }
 
     /**
@@ -102,7 +103,7 @@ public class WxMenuController{
      * </pre>
      */
     @GetMapping("/getSelfMenuInfo")
-    public WxMpGetSelfMenuInfoResult getSelfMenuInfo() throws WxErrorException {
-        return this.wxService.getMenuService().getSelfMenuInfo();
+    public CommonResult getSelfMenuInfo() throws WxErrorException {
+        return ResultUtil.success(this.wxService.getMenuService().getSelfMenuInfo());
     }
 }

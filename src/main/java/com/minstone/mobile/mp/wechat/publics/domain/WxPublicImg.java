@@ -12,6 +12,9 @@ public class WxPublicImg {
     @NotNull
     private byte[] qrcode;
 
+    public WxPublicImg(String imgCode) {
+        this.setImgCode(imgCode);
+    }
     public WxPublicImg(String imgCode, byte[] headimg, byte[] qrcode) {
         this.setImgCode(imgCode);
         this.setHeadimg(headimg);

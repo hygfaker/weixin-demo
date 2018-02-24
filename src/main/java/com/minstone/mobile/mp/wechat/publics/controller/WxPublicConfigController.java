@@ -1,6 +1,7 @@
 package com.minstone.mobile.mp.wechat.publics.controller;
 
 import com.minstone.mobile.mp.common.CommonResult;
+import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ResultUtil;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublicConfig;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicConfigService;
@@ -31,7 +32,12 @@ public class WxPublicConfigController {
 
     @PostMapping("/update")
     public CommonResult update(WxPublicConfig publicConfig) throws WxErrorException{
-        return ResultUtil.success(publicConfigService.update(publicConfig));
+        if (publicConfigService.update(publicConfig)){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.failure(CommonResultEnum.UPDATE_PUBLIC_ERROR);
+        }
+
     }
 
     @GetMapping("/get")
