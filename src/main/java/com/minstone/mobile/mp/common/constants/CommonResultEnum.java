@@ -52,6 +52,8 @@ public enum CommonResultEnum {
      */
     PUBLIC_EXIST(500,"公众号已经存在"),
 
+
+
     /**
      * 500,"上传头像失败"
      */
@@ -104,6 +106,11 @@ public enum CommonResultEnum {
      * 400,"参数有误"
      */
     PARAME_ERROR(400,"参数有误"),
+
+    /**
+     * 400,"publicCode 参数缺失"
+     */
+    PARAMS_PUBLICCODE_MISSING(400,"publicCode 参数缺失"),
 
     /**
      * 400,"参数有误"

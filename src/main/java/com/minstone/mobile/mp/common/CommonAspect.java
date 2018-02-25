@@ -28,13 +28,23 @@ import java.lang.reflect.Method;
 @Component
 public class CommonAspect {
 
+
+    @Autowired
+    private WxMpService wxService;
+
+    @Autowired
+    private IWxPublicService publicService;
+
     private static Logger logger = LoggerFactory.getLogger(CommonAspect.class);
 
     @Pointcut("execution(public * com.minstone.mobile.mp.wechat..*.controller..*(..))")
     public void pointCut(){}
 
+
     @Before("pointCut()")
-    public void doBefore(JoinPoint joinPoint){
+    public void doBefore(JoinPoint joinPoint) throws WxErrorException, IOException {
+
+
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
@@ -43,20 +53,39 @@ public class CommonAspect {
         logger.info("Method        :{}",joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         logger.info("Address       :{}",request.getRemoteHost(),request.getRemoteAddr(),request.getRequestURL());
         Class[] parameterTypes = ( (MethodSignature)joinPoint.getSignature() ).getMethod().getParameterTypes() ;
+
+
         switch( request.getMethod() ){
             case "GET" :{
                 logger.info("Parameter     :{}",request.getQueryString() ) ;
                 break ;
             }
             case "POST" :{
-                Object reqDto = joinPoint.getArgs()[0] ;
+                Object reqDto = joinPoint.getArgs() ;
                 if( reqDto != null ){
+
                     logger.info("Parameter     :{}",reqDto.toString()) ;
                 }
                 break ;
             }
             default : break ;
         }
+
+        // 每次都拦截参数 publicCode
+        String publicCode = request.getParameter("publicCode");
+        if (publicCode == null){
+            throw  new CommonException(CommonResultEnum.PARAMS_PUBLICCODE_MISSING);
+        }
+        WxPublic checkPublic = publicService.get(publicCode);
+        if (checkPublic == null) {
+            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+        }
+        // 判断是否需要切换公众号
+        if (!checkPublic.getAppSecret().equals(new WxMpInMemoryConfigStorage().getSecret())) {
+            WxMpInMemoryConfigStorage config = publicService.switchPublic(checkPublic);
+            wxService.setWxMpConfigStorage(config);
+        }
+
     }
 
 //    @Around("pointCut()")

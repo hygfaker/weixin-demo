@@ -56,12 +56,9 @@ public class WxUserController {
     // 获取用户列表
     @GetMapping("/list")
     @StorageAnnotation
-    public CommonResult userList(@RequestParam String publicCode,
-                                 @RequestParam(value = "nextOpenid", required = false) String nextOpenid,
+    public CommonResult userList(@RequestParam(value = "nextOpenid", required = false) String nextOpenid,
                                  @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                  @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) throws WxErrorException, IOException {
-
-        this.configStorage(publicCode);
         List<String> list = this.wxService.getUserService().userList(nextOpenid).getOpenids();
         PageInfo<String> page = PagerUtil.lowPager(currentPage, pageSize, list);
         return ResultUtil.pageFormat(page);
@@ -69,22 +66,16 @@ public class WxUserController {
 
     // 获取用户基本信息
     @GetMapping("/info")
-    public CommonResult userInfo(@RequestParam String publicCode,
-                             @RequestParam(value = "openid") String openid,
+    public CommonResult userInfo( @RequestParam(value = "openid") String openid,
                              @RequestParam(value = "lang", required = false) String lang) throws WxErrorException {
-
-
         return ResultUtil.success(this.wxService.getUserService().userInfo(openid, lang));
     }
 
     // 批量获取用户基本信息
     @PostMapping("/infoList")
-    public CommonResult userInfoList(@RequestParam String publicCode,
-                                     @RequestParam("openids") List<String> openids,
+    public CommonResult userInfoList(@RequestParam("openids") List<String> openids,
                                      @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                      @RequestParam(value = "pageSize", defaultValue = "5")  int pageSize) throws WxErrorException, IOException {
-
-        this.configStorage(publicCode);
         if (openids.size() == 0){
             return ResultUtil.success();
         }else{
@@ -96,12 +87,10 @@ public class WxUserController {
 
     // 分页直接获取所有用户基本信息、
     @GetMapping("/userInfoPage")
-    public CommonResult userInfoPage(@RequestParam String publicCode,
-                                     @RequestParam(value = "nextOpenid", required = false) String nextOpenid,
+    public CommonResult userInfoPage(@RequestParam(value = "nextOpenid", required = false) String nextOpenid,
                                      @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                      @RequestParam(value = "pageSize", defaultValue = "5")  int pageSize) throws WxErrorException, IOException {
         // 先获取列表
-        this.configStorage(publicCode);
         List<String> list = this.wxService.getUserService().userList(nextOpenid).getOpenids();
         PageInfo<WxMpUser> page = PagerUtil.lowPager(currentPage, pageSize, list);
 
@@ -120,22 +109,17 @@ public class WxUserController {
 
     // 修改用户备注名
     @PostMapping("/updateRemark")
-    public CommonResult userUpdateRemark(@RequestParam String publicCode,
-                                 @RequestParam("openid") String openid,
+    public CommonResult userUpdateRemark( @RequestParam("openid") String openid,
                                  @RequestParam("remark") String remark) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
         this.wxService.getUserService().userUpdateRemark(openid, remark);
         return ResultUtil.success();
     }
 
     // 获取公众号的黑名单列表
     @GetMapping("/blacklist")
-    public CommonResult blackList(@RequestParam String publicCode,
-                                  @RequestParam(value = "nextOpenid",required = false) String nextOpenid,
+    public CommonResult blackList(@RequestParam(value = "nextOpenid",required = false) String nextOpenid,
                                   @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                   @RequestParam(value = "pageSize", defaultValue = "5")  int pageSize) throws WxErrorException, IOException {
-
-        this.configStorage(publicCode);
         WxMpUserBlacklistGetResult result = this.wxService.getBlackListService().getBlacklist(nextOpenid);
         if (result.getCount() > 0){
             PageInfo<String> page = PagerUtil.lowPager(currentPage, pageSize, result.getOpenidList());
@@ -147,12 +131,10 @@ public class WxUserController {
 
     // 分页直接获取黑名单列表基本信息
     @GetMapping("/blackInfoPage")
-    public CommonResult blackInfoPage(@RequestParam String publicCode,
-                                     @RequestParam(value = "nextOpenid", required = false) String nextOpenid,
+    public CommonResult blackInfoPage(@RequestParam(value = "nextOpenid", required = false) String nextOpenid,
                                      @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                      @RequestParam(value = "pageSize", defaultValue = "5")  int pageSize) throws WxErrorException, IOException {
         // 先获取列表
-        this.configStorage(publicCode);
         WxMpUserBlacklistGetResult blacklist = this.wxService.getBlackListService().getBlacklist(nextOpenid);
         PageInfo<WxMpUser> page = PagerUtil.lowPager(currentPage, pageSize, blacklist.getOpenidList());
 
@@ -171,9 +153,7 @@ public class WxUserController {
 
     // 拉黑用户
     @PostMapping("/pushBlackList")
-    public CommonResult pushToBlacklist(@RequestParam String publicCode,
-                                        @RequestParam(value = "openids") List<String> openidList) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult pushToBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException, IOException {
 
         this.wxService.getBlackListService().pushToBlacklist(openidList);
         return ResultUtil.success();
@@ -182,10 +162,7 @@ public class WxUserController {
 
     // 取消拉黑用户
     @PostMapping("/removeBlackList")
-    public CommonResult removeFromBlacklist(@RequestParam String publicCode,
-                                            @RequestParam(value = "openids") List<String> openidList) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
-
+    public CommonResult removeFromBlacklist(@RequestParam(value = "openids") List<String> openidList) throws WxErrorException, IOException {
         this.wxService.getBlackListService().pullFromBlacklist(openidList);
         return ResultUtil.success();
     }
@@ -193,8 +170,7 @@ public class WxUserController {
 
     // 授权获取 openid
     @GetMapping("/openid")
-    public void getOpenid(@RequestParam String publicCode,
-                          @RequestParam(value = "isAuthPage") Boolean isAuthPage,
+    public void getOpenid(@RequestParam(value = "isAuthPage") Boolean isAuthPage,
                           @RequestParam(value = "callbackUrl", required = false) String callBackUrl,
                           HttpServletRequest request, HttpServletResponse response) throws WxErrorException, IOException, ServletException {
 

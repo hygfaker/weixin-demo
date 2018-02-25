@@ -92,7 +92,6 @@ public class WxPublicController {
     // 批量逻辑删除公众号
     @GetMapping("/deleteBatch")
     public CommonResult deleteBatch(WxPublic wxPublic) throws WxErrorException, IOException {
-        // TODO: 2017/11/3 判断公众号是否存在 
         if (wxPublicService.deleteBatch(wxPublic)) {
             return ResultUtil.success();
         } else {

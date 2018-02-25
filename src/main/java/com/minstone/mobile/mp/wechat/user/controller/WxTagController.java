@@ -44,17 +44,15 @@ public class WxTagController {
 
     // 获取公众号已创建的标签
     @GetMapping("/get")
-    public CommonResult tagGet(@RequestParam String publicCode) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult tagGet() throws WxErrorException, IOException {
+
         List<WxUserTag> tagList = this.wxService.getUserTagService().tagGet();
         return ResultUtil.success(tagList);
     }
 
     // 获取公众号已创建的标签，包括黑名单+全部用户
     @GetMapping("/getAll")
-    public CommonResult getAll(@RequestParam String publicCode,
-                               @RequestParam(value = "nextOpenid", required = false) String nextOpenid) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult getAll(@RequestParam(value = "nextOpenid", required = false) String nextOpenid) throws WxErrorException, IOException {
         List<WxUserTag> tagList = this.wxService.getUserTagService().tagGet();
 
         // 获取全部用户
@@ -73,16 +71,13 @@ public class WxTagController {
 
         tagList.add(0,allUserTag);
         tagList.add(tagList.size(),blackListTag);
-//        List<WxUserTag> allList = new ArrayList<>();
-//        allList.add();
 
         return ResultUtil.success(tagList);
     }
 
     // 删除标签
     @GetMapping("/delete")
-    public CommonResult tagDelete(@RequestParam String publicCode, @RequestParam int tagid) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult tagDelete(@RequestParam int tagid) throws WxErrorException, IOException {
 
         if (this.wxService.getUserTagService().tagDelete((long)tagid)) {
             return ResultUtil.success();
@@ -93,8 +88,7 @@ public class WxTagController {
 
     // 修改标签
     @PostMapping("/update")
-    public CommonResult tagUpdate(@RequestParam String publicCode, Long tagID, String name) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult tagUpdate(Long tagID, String name) throws WxErrorException, IOException {
         if (this.wxService.getUserTagService().tagUpdate(tagID, name)) {
             return ResultUtil.success();
         } else {
@@ -104,12 +98,10 @@ public class WxTagController {
 
     // 获取标签下粉丝列表
     @GetMapping("/usersOfTag")
-    public CommonResult tagListUser(@RequestParam String publicCode,
-                                    Long tagID,
+    public CommonResult tagListUser(Long tagID,
                                     String nextOpenid,
                                     @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                     @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
         WxTagListUser listUser = this.wxService.getUserTagService().tagListUser(tagID, nextOpenid);
         if (listUser.getCount() > 0) {
             PageInfo<String> page = PagerUtil.lowPager(currentPage, pageSize, listUser.getData().getOpenidList());
@@ -121,12 +113,10 @@ public class WxTagController {
 
     // 分页直接获取标签下粉丝列表
     @GetMapping("userinfoOfTagPage")
-    public CommonResult userinfoOfTagPage(@RequestParam String publicCode,
-                                          @RequestParam Long tagID,
+    public CommonResult userinfoOfTagPage(@RequestParam Long tagID,
                                           String nextOpenid,
                                           @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                           @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
         WxTagListUser listUser = this.wxService.getUserTagService().tagListUser(tagID, nextOpenid);
         if (listUser.getCount() > 0) {
             PageInfo<WxMpUser> page = PagerUtil.lowPager(currentPage, pageSize, listUser.getData().getOpenidList());
@@ -148,11 +138,8 @@ public class WxTagController {
 
     // 批量为用户打标签
     @PostMapping("/batchTagForUser")
-    public CommonResult batchTagging(@RequestParam String publicCode,
-                                     @RequestParam Long tagID,
+    public CommonResult batchTagging(@RequestParam Long tagID,
                                      @RequestParam String[] openids) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
-
         if (this.wxService.getUserTagService().batchTagging(tagID, openids)) {
             return ResultUtil.success();
         } else {
@@ -162,11 +149,8 @@ public class WxTagController {
 
     // 批量为用户取消标签
     @PostMapping("/batchCancelTag")
-    public CommonResult batchUntagging(@RequestParam String publicCode,
-                                       @RequestParam Long tagID,
+    public CommonResult batchUntagging(@RequestParam Long tagID,
                                        @RequestParam String[] openids) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
-
         if (this.wxService.getUserTagService().batchUntagging(tagID, openids)) {
             return ResultUtil.success();
         } else {
@@ -176,12 +160,9 @@ public class WxTagController {
 
     // 批量为用户修改标签（单选）
     @PostMapping("/batchChangeTag")
-    public CommonResult batchChangeTag(@RequestParam String publicCode,
-                                       @RequestParam Long originTagID,
+    public CommonResult batchChangeTag(@RequestParam Long originTagID,
                                        @RequestParam Long targetTagID,
                                        @RequestParam String[] openids) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
-
         // 先取消标签,再打上标签
         if (this.wxService.getUserTagService().batchUntagging(originTagID, openids)) {
             if (this.wxService.getUserTagService().batchTagging(targetTagID, openids)){
@@ -197,29 +178,8 @@ public class WxTagController {
 
     // 获取用户身上的标签列表
     @GetMapping("/tagsOfUser")
-    public CommonResult userTagList(@RequestParam String publicCode, String openid) throws WxErrorException, IOException {
-        this.configStorage(publicCode);
+    public CommonResult userTagList(String openid) throws WxErrorException, IOException {
         List<Long> tagList = this.wxService.getUserTagService().userTagList(openid);
         return ResultUtil.success(tagList);
     }
-
-    /**
-     * 根据接收的 publicCode 参数判断 access_token
-     *
-     * @param publicCode 公众号
-     * @return void
-     * @author huangyg
-     */
-    public void configStorage(String publicCode) throws WxErrorException, IOException {
-        WxPublic checkPublic = publicService.get(publicCode);
-        if (checkPublic == null) {
-            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-        }
-        // 判断是否需要切换公众号
-        if (!checkPublic.getAppSecret().equals(new WxMpInMemoryConfigStorage().getSecret())) {
-            WxMpInMemoryConfigStorage config = publicService.switchPublic(checkPublic);
-            wxService.setWxMpConfigStorage(config);
-        }
-    }
-
 }
