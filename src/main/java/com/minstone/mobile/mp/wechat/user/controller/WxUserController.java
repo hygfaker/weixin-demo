@@ -69,12 +69,12 @@ public class WxUserController {
 
     // 获取用户基本信息
     @GetMapping("/info")
-    public WxMpUser userInfo(@RequestParam String publicCode,
+    public CommonResult userInfo(@RequestParam String publicCode,
                              @RequestParam(value = "openid") String openid,
                              @RequestParam(value = "lang", required = false) String lang) throws WxErrorException {
 
 
-        return this.wxService.getUserService().userInfo(openid, lang);
+        return ResultUtil.success(this.wxService.getUserService().userInfo(openid, lang));
     }
 
     // 批量获取用户基本信息
@@ -120,11 +120,12 @@ public class WxUserController {
 
     // 修改用户备注名
     @PostMapping("/updateRemark")
-    public void userUpdateRemark(@RequestParam String publicCode,
+    public CommonResult userUpdateRemark(@RequestParam String publicCode,
                                  @RequestParam("openid") String openid,
                                  @RequestParam("remark") String remark) throws WxErrorException, IOException {
         this.configStorage(publicCode);
         this.wxService.getUserService().userUpdateRemark(openid, remark);
+        return ResultUtil.success();
     }
 
     // 获取公众号的黑名单列表
@@ -140,7 +141,7 @@ public class WxUserController {
             PageInfo<String> page = PagerUtil.lowPager(currentPage, pageSize, result.getOpenidList());
             return ResultUtil.pageFormat(page);
         }else{
-            return ResultUtil.success();
+            return ResultUtil.success(new int[0]);
         }
     }
 
@@ -158,7 +159,7 @@ public class WxUserController {
         // 根据请求的分页参数，拿到相应数据去获取基本信息
         List<WxMpUser> result = new ArrayList<>();
         if (blacklist.getOpenidList().size() == 0){
-            return ResultUtil.success();
+            return ResultUtil.success(new int[0]);
         }else{
             int startIndex = (page.getPageNum()-1) * pageSize;
             int endIndex = startIndex + page.getPageSize();
