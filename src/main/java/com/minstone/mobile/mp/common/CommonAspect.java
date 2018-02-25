@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import sun.font.TrueTypeFont;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -71,20 +72,23 @@ public class CommonAspect {
             default : break ;
         }
 
-        // 每次都拦截参数 publicCode
-        String publicCode = request.getParameter("publicCode");
-        if (publicCode == null){
-            throw  new CommonException(CommonResultEnum.PARAMS_PUBLICCODE_MISSING);
+        if (request.getRequestURL().lastIndexOf("/public/add") < 0){
+            // 每次都拦截参数 publicCode
+            String publicCode = request.getParameter("publicCode");
+            if (publicCode == null){
+                throw  new CommonException(CommonResultEnum.PARAMS_PUBLICCODE_MISSING);
+            }
+            WxPublic checkPublic = publicService.get(publicCode);
+            if (checkPublic == null) {
+                throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
+            }
+            // 判断是否需要切换公众号
+            if (!checkPublic.getAppSecret().equals(new WxMpInMemoryConfigStorage().getSecret())) {
+                WxMpInMemoryConfigStorage config = publicService.switchPublic(checkPublic);
+                wxService.setWxMpConfigStorage(config);
+            }
         }
-        WxPublic checkPublic = publicService.get(publicCode);
-        if (checkPublic == null) {
-            throw new CommonException(CommonResultEnum.PUBLIC_NOTFOUND);
-        }
-        // 判断是否需要切换公众号
-        if (!checkPublic.getAppSecret().equals(new WxMpInMemoryConfigStorage().getSecret())) {
-            WxMpInMemoryConfigStorage config = publicService.switchPublic(checkPublic);
-            wxService.setWxMpConfigStorage(config);
-        }
+
 
     }
 
