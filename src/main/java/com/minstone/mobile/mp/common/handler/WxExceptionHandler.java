@@ -75,7 +75,8 @@ public class WxExceptionHandler {
         } else if (e instanceof MissingServletRequestPartException) {
 
             MissingServletRequestPartException exception = (MissingServletRequestPartException) e;
-            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, exception.getMessage());
+            String msg = "【" + exception.getRequestPartName() + "】" + "参数缺失。";
+            return ResultUtil.failure(CommonResultEnum.PARAM_ERROR, msg);
 
         } else if (e instanceof BindException) {  // get/Post 请求控制器提交参数缺失(@Valid 校验)
             BindException exception = (BindException) e;

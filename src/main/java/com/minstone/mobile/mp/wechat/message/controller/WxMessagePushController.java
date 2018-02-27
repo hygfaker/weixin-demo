@@ -1,5 +1,6 @@
 package com.minstone.mobile.mp.wechat.message.controller;
 
+import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.wechat.message.service.impl.WxMessagePushServiceImpl;
@@ -99,7 +100,11 @@ public class WxMessagePushController {
      */
     @PostMapping("/update")
     public CommonResult update(WxMessagePush wxMessagePush) throws WxErrorException{
-        return ResultUtil.success(wxMessagePushService.update(wxMessagePush));
+        if (wxMessagePushService.update(wxMessagePush)){
+            return ResultUtil.success(new int[0]);
+        }else{
+            throw new CommonException(CommonResultEnum.SERVER_ERROR);
+        }
     }
 
     /**

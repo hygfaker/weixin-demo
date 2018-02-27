@@ -70,7 +70,7 @@ public class WxKefuController {
 
     // 添加、上传头像并邀请客服
     @PostMapping("/add")
-    public CommonResult kfAccountAdd(WxMpKfAccountRequest account, @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
+    public CommonResult kfAccountAdd( WxMpKfAccountRequest account, @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
         if (account.getKfAccount() == null) {
             return ResultUtil.failure(CommonResultEnum.KEFU_ACCOUNT_ERROR);
         }

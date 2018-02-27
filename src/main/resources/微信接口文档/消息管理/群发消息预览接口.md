@@ -1,0 +1,43 @@
+**简要描述：** 
+
+- 按分组群发消息
+
+
+**请求URL：** 
+- ` ${schema}://${ip}:${port}/modu/api/sendAll/group `
+  
+**请求方式：**
+- POST 
+
+**参数：** 
+参数根据要群发的消息类型不一样而有以下几种情况：
+群发的消息为图文消息：
+
+| 参数名 | 类型 | 可空 | 默认值 | 说明 |
+| :-- | :-- | :-- | :-- | :-- |
+| img | file | 否 | 无 | 需要上传的图片 |
+| publicCode | string | 否 | 无 | 公众号主键 |
+
+ **返回示例**
+
+``` 
+{
+    "desc": "执行成功",
+    "status": 200,
+    "time": "20180226100350",
+    "data": {
+        "url": "http://mmbiz.qpic.cn/mmbiz_png/MtxW1n5fT2WJ9sWCribaC3uuvU4y7aoqhveUWAzq0d2olWVFkFeRn8Rl1uX7oKShb76yu7XwVbiaNGOHlxNQaFYQ/0"
+    }
+}
+```
+
+ **返回参数说明** 
+
+| 参数名 | 类型 | 说明 |
+| :-- | :-- | :-- |
+| url | string | 上传到微信服务器后返回的 url |
+
+
+
+
+

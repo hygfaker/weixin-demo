@@ -3,9 +3,11 @@ package com.minstone.mobile.mp.wechat.material.controller;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.utils.FileUtil;
 import com.minstone.mobile.mp.utils.ResultUtil;
+import com.minstone.mobile.mp.wechat.material.domain.WxMpCustomeMaterialNews;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
+import org.apache.http.HttpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +60,7 @@ public class WxMaterialController {
 
     // 新增永久图文素材
     @PostMapping("/uploadNews")
-    public CommonResult uploadNews(@RequestBody WxMpMaterialNews news) throws WxErrorException {
+    public CommonResult uploadNews(@RequestBody WxMpCustomeMaterialNews news) throws WxErrorException {
         WxMpMaterialUploadResult result = wxService.getMaterialService().materialNewsUpload(news);
         return ResultUtil.success(result);
     }

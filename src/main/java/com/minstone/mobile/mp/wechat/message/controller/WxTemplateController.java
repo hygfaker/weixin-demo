@@ -34,7 +34,11 @@ public class WxTemplateController {
     public CommonResult setIndustry(@RequestParam String primary, @RequestParam String second) throws WxErrorException{
         WxMpTemplateIndustry industry = new WxMpTemplateIndustry(new WxMpTemplateIndustry.Industry(primary),
                 new WxMpTemplateIndustry.Industry(second));
-        return ResultUtil.success(this.wxService.getTemplateMsgService().setIndustry(industry));
+        if (this.wxService.getTemplateMsgService().setIndustry(industry)){
+           return ResultUtil.success(new int[0]);
+        }else{
+            throw new CommonException(CommonResultEnum.SERVER_ERROR);
+        }
     }
 
     // 获取设置的行业信息
@@ -80,7 +84,11 @@ public class WxTemplateController {
     // 删除模板
     @GetMapping("/delete")
     public CommonResult delPrivateTemplate(@RequestParam ("templateId") String templateId) throws WxErrorException{
-        return ResultUtil.success(this.wxService.getTemplateMsgService().delPrivateTemplate(templateId));
+        if (this.wxService.getTemplateMsgService().delPrivateTemplate(templateId)){
+            return ResultUtil.success(new int[0]);
+        }else{
+            throw new CommonException(CommonResultEnum.SERVER_ERROR);
+        }
     }
 
     // 发送模板消息
