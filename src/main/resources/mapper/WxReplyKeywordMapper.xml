@@ -165,7 +165,7 @@
 
     <select id="selectKeywords" resultMap="BaseResultMap">
       select k.* from MP_YY_REP_KEYWORD k,MP_YY_REP_RULE r
-      where r.PUBLIC = #{publicCode,jdbcType=VARCHAR}
+      where r.PUBLIC_CODE= #{publicCode,jdbcType=VARCHAR}
       AND k.RULE_CODE = r.RULE_CODE
       AND r.DEL_FLAG = 0
       AND k.DEL_FLAG = 0
