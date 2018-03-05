@@ -60,8 +60,6 @@ public class WxPublicController {
     @Autowired
     private WxPublicServiceImpl wxPublicService;
 
-    private static Logger logger = LoggerFactory.getLogger(WxPublicController.class);
-
     // 添加公众号
     @PostMapping("/add")
     public CommonResult add(WxPublic wxPublic, @RequestParam MultipartFile publicHeadImg, @RequestParam MultipartFile publicQrcode,HttpServletRequest request) throws WxErrorException, IOException {

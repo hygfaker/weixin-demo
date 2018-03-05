@@ -12,16 +12,14 @@ import com.minstone.mobile.mp.utils.JsonUtil;
 import com.google.gson.JsonParser;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
+import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserBlacklistGetResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -35,14 +33,15 @@ import java.util.List;
 /**
  * 该数据的获取主要是根据公众号配置的 appkey、appsecret、token 来获取。
  * <p>
- * Created by huangyg on 2017/8/2.
+ *
+ * @author huangyg
+ * @date 2017/8/2
  */
 
 @RestController
 @RequestMapping("/user")
+@Log4j
 public class WxUserController {
-
-    private static Logger logger = LoggerFactory.getLogger(WxUserController.class);
 
     @Autowired
     private WxMpService wxService;
@@ -181,7 +180,7 @@ public class WxUserController {
             authUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/code" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
 
         }
-        logger.info("微信网页授权的 url：" + authUrl);
+        log.info("微信网页授权的 url：" + authUrl);
         response.sendRedirect(authUrl); // 重定向
     }
 
@@ -205,7 +204,7 @@ public class WxUserController {
                 callbackUrl += "&";
             }
             callbackUrl += "openid=" + openid;
-            logger.info("回调的页面：" + callbackUrl);
+            log.info("回调的页面：" + callbackUrl);
             // 跳转到回调页面
             response.sendRedirect(callbackUrl); // 重定向
             return ResultUtil.success();
@@ -236,7 +235,7 @@ public class WxUserController {
                 callbackUrl += "&";
             }
 //            callbackUrl += "userInfo=" + JsonUtil.toJson(user);
-            logger.info("回调的页面：" + callbackUrl);
+            log.info("回调的页面：" + callbackUrl);
             // 跳转到回调页面
             response.sendRedirect(callbackUrl); // 重定向
             return ResultUtil.success(JsonUtil.toJson(user));
@@ -262,7 +261,7 @@ public class WxUserController {
                 url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + this.properties.getAppId() + "&redirect_uri=" + request.getRequestURL() + "/code" + "&response_type=code&scope=snsapi_base&state=" + callBackUrl + "#wechat_redirect";
 
             }
-            logger.info("微信网页授权的 url：" + url);
+            log.info("微信网页授权的 url：" + url);
             response.sendRedirect(url); // 重定向
         }
         // 跳转到回调的 url 并且返回 code
@@ -283,7 +282,7 @@ public class WxUserController {
                 callbackUrl += "&";
             }
             callbackUrl += "openid=" + openid;
-            logger.info("回调的页面：" + callbackUrl);
+            log.info("回调的页面：" + callbackUrl);
             // 跳转到回调页面
             response.sendRedirect(callbackUrl); // 重定向
         }
@@ -308,7 +307,7 @@ public class WxUserController {
             String getUserInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
             String userInfo = this.impl.get(getUserInfo,null);
 
-            logger.info("回调的页面：" + callbackUrl);
+            log.info("回调的页面：" + callbackUrl);
             // 跳转到回调页面
             response.sendRedirect(callbackUrl); // 重定向
         }

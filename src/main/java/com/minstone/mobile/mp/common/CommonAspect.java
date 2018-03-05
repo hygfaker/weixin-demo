@@ -1,8 +1,4 @@
 package com.minstone.mobile.mp.common;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.JsonUtil;
 import com.minstone.mobile.mp.utils.ReflectBeanUtil;
@@ -14,20 +10,15 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import sun.font.TrueTypeFont;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 /**

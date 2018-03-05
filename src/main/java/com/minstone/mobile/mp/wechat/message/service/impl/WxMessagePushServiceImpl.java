@@ -14,9 +14,8 @@ import com.minstone.mobile.mp.utils.IdGen;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessagePushDao;
 import com.minstone.mobile.mp.wechat.publics.dao.WxPublicDao;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
+import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +46,6 @@ public class WxMessagePushServiceImpl implements IWxMessagePushService {
     // 4-1. 修改定点消息状态
 
     // 5-1. 获取定点消息分页列表
-
-    private static Logger logger = LoggerFactory.getLogger(IWxMessagePushService.class);
 
     @Autowired
     private WxMessagePushDao wxMessagePushDao;

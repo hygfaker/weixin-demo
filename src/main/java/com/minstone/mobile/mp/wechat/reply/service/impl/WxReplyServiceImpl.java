@@ -6,7 +6,6 @@ import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
-import com.minstone.mobile.mp.wechat.publics.service.impl.WxPublicServiceImpl;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReply;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyRule;
 import com.minstone.mobile.mp.utils.IdGen;
@@ -16,9 +15,8 @@ import com.minstone.mobile.mp.wechat.reply.dao.WxReplyDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyKeywordDao;
 import com.minstone.mobile.mp.wechat.reply.dao.WxReplyRuleDao;
 import com.minstone.mobile.mp.wechat.reply.domain.WxReplyKeyword;
+import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by huangyg on 2017/9/21.
+ *
+ * @author huangyg
+ * @date 2017/9/21
  */
 
 @Service
 @Transactional
+@Log4j
 public class WxReplyServiceImpl implements IWxReplyService {
 //    todo
 
@@ -86,8 +87,6 @@ public class WxReplyServiceImpl implements IWxReplyService {
     private WxPublicDao wxPublicDao;
     @Autowired
     private Validator validator;
-
-    private static Logger logger = LoggerFactory.getLogger(WxPublicServiceImpl.class);
 
     /**
      * 添加公众号的时候，初始化【消息回复】数据
@@ -143,7 +142,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
             if (selectList.size() == 0) {
                 throw new CommonException(CommonResultEnum.REPLY_TYPE_NOTFOUND);
             } else {
-                logger.info("获取成功：List<WxReply> = " + selectList);
+                log.info("获取成功：List<WxReply> = " + selectList);
                 return selectList;
             }
         }
@@ -172,7 +171,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
                 if (wxReplyDao.updateContent(reply) < 1) {
                     throw new CommonException(CommonResultEnum.UPDATE_REPLY_CONTENT_ERROR);
                 }
-                logger.info("更新公众号信息成功");
+                log.info("更新公众号信息成功");
                 WxReply result = selectList.get(0);
                 result.setContent(reply.getContent());
                 return result;
@@ -181,7 +180,7 @@ public class WxReplyServiceImpl implements IWxReplyService {
                 if (wxReplyDao.insert(reply) < 1) {
                     throw new CommonException(CommonResultEnum.SAVE_REPLY_CONTENT_ERROR);
                 }
-                logger.info("保存公众号信息成功");
+                log.info("保存公众号信息成功");
                 return reply;
             }
         }
@@ -639,10 +638,10 @@ public class WxReplyServiceImpl implements IWxReplyService {
     @Override
     public boolean updateKeywordBatch(WxReplyRule rule) throws WxErrorException {
         if (wxReplyKeywordDao.updateBatch(rule.getKeywords()) < 0) {
-            logger.error("批量更新关键词出错");
+            log.error("批量更新关键词出错");
             return false;
         } else {
-            logger.info("批量更新关键词成功");
+            log.info("批量更新关键词成功");
             return true;
         }
     }
@@ -659,10 +658,10 @@ public class WxReplyServiceImpl implements IWxReplyService {
     public boolean singleRuleFlag(WxReplyRule rule) throws WxErrorException, CommonException {
         ValidatorUtil.mustParam(rule, validator, "ruleCode", "useFlag");
         if (wxReplyRuleDao.updateRuleFlag(rule) < 0) {
-            logger.error("开启/关闭关键词规则开关出错");
+            log.error("开启/关闭关键词规则开关出错");
             return false;
         } else {
-            logger.info("开启/关闭关键词规则开关成功");
+            log.info("开启/关闭关键词规则开关成功");
             return true;
         }
     }

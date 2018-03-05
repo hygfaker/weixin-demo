@@ -1,6 +1,5 @@
 package com.minstone.mobile.mp.utils;
 
-import com.google.gson.JsonObject;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 /**

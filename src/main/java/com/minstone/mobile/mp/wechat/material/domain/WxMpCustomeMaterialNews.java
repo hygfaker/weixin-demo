@@ -8,8 +8,10 @@ import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
  * @description
  * @since 2018/2/26
  */
-@Data
 public class WxMpCustomeMaterialNews extends WxMpMaterialNews {
+
+    private static final long serialVersionUID = 1L;
+
     private String publicCode;
 
     public String getPublicCode() {

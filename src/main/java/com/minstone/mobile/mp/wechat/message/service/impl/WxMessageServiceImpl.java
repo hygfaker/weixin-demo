@@ -8,11 +8,8 @@ import com.minstone.mobile.mp.utils.ValidatorUtil;
 import com.minstone.mobile.mp.wechat.message.dao.WxMessageDao;
 import com.minstone.mobile.mp.wechat.message.domain.WxMessage;
 import com.minstone.mobile.mp.wechat.message.service.IWxMessageService;
-import me.chanjar.weixin.common.api.WxConsts;
+import lombok.extern.log4j.Log4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,6 @@ public class WxMessageServiceImpl implements IWxMessageService {
     @Autowired
     private Validator validator;
 
-    private static Logger logger = LoggerFactory.getLogger(WxMessageServiceImpl.class);
     // ----------------- 提供的服务 -----------------//
     // 1-1. 保存消息
     // 2-1. 删除消息

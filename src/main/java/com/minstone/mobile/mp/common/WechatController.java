@@ -1,11 +1,7 @@
 package com.minstone.mobile.mp.common;
 
-import com.minstone.mobile.mp.wechat.message.handler.MsgHandler;
-import com.minstone.mobile.mp.common.handler.SubscribeHandler;
 import com.minstone.mobile.mp.wechat.publics.domain.WxPublic;
 import com.minstone.mobile.mp.wechat.publics.service.IWxPublicService;
-import com.minstone.mobile.mp.wechat.sendall.controller.SendAllHandler;
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.*;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
