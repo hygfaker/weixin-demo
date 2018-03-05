@@ -2,6 +2,7 @@ package com.minstone.mobile.mp.wechat.kefu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.minstone.mobile.mp.common.CommonException;
 import com.minstone.mobile.mp.common.CommonResult;
 import com.minstone.mobile.mp.common.constants.CommonResultEnum;
 import com.minstone.mobile.mp.utils.DateUtil;
@@ -14,6 +15,8 @@ import me.chanjar.weixin.mp.bean.kefu.request.WxMpKfAccountRequest;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfList;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfMsgList;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfMsgRecord;
+import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfSessionGetResult;
+import me.chanjar.weixin.mp.bean.material.WxMpMaterialNews;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,32 +67,30 @@ public class WxKefuController {
 
     // 邀请客服
     @PostMapping("/invite")
-    public CommonResult kfAccountInvite(@ModelAttribute WxMpKfAccountRequest account) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfAccountInviteWorker(account));
+    public CommonResult kfAccountInvite(@RequestParam String kfAccount,
+                                        @RequestParam String inviteWx) throws WxErrorException {
+        WxMpKfAccountRequest kfAccountRequest = WxMpKfAccountRequest.builder().inviteWx(inviteWx).kfAccount(kfAccount).build();
+
+        return ResultUtil.success(this.service.getKefuService().kfAccountInviteWorker(kfAccountRequest));
     }
 
     // 添加、上传头像并邀请客服
     @PostMapping("/add")
-    public CommonResult kfAccountAdd( WxMpKfAccountRequest account, @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
-        if (account.getKfAccount() == null) {
-            return ResultUtil.failure(CommonResultEnum.KEFU_ACCOUNT_ERROR);
-        }
-        if (account.getInviteWx() == null) {
-            return ResultUtil.failure(CommonResultEnum.KEFU_INVITE_ERROR);
-        }
-        if (account.getNickName() == null) {
-            return ResultUtil.failure(CommonResultEnum.KEFU_INVITE_ERROR);
-        }
+    public CommonResult kfAccountAdd(@RequestParam String kfAccount,
+                                     @RequestParam String nickName,
+                                     @RequestParam String inviteWx,
+                                     @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
+
+        WxMpKfAccountRequest kfAccountRequest = WxMpKfAccountRequest.builder().inviteWx(inviteWx).nickName(nickName).kfAccount(kfAccount).build();
         // 1. 创建客服账号
         // 完整客服帐号，格式为：帐号前缀@公众号微信号，帐号前缀最多10个字符，必须是英文、数字字符或者下划线，后缀为公众号微信号，长度不超过30个字符
-        this.service.getKefuService().kfAccountAdd(account);
+        this.service.getKefuService().kfAccountAdd(kfAccountRequest);
         // 2. 上传头像
         if (multfile != null) {
             File file = FileUtil.convert(multfile);
-            // todo - 判断图片格式
-            if (!this.service.getKefuService().kfAccountUploadHeadImg(account.getKfAccount(), file)) {
+            if (!this.service.getKefuService().kfAccountUploadHeadImg(kfAccount, file)) {
                 // 上传失败后应该删除客服账号
-                this.service.getKefuService().kfAccountDel(account.getKfAccount());
+                this.service.getKefuService().kfAccountDel(kfAccount);
                 return ResultUtil.failure(CommonResultEnum.KEFU_HEADIMG_ERROR);
             } else {
 
@@ -97,57 +98,62 @@ public class WxKefuController {
             file.delete();
         }
         // 3. 邀请微信用户
-        return ResultUtil.success(this.service.getKefuService().kfAccountInviteWorker(account));
+        if (this.service.getKefuService().kfAccountInviteWorker(kfAccountRequest)){
+            return ResultUtil.success();
+        }else{
+            throw new CommonException(CommonResultEnum.SERVER_ERROR);
+        }
     }
 
     // 删除客服
     @GetMapping("/delete")
-    public CommonResult kfAccountDelete(@RequestParam String account) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfAccountDel(account));
+    public CommonResult kfAccountDelete(@RequestParam String kfAccount) throws WxErrorException {
+        return ResultUtil.success(this.service.getKefuService().kfAccountDel(kfAccount));
 
     }
 
     // 更新客服信息
     @PostMapping("/update")
-    public CommonResult test(WxMpKfAccountRequest account, @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
-        if (account.getKfAccount() == null) {
-            return ResultUtil.failure(CommonResultEnum.KEFU_ACCOUNT_ERROR);
-        }
+    public CommonResult test(@RequestParam String kfAccount,
+                             @RequestParam String nickName,
+                             @RequestParam(value = "headImg", required = false) MultipartFile multfile) throws WxErrorException, IOException {
+        WxMpKfAccountRequest kfAccountRequest = WxMpKfAccountRequest.builder().nickName(nickName).kfAccount(kfAccount).build();
         if (multfile != null) {
             File file = FileUtil.convert(multfile);
-            if (!this.service.getKefuService().kfAccountUploadHeadImg(account.getKfAccount(), file)) {
+            if (!this.service.getKefuService().kfAccountUploadHeadImg(kfAccount, file)) {
                 return ResultUtil.failure(CommonResultEnum.KEFU_HEADIMG_ERROR);
             }
             file.delete();
         }
-        return ResultUtil.success(this.service.getKefuService().kfAccountUpdate(account));
+        return ResultUtil.success(this.service.getKefuService().kfAccountUpdate(kfAccountRequest));
     }
 
     // 创建会话
     @PostMapping("/sessionCreate")
-    public CommonResult kfSessionCreate(String openid, String account) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfSessionCreate(openid, account));
+    public CommonResult kfSessionCreate(String openid, String kfAccount) throws WxErrorException {
+        return ResultUtil.success(this.service.getKefuService().kfSessionCreate(openid, kfAccount));
 
     }
 
     // 关闭会话
     @PostMapping("/sessionClose")
-    public CommonResult kfSessionClose(String openid, String account) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfSessionClose(openid, account));
+    public CommonResult kfSessionClose(String openid, String kfAccount) throws WxErrorException {
+        return ResultUtil.success(this.service.getKefuService().kfSessionClose(openid, kfAccount));
 
     }
 
     // 获取客户会话状态
     @GetMapping("/sessionGet")
     public CommonResult kfSessionGet(@RequestParam String openid) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfSessionGet(openid));
+        WxMpKfSessionGetResult result = service.getKefuService().kfSessionGet(openid);
+        return ResultUtil.success(result);
 
     }
 
     // 获取客服的会话列表
     @GetMapping("/sessionList")
-    public CommonResult kfSessionList(@RequestParam String account) throws WxErrorException {
-        return ResultUtil.success(this.service.getKefuService().kfSessionList(account));
+    public CommonResult kfSessionList(@RequestParam String kfAccount) throws WxErrorException {
+        return ResultUtil.success(this.service.getKefuService().kfSessionList(kfAccount));
 
     }
 
@@ -163,7 +169,7 @@ public class WxKefuController {
     @GetMapping("/chatUser")
     public CommonResult chatRecord(String startTime,
                                    @RequestParam(value = "endTime", required = false) String endTime,
-                                   @RequestParam(value = "account", required = false) String account,
+                                   @RequestParam(value = "kfAccount", required = false) String kfAccount,
                                    @RequestParam(value = "msgid", required = false, defaultValue = "1") Long msgid,
                                    @RequestParam(value = "number", required = false, defaultValue = "10000") Integer number) throws WxErrorException {
         Date start = DateUtil.dateToUnixTimestamp(startTime);
@@ -212,10 +218,10 @@ public class WxKefuController {
     @GetMapping("/chatRecord")
     public CommonResult chatRecord(String startTime,
                                    @RequestParam(value = "endTime", required = false) String endTime,
-                                   @RequestParam(value = "account", required = false) String account,
+                                   @RequestParam(value = "kfAccount", required = false) String kfAccount,
                                    @RequestParam(value = "userName", required = false) String userName,
-                                   @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                   @RequestParam(value = "currentPage", defaultValue = "1",required = false) int currentPage,
+                                   @RequestParam(value = "pageSize", defaultValue = "20",required = false) int pageSize,
                                    @RequestParam(value = "msgid", required = false, defaultValue = "1") Long msgid,
                                    @RequestParam(value = "number", required = false, defaultValue = "10000") Integer number) throws WxErrorException {
 
@@ -260,7 +266,7 @@ public class WxKefuController {
             }
             record.setOpenid(nickName);
             // 记录某个客服的聊天记录
-            if (account != null && record.getWorker().equals(account)) {
+            if (kfAccount != null && record.getWorker().equals(kfAccount)) {
                 // 记录某个客服和用户的聊天记录
                 result1.add(record);
                 if (userName != null && record.getOpenid().equals(userName)) {
